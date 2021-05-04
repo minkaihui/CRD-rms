@@ -1,0 +1,16 @@
+export default {
+  all: 'all',
+  picture: 'picture',
+  videoClip: 'videoClip',
+  file: 'file',
+  audioFrequency: 'audioFrequency',
+  auditList: 'auditList',
+  labelManagement: 'labelManagement',
+  recycleBin: 'recycleBin',
+  uploadMaterial: 'uploadMaterial',
+  sharedFolders: 'sharedFolders',
+  dashboard: 'Dashboard',
+  about: 'About',
+  workbench: 'Workbench',
+  analysis: 'Analysis',
+};
