@@ -83,9 +83,6 @@
   @prefix-cls: ~'@{namespace}-image-preview';
 
   .@{prefix-cls} {
-    .ant-image {
-      margin-right: 10px;
-    }
 
     .ant-image-preview-operations {
       background-color: rgba(0, 0, 0, 0.4);

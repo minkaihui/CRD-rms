@@ -1,15 +1,11 @@
 <template>
-  <div class="flex">
+  <div class="flex justify-start h-full">
     <div class="w-full">
-      <PageWrapper title="全部">
-      <!-- 中心模块1 -->
-      <PageContentWrapper  title="全部1"></PageContentWrapper>
-      </PageWrapper>
+     <!-- 中心模块1 -->
+      <PageContentWrapper></PageContentWrapper>
     </div>
-    <div>
-      <!-- 右侧模块1 -->
+    <!-- 右侧模块1 -->
       <RightPageWrapper></RightPageWrapper>
-    </div>
   </div>
 </template>
 <script lang="ts">

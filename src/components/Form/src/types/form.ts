@@ -156,7 +156,7 @@ export interface FormSchema {
   // Reference formModelItem
   itemProps?: Partial<FormItem>;
 
-  // col configuration outside formModelItem
+  // col configuration outside formModelItem  表单模型项外的列配置
   colProps?: Partial<ColEx>;
 
   // 默认值
