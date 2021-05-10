@@ -5,7 +5,7 @@
     </template>
     <DetailModal :info="rowInfo" @register="registerModal" />
     <BasicTable @register="register" class="error-handle-table">
-      <!-- <template #toolbar>
+      <template #toolbar>
         <a-button @click="fireVueError" type="primary">
           {{ t('sys.errorLog.fireVueError') }}
         </a-button>
@@ -15,7 +15,7 @@
         <a-button @click="fireAjaxError" type="primary">
           {{ t('sys.errorLog.fireAjaxError') }}
         </a-button>
-      </template> -->
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[

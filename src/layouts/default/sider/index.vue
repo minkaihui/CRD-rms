@@ -10,7 +10,6 @@
   >
     <Sider />
   </Drawer>
-
   <MixSider v-else-if="getIsMixSidebar" />
   <Sider v-else />
 </template>

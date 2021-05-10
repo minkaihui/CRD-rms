@@ -137,10 +137,9 @@ const setting: ProjectConfig = {
     // The disabled state will also disable pageLoadinng
     enable: true,
 
-    // 动画名
+    // Route basic switching animation
     basicTransition: RouterTransitionEnum.FADE_SIDE,
 
-    // 是否打开页面切换loading
     // Whether to open page switching loading
     // Only open when enable=true
     openPageLoading: true,

@@ -1,4 +1,5 @@
 <template>
+<div>
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow">
     <FormItem name="account" class="enter-x">
@@ -68,6 +69,9 @@
       <TwitterCircleFilled />
     </div> -->
   </Form>
+  
+
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue';

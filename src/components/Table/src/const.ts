@@ -20,6 +20,7 @@ export const DEFAULT_SORT_FN = defaultSortFn;
 
 export const DEFAULT_FILTER_FN = defaultFilterFn;
 
+//  Default layout of table cells
 //表格单元格的默认布局 
 export const DEFAULT_ALIGN = 'center';
 export const INDEX_COLUMN_FLAG = 'INDEX';
