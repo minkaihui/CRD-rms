@@ -61,13 +61,13 @@ const setting: ProjectConfig = {
     // 主题
     theme: ThemeEnum.LIGHT,
     // 开启锁屏功能
-    useLockPage: true,
+    useLockPage: false,
     // 显示全屏按钮
     showFullScreen: false,
     // 显示文档按钮
     showDoc: false,
     // 显示消息中心按钮
-    showNotice: true,
+    showNotice: false,
     // 显示菜单搜索按钮
     showSearch: false,
   },
@@ -89,7 +89,7 @@ const setting: ProjectConfig = {
     // 是否显示
     show: true,
     // Whether to show dom
-    hidden: false,
+    hidden: true,
     // 菜单宽度
     menuWidth: 210,
     // 菜单模式
@@ -145,7 +145,7 @@ const setting: ProjectConfig = {
     openPageLoading: true,
 
     // 是否打开页面切换顶部进度条
-    openNProgress: false,
+    openNProgress: true,
   },
 
   // 是否开启KeepAlive缓存  开发时候最好关闭,不然每次都需要清除缓存

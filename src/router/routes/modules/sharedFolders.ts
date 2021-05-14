@@ -9,7 +9,6 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/sharedFolders/index',
   meta: {
-    icon: 'ant-design:folder-outlined',
     title: t('routes.dashboard.sharedFolders'),
   },
   children: [
@@ -19,10 +18,14 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/sharedFolders/index.vue'),
       meta: {
         title: t('routes.dashboard.sharedFolders'),
-        icon: 'ant-design:folder-outlined',
+        hideTab:true,
+        ignoreKeepAlive:true
       },
     },
   ],
+  beforeEnter: (to, from, next) => {
+    next(false)
+  }
 };
 
 export default dashboard;

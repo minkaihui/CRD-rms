@@ -9,7 +9,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/uploadMaterial/index',
   meta: {
-    icon: 'ant-design:folder-outlined',
+    icon: 'ant-design:upload-outlined',
     title: t('routes.dashboard.uploadMaterial'),
   },
   children: [
@@ -19,10 +19,15 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/uploadMaterial/index.vue'),
       meta: {
         title: t('routes.dashboard.uploadMaterial'),
-        icon: 'ant-design:folder-outlined',
+        icon: 'ant-design:upload-outlined',
+        hideTab:true,
+        ignoreKeepAlive:true
       },
     },
-  ],
+  ], 
+  beforeEnter: (to, from, next) => {
+    next(false)
+  }
 };
 
 export default dashboard;

@@ -107,7 +107,7 @@ export default defineComponent({
     width: 100%;
     margin-bottom: -8px;
     background-color: rgba(0,0,0,0);
-    border: 3px solid rgba(26,115,232,.8);
+    border: 2px solid rgba(26,115,232,.8);
     border-radius: 4px;
 
     &-detail {
