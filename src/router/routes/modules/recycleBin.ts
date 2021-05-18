@@ -9,7 +9,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/recycleBin/index',
   meta: {
-    icon: 'ant-design:folder-outlined',
+    icon: 'ant-design:delete-outlined',
     title: t('routes.dashboard.recycleBin'),
   },
   children: [
@@ -19,7 +19,7 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/recycleBin/index.vue'),
       meta: {
         title: t('routes.dashboard.recycleBin'),
-        icon: 'ant-design:folder-outlined',
+        icon: 'ant-design:delete-outlined',
       },
     },
   ],

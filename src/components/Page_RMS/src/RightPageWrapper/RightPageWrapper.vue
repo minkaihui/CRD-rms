@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <a-tabs class="a-tabs" default-active-key="1" size="small" @change="clickshow">
+    <a-tabs class="a-tabs" default-active-key="1" size="small" :tabBarStyle="tabStyle" tabBarGutter="28px" @change="clickshow">
       <!-- 文件详情 -->
       <a-tab-pane key="1" tab="文件详情">
         <!-- 图片 -->
@@ -8,7 +8,7 @@
           <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
         </div>
         <!-- 名称 -->
-        <div class="mt-4">
+        <div class="mt-5">
           <a-input :value="value" placeholder="名称" />
         </div>
         <!-- 标签 -->
@@ -27,25 +27,26 @@
           :bordered="false"
           :collapseOptions="{ canExpand: true }"
           :column="1"
+          size="12px"
           :data="mockData"
           :schema="schema"
         />
         <!-- 分类 -->
-        <div class="classify">
-          分类
+        <div class="classify mt-4">
+          <div class=" mb-2">分类</div>
           <div class="classify-file flex">
-            <div class="left w-60">
-              <Icon icon="ant-design:folder-outlined" :size="16" />
+            <div class="left" style="width: -webkit-fill-available;">
+              <Icon icon="ant-design:folder-outlined" :size="14" />
               文件夹名
-              <Icon icon="ant-design:close-outlined" :size="16" class="cursor-pointer" />
+              <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer" />
             </div>
 
-            <div class="w-40 pl-2"
-              ><Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="16"
+            <div class="pl-2 w-40"
+              ><Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14"
             /></div>
           </div>
-          <div class="classify-download cursor-pointer">
-            <Icon icon="ant-design:download-outlined" :size="16" />
+          <div class="classify-download cursor-pointer text-sm">
+            <Icon icon="ant-design:download-outlined" :size="14" />
             下载附件
           </div>
         </div>
@@ -56,7 +57,7 @@
           <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
         </div>
         <!-- 名称 -->
-        <div class="mt-4">
+        <div class=" mt-5">
           <a-input :value="value" placeholder="名称" />
         </div>
         <BasicForm
@@ -100,7 +101,7 @@ export default defineComponent({
         field: 'label',
         component: 'Select',
         labelWidth: 0,
-        defaultValue: ['1', '2'],
+        defaultValue: ['1', '2','3','4','5','6'],
         show: (renderCallbackParams) => {
           return show.value == '1';
         },
@@ -108,17 +109,17 @@ export default defineComponent({
           mode: 'multiple',
           options: [
             {
-              label: '选项1',
+              label: '选项',
               value: '1',
               key: '1',
             },
             {
-              label: '选项2',
+              label: '选大阿文发',
               value: '2',
               key: '2',
             },
             {
-              label: '选项3',
+              label: '选小',
               value: '3',
               key: '3',
             },
@@ -219,7 +220,6 @@ export default defineComponent({
     function clickshow(activeKey) {
       show.value = activeKey;
     }
-
     return {
       // 名称
       value,
@@ -241,9 +241,15 @@ export default defineComponent({
 </script>
 <style scoped lang="less">
 // 主体
+ 
 .vben-page-wrapper {
-  width: 210px;
+  width: 280px;
   background-color: #fff;
+  box-shadow: -1px 0 0 0 #ececee; 
+  
+  ::v-deep(.vben-page-wrapper-content) {
+    margin: 20px;
+  }
 
   //a-tabs
   ::v-deep(.a-tabs .ant-page-header) {
@@ -258,9 +264,14 @@ export default defineComponent({
     margin-bottom: 16px;
     border-bottom: none;
   }
+  
 
   ::v-deep(.a-tabs .ant-tabs-small-bar .ant-tabs-tab) {
     padding: 5px 5px;
+  }
+
+   ::v-deep(.ant-tabs .ant-tabs-small-bar .ant-tabs-nav-container) {
+    font-size: 12px;
   }
 
   ::v-deep(.a-tabs .ant-tabs-ink-bar) {
@@ -269,7 +280,7 @@ export default defineComponent({
 
   //图片
   .tab_right {
-    height: 130px;
+    height: 180px;
     border: 1px solid #eee;
 
     img {
@@ -281,15 +292,30 @@ export default defineComponent({
   // BasicForm
   ::v-deep(.BasicForm .ant-form-item-control-wrapper) {
     width: 100% !important;
-    margin-top: 10px;
-    margin-bottom: -5px;
+    margin-top: 15px;
+  }
+
+  ::v-deep(.ant-descriptions-item > span) {
+    font-size: 12px;
+  }
+
+  ::v-deep(.ant-descriptions-row > td) {
+    padding-bottom: 7px;
+  }
+
+  ::v-deep(.vben-basic-title-normal) {
+    font-size: 12px;
   }
 
   ::v-deep(.BasicForm .ant-select-selector) {
     max-height: auto;
-    min-height: 120px;
-    padding-right: 0;
+    min-height: 130px;
+    padding: 0;
     align-content: start;
+  }
+
+  ::v-deep(.ant-select-multiple .ant-select-selection-item) {
+    margin: 10px 0 0 10px;
   }
 
   ::v-deep(.BasicForm .ant-select-multiple .ant-select-selection-placeholder) {
@@ -321,8 +347,7 @@ export default defineComponent({
     }
 
     .classify-download {
-      height: 36px;
-      line-height: 36px;
+      padding: 20px 0;
       text-align: center;
     }
   }

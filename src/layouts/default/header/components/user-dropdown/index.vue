@@ -1,12 +1,13 @@
 <template>
   <Dropdown placement="bottomLeft" :overlayClassName="`${prefixCls}-dropdown-overlay`">
     <span :class="[prefixCls, `${prefixCls}--${theme}`]" class="flex">
-      <img :class="`${prefixCls}__header`" :src="headerImg" />
       <span :class="`${prefixCls}__info hidden md:block`">
         <span :class="`${prefixCls}__name  `" class="truncate">
           {{ getUserInfo.realName }}
         </span>
       </span>
+      <img :class="`${prefixCls}__header`" class="ml-2" :src="headerImg" />
+      <img src="../../../../../assets/images/men/down.png" alt="">
     </span>
 
     <template #overlay>
@@ -47,7 +48,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useModal } from '/@/components/Modal';
 
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/header.png';
   import { propTypes } from '/@/utils/propTypes';
   import { openWindow } from '/@/utils';
 
@@ -135,7 +136,6 @@
     img {
       width: 24px;
       height: 24px;
-      margin-right: 12px;
     }
 
     &__header {

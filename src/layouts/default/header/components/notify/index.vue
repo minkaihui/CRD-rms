@@ -1,8 +1,8 @@
 <template>
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" dot :numberStyle="numberStyle">
-        <BellOutlined />
+      <Badge :count="count" :numberStyle="numberStyle" >
+        <img class=" mt-6" src="../../../../../assets/images/men/Message.png" alt="">
       </Badge>
       <template #content>
         <Tabs>
@@ -23,13 +23,12 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
-  import { BellOutlined } from '@ant-design/icons-vue';
   import { tabListData } from './data';
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   export default defineComponent({
-    components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
+    components: { Popover, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
     setup() {
       const { prefixCls } = useDesign('header-notify');
 
@@ -43,7 +42,9 @@
         prefixCls,
         tabListData,
         count,
-        numberStyle: {},
+        numberStyle: {
+          top:"13px"
+        },
       };
     },
   });
@@ -51,6 +52,9 @@
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-notify';
 
+  ::v-deep(.ant-badge-count){
+    top: 13px !important;
+  }
   .@{prefix-cls} {
     padding-top: 2px;
 

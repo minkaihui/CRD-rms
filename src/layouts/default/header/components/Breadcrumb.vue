@@ -1,10 +1,11 @@
 <template>
-  <div :class="[prefixCls, `${prefixCls}--${theme}`]">
+  <div class="bg-white" :class="[prefixCls, `${prefixCls}--${theme}`]">
     <a-breadcrumb :routes="routes">
       <template #itemRender="{ route, routes, paths }">
         <Icon :icon="getIcon(route)" v-if="getShowBreadCrumbIcon && getIcon(route)" />
         <span v-if="!hasRedirect(routes, route)">
-          {{ t(route.name || route.meta.title) }}
+          {{ t(route.name || route.meta.title) }} 
+          <span class="text-cool-gray-400 text-xs">(200)</span>
         </span>
         <router-link v-else to="" @click="handleClick(route, paths, $event)">
           {{ t(route.name || route.meta.title) }}
@@ -159,7 +160,7 @@
 
   .@{prefix-cls} {
     display: flex;
-    padding: 0 8px;
+    padding: 10px 10px 10px 20px;
     align-items: center;
 
     .ant-breadcrumb-link {
@@ -171,7 +172,7 @@
 
     &--light {
       .ant-breadcrumb-link {
-        color: @breadcrumb-item-normal-color;
+        color: @text-color-base;
 
         a {
           color: rgba(0, 0, 0, 0.65);
@@ -183,7 +184,7 @@
       }
 
       .ant-breadcrumb-separator {
-        color: @breadcrumb-item-normal-color;
+        color: @text-color-base;
       }
     }
 

@@ -1,8 +1,8 @@
 // github repo url
-export const GITHUB_URL = 'https://github.com/anncwb/vue-vben-admin';
+export const GITHUB_URL = 'http://192.168.10.104:8989/tfs/Hone.Platform/_git/MaterialManagement';
 
-// vue-vben-admin-next-doc
-export const DOC_URL = 'https://vvbin.cn/doc-next/';
+// 文档
+export const DOC_URL = '';
 
-// site url
-export const SITE_URL = 'https://vvbin.cn/next/';
+// 网站网址 
+export const SITE_URL = '';

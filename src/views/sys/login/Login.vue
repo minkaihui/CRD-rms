@@ -3,6 +3,7 @@
     <AppLocalePicker
       class="absolute top-4 right-4 enter-x text-white xl:text-gray-600"
       :showText="false"
+      v-if="getShowLocalePicker"
     />
     <AppDarkModeToggle class="absolute top-3 right-7 enter-x" />
 
@@ -59,6 +60,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLocaleStore } from '/@/store/modules/locale';
+  import { useLocale } from '/@/locales/useLocale';
 
   export default defineComponent({
     name: 'Login',
@@ -77,12 +79,13 @@
       const { prefixCls } = useDesign('login');
       const { t } = useI18n();
       const localeStore = useLocaleStore();
-
+      const { getShowLocalePicker } = useLocale();
       return {
         t,
         prefixCls,
         title: computed(() => globSetting?.title ?? ''),
         showLocale: localeStore.getShowPicker,
+        getShowLocalePicker
       };
     },
   });

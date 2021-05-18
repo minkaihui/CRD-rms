@@ -27,7 +27,7 @@
 
   import { Avatar } from 'ant-design-vue';
 
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/header.png';
   export default defineComponent({
     components: { Avatar },
     setup() {

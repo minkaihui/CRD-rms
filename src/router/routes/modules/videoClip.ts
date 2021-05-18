@@ -9,7 +9,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/videoClip/index',
   meta: {
-    icon: 'ant-design:video-camera-outlined',
+    icon: 'ant-design:play-circle-outlined',
     title: t('routes.dashboard.videoClip'),
   },
   children: [
@@ -19,7 +19,7 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/videoClip/index.vue'),
       meta: {
         title: t('routes.dashboard.videoClip'),
-        icon: 'ant-design:video-camera-outlined',
+        icon: 'ant-design:play-circle-outlined',
       },
     },
   ],

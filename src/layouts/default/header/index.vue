@@ -16,6 +16,7 @@
         :theme="getHeaderTheme"
         :sider="false"
       />
+      <!-- 面包屑换位置 -->
       <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
     </div>
     <!-- left end -->
@@ -33,23 +34,27 @@
 
     <!-- action  -->
     <div :class="`${prefixCls}-action`">
-      <AppSearch :class="`${prefixCls}-action__item `" />
-
-      <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
-
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
-
+      <!-- 全屏 -->
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
-
+      <!-- 搜搜 -->
+      <AppSearch :class="`${prefixCls}-action__item `" />
+      <div class=" text-xs" style="color: rgba(0,0,0,0.65);">
+        管理员
+      </div>
+      <!-- 错误日志 -->
+      <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
+      <!-- 消息 -->
+      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
+      <!-- 语言切换 -->
       <AppLocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
         :showText="false"
         :class="`${prefixCls}-action__item`"
       />
-
+      <!-- 个人 -->
       <UserDropDown :theme="getHeaderTheme" />
-
+        <!-- 设置 -->
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
     </div>
   </Header>

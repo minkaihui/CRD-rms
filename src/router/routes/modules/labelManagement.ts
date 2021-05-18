@@ -9,7 +9,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/labelManagement/index',
   meta: {
-    icon: 'ant-design:folder-outlined',
+    icon: 'ant-design:tag-outlined',
     title: t('routes.dashboard.labelManagement'),
   },
   children: [
@@ -19,7 +19,7 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/labelManagement/index.vue'),
       meta: {
         title: t('routes.dashboard.labelManagement'),
-        icon: 'ant-design:folder-outlined',
+        icon: 'ant-design:tag-outlined',
       },
     },
   ],

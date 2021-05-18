@@ -52,12 +52,18 @@
   </div>
 </template>
 <style lang="less" scoped>
+::v-deep(.vben-simple-menu__upload) {
+    padding: 9px 30px;
+     padding-left: 30px !important;
+}
+
 .mkh1 {
   ::v-deep(.vben-simple-menu__upload) {
     display: block;
-    padding: 15px 0 6px 0;
+    padding: 0;
+    padding-top: 18px;
     padding-left: 0 !important;
-    margin: 0 24px 14px 16px;
+    margin: 9px 30px;
     border-top: 1px solid #ddd;
   }
 }
@@ -69,11 +75,13 @@
 
   ::v-deep(.vben-simple-menu__upload) {
     display: block;
-    padding: 6px 0;
+    height: 40px;
+    padding: 0;
     padding-left: 0 !important;
-    margin: 14px 24px 14px 16px;
+    margin: 20px;
+    line-height: 40px;
     text-align: center;
-    border: 2px solid rgba(26, 115, 232, 0.8);
+    border: 1px solid #1665d8;
   }
 
   
@@ -93,6 +101,7 @@
   }
 
   ::v-deep(.vben-simple-menu__upload) {
+    padding: 0 30px;
     cursor: auto;
   }
 }

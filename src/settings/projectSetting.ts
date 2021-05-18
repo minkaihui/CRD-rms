@@ -10,6 +10,7 @@ import {
 } from '/@/enums/appEnum';
 import { SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST } from './designSetting';
 import { primaryColor } from '../../build/config/themeConfig';
+import { number } from 'vue-types';
 
 // ! 改动后需要清空浏览器缓存
 const setting: ProjectConfig = {
@@ -67,7 +68,7 @@ const setting: ProjectConfig = {
     // 显示文档按钮
     showDoc: false,
     // 显示消息中心按钮
-    showNotice: false,
+    showNotice: true,
     // 显示菜单搜索按钮
     showSearch: false,
   },
@@ -91,7 +92,7 @@ const setting: ProjectConfig = {
     // Whether to show dom
     hidden: true,
     // 菜单宽度
-    menuWidth: 210,
+    menuWidth: 202,
     // 菜单模式
     mode: MenuModeEnum.INLINE,
     // 菜单类型
@@ -111,7 +112,7 @@ const setting: ProjectConfig = {
     // 左侧混合菜单模块切换触发方式
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
     // 是否固定左侧混合菜单
-    mixSideFixed: true,
+    mixSideFixed: false,
   },
 
   //多标签
@@ -155,7 +156,7 @@ const setting: ProjectConfig = {
   lockTime: 0,
 
   // 显示面包屑
-  showBreadCrumb: true,
+  showBreadCrumb: false,
 
   // 是否显示面包屑图标
   showBreadCrumbIcon: false,

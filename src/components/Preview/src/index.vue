@@ -4,9 +4,10 @@
       <slot v-if="!imageList || $slots.default"></slot>
       <template v-else>
         <template v-for="item in getImageList" :key="item.src">
-          <Image v-bind="item" @click="abc">
+          <!-- :class="item.flag == 1 ? 'rms' : ''" -->
+          <Image  v-bind="item">
             <template #placeholder v-if="item.placeholder">
-              <Image v-bind="item" :src="item.placeholder" :preview="abc" />
+              <Image v-bind="item" :src="item.placeholder" />
             </template>
           </Image>
         </template>
@@ -29,6 +30,7 @@ interface ImageProps {
   src: string;
   width: string | number;
   height?: string | number;
+  // flag: string | number;
   placeholder?: string | boolean;
   preview?:
     | boolean
@@ -75,21 +77,20 @@ export default defineComponent({
     return {
       prefixCls,
       getImageList,
-      abc: {
-        visible: true,
-        onVisibleChange: (visible, prevVisible) => {
-          console.log(123,visible, prevVisible);
-        },
-        getContainer: (e) => {
-          console.log(666, e);
-        },
-      },
     };
   },
 });
 </script>
 <style lang="less">
 @prefix-cls: ~'@{namespace}-image-preview';
+
+// .rms {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   max-height: 225px;
+//   transform: translate(-50%, -50%);
+// }
 
 .@{prefix-cls} {
   .ant-image-preview-operations {
