@@ -3,9 +3,7 @@
     <!-- 头部 -->
     <LayoutBreadcrumb :theme="getHeaderTheme" />
     <!-- 右键菜单 -->
-    
-     
-    
+
     <!-- 视图 -->
     <div class="p-5" id="viewerjs">
       <a-list>
@@ -42,7 +40,7 @@
         </a-row>
       </a-list>
     </div>
-   
+
     <!-- <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="handleReloadCurrent"> 刷新当前页 </a-button>
@@ -56,8 +54,8 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive } from 'vue';
 import { Card, Row, Col, List } from 'ant-design-vue';
-  import { useContextMenu } from '/@/hooks/web/useContextMenu';
-  import { useMessage } from '/@/hooks/web/useMessage';
+import { useContextMenu } from '/@/hooks/web/useContextMenu';
+import { useMessage } from '/@/hooks/web/useMessage';
 import { BasicTable, useTable } from '/@/components/Table';
 import { getBasicColumns } from './tableData';
 import { LayoutBreadcrumb } from '../../../../layouts/default/header/components';
@@ -81,48 +79,50 @@ export default defineComponent({
   setup() {
     //右键
     const [createContextMenu] = useContextMenu();
-      const { createMessage } = useMessage();
-      function handleContext(e: MouseEvent) {
-        createContextMenu({
-          event: e,
-          items: [
-            {
-              label: '查看详情',
-              handler: () => {
-                createMessage.success('查看详情');
-              },
+    const { createMessage } = useMessage();
+    function handleContext(e: MouseEvent) {
+      createContextMenu({
+        event: e,
+        items: [
+          {
+            label: '查看详情',
+            handler: () => {
+              createMessage.success('查看详情');
             },
-            {
-              label: '移动至文件夹..',
-              handler: () => {
-                createMessage.success('移动至文件夹..');
-              },
-            },{
-              label: '复制',
-              handler: () => {
-                createMessage.success('复制');
-              },
+          },
+          {
+            label: '移动至文件夹..',
+            handler: () => {
+              createMessage.success('移动至文件夹..');
             },
-            {
-              label: '重命名',
-              handler: () => {
-                createMessage.success('重命名');
-              },
-            },{
-              label: '下载',
-              handler: () => {
-                createMessage.success('下载');
-              },
+          },
+          {
+            label: '复制',
+            handler: () => {
+              createMessage.success('复制');
             },
-            {
-              label: '删除',
-              handler: () => {
-                createMessage.success('删除');
-              },
+          },
+          {
+            label: '重命名',
+            handler: () => {
+              createMessage.success('重命名');
             },
-          ]
-        });
-      }
+          },
+          {
+            label: '下载',
+            handler: () => {
+              createMessage.success('下载');
+            },
+          },
+          {
+            label: '删除',
+            handler: () => {
+              createMessage.success('删除');
+            },
+          },
+        ],
+      });
+    }
     // 列表
     const { getHeaderTheme } = useHeaderSetting();
     const [registerTable, { reload }] = useTable({
@@ -216,15 +216,14 @@ export default defineComponent({
     function clickDecide(item, index) {
       //单击
       if (ctrlflag) {
-        if (decideIndex.value > 0){
+        if (decideIndex.value > 0) {
           bigImagesList[decideIndex.value].decide = true;
         }
         bigImagesList[index].decide = !bigImagesList[index].decide;
       } else {
-       
         if (decideIndex.value == index || bigImagesList[index].decide) {
           decideIndex.value = null;
-          bigImagesList[index].decide =false;
+          bigImagesList[index].decide = false;
         } else {
           decideIndex.value = index;
         }
@@ -238,15 +237,7 @@ export default defineComponent({
       viewer.view(index);
     }
 
-    // window.onkeydown = (event) => {
-    //   console.log(event);
-    //   if (event && event.keyCode == 32) {
-    //   } else if (event && event.keyCode == 17) {
-    //   } else {
-    //     ctrlflag = false;
-    //   }
-    // };
-
+    // 按键监听
     (function watchKeyEvent() {
       const setKeyStatus = (keyCode, status) => {
         switch (keyCode) {
@@ -254,12 +245,12 @@ export default defineComponent({
             //空格
             viewer.isShown = false;
             viewer.played = false;
-            viewer.view(2);
+            viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
             break;
           case 17:
             //ctrl
             if (status) {
-              console.log(666)
+              console.log(666);
               ctrlflag = true;
             } else {
               ctrlflag = false;
@@ -273,7 +264,7 @@ export default defineComponent({
       window.onkeyup = (e) => {
         setKeyStatus(e.keyCode, false);
       };
-    })()
+    })();
 
     return {
       //右键
@@ -303,7 +294,6 @@ export default defineComponent({
 ::v-deep(.ant-card-body) {
   height: 100%;
   padding: 0;
-  background-color: #fff;
 }
 
 .click_card {
@@ -321,24 +311,27 @@ export default defineComponent({
     height: 212px;
     padding: 0;
     overflow: hidden;
+    background-color: #fff;
 
     img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
       max-height: 100%;
-      margin-top: 50%;
-      margin-left: 50%;
       transform: translate(-50%, -50%);
     }
   }
 
   &__card {
     width: 100%;
-    height: 260px;
+    height: 265px;
     margin-bottom: -8px;
     background-color: rgba(0, 0, 0, 0);
     border-radius: 4px;
 
     &-pa {
-      height: 100px;
+      height: auto;
+      padding: 5px;
       text-align: center;
     }
 

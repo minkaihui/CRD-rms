@@ -70,7 +70,7 @@
   .@{prefix-cls} {
     display: flex;
     align-items: center;
-    padding-left: 30px;
+    padding-left: 30px !important;
     cursor: pointer;
     transition: all 0.2s ease;
 
