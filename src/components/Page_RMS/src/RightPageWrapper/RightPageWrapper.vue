@@ -1,6 +1,13 @@
 <template>
   <PageWrapper>
-    <a-tabs class="a-tabs" default-active-key="1" size="small" :tabBarStyle="tabStyle" tabBarGutter="28px" @change="clickshow">
+    <a-tabs
+      class="a-tabs"
+      default-active-key="1"
+      size="small"
+      :tabBarStyle="tabStyle"
+      tabBarGutter="28px"
+      @change="clickshow"
+    >
       <!-- 文件详情 -->
       <a-tab-pane key="1" tab="文件详情">
         <!-- 图片 -->
@@ -33,9 +40,9 @@
         />
         <!-- 分类 -->
         <div class="classify mt-4">
-          <div class=" mb-2">分类</div>
+          <div class="mb-2">分类</div>
           <div class="classify-file flex">
-            <div class="left" style="width: -webkit-fill-available;">
+            <div class="left" style="width: -webkit-fill-available">
               <Icon icon="ant-design:folder-outlined" :size="14" />
               文件夹名
               <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer" />
@@ -45,19 +52,25 @@
               ><Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14"
             /></div>
           </div>
-          <div class="classify-download cursor-pointer text-sm">
+          <div class="classify-download cursor-pointer text-sm" v-if="!isShow_auditList">
             <Icon icon="ant-design:download-outlined" :size="14" />
             下载附件
+          </div>
+
+          <div class="but" v-if="isShow_auditList">
+            <a-button type="primary" shape="round" block>通过</a-button>
+            <a-button shape="round" block @click="unthread">不通过</a-button>
+            <ModalUnthread @register="unthreadText" />
           </div>
         </div>
       </a-tab-pane>
       <!-- 产品故事 -->
-      <a-tab-pane key="2" tab="产品故事">
+      <a-tab-pane key="2" tab="产品故事" v-if="!isShow_auditList">
         <div class="tab_right">
           <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
         </div>
         <!-- 名称 -->
-        <div class=" mt-5">
+        <div class="mt-5">
           <a-input :value="value" placeholder="名称" />
         </div>
         <BasicForm
@@ -78,7 +91,9 @@ import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
 import { CollapseContainer } from '/@/components/Container/index';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Alert } from 'ant-design-vue';
-import { Description, DescItem, useDescription } from '/@/components/Description/index';
+import { Description, DescItem } from '/@/components/Description/index';
+import { useModal } from '/@/components/Modal';
+import ModalUnthread from '../modal/Modal.vue';
 import { Icon } from '/@/components/Icon/index';
 
 export default defineComponent({
@@ -92,6 +107,14 @@ export default defineComponent({
     Description,
     Alert,
     Icon,
+    useModal,
+    ModalUnthread
+  },
+  props: {
+    isShow_auditList: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     let show = ref('1');
@@ -101,7 +124,7 @@ export default defineComponent({
         field: 'label',
         component: 'Select',
         labelWidth: 0,
-        defaultValue: ['1', '2','3','4','5','6'],
+        defaultValue: ['1', '2', '3', '4', '5', '6'],
         show: (renderCallbackParams) => {
           return show.value == '1';
         },
@@ -220,6 +243,13 @@ export default defineComponent({
     function clickshow(activeKey) {
       show.value = activeKey;
     }
+
+     //审核特写
+    const [unthreadText, { openModal: openModal}] = useModal();
+    
+    function unthread(){
+      openModal();
+    }
     return {
       // 名称
       value,
@@ -235,18 +265,28 @@ export default defineComponent({
       // 详情
       mockData,
       schema,
+      //审核特写
+      unthread,
+      unthreadText,
+        openModal,
     };
   },
 });
 </script>
 <style scoped lang="less">
+.but {
+  button {
+    height: 36px;
+    margin-top: 20px;
+    line-height: 36px;
+  }
+}
 // 主体
- 
 .vben-page-wrapper {
   width: 280px;
   background-color: #fff;
-  box-shadow: -1px 0 0 0 #ececee; 
-  
+  box-shadow: -1px 0 0 0 #ececee;
+
   ::v-deep(.vben-page-wrapper-content) {
     margin: 20px;
   }
@@ -264,13 +304,12 @@ export default defineComponent({
     margin-bottom: 16px;
     border-bottom: none;
   }
-  
 
   ::v-deep(.a-tabs .ant-tabs-small-bar .ant-tabs-tab) {
     padding: 5px 5px;
   }
 
-   ::v-deep(.ant-tabs .ant-tabs-small-bar .ant-tabs-nav-container) {
+  ::v-deep(.ant-tabs .ant-tabs-small-bar .ant-tabs-nav-container) {
     font-size: 12px;
   }
 

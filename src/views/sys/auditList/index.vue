@@ -1,12 +1,23 @@
+
 <template>
-  <PageWrapper title="审核列表" />
+  <div class="flex justify-start h-full">
+    <div class="w-full">
+     <!-- 中心模块1 -->
+      <PageContentWrapper isShow_auditList></PageContentWrapper>
+    </div>
+    <!-- 右侧模块1 -->
+      <RightPageWrapper isShow_auditList></RightPageWrapper>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
+  import { RightPageWrapper,PageContentWrapper} from '/@/components/Page_RMS';
   export default defineComponent({
     name: 'AuditListPage',
-    components: { PageWrapper },
-    setup() {},
+    components: {RightPageWrapper ,PageContentWrapper},
+    setup() {
+
+    },
   });
 </script>
+

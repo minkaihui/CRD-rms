@@ -1,5 +1,5 @@
 <template>
-  <BasicTitle :helpMessage="helpMessage">
+  <BasicTitle :helpMessage="helpMessage" style="font-size: 14px;">
     {{ title }}
   </BasicTitle>
 </template>

@@ -25,7 +25,7 @@ import { useDesign } from '/@/hooks/web/useDesign';
 import { propTypes } from '/@/utils/propTypes';
 import { Icon } from '/@/components/Icon';
 import { useModal } from '/@/components/Modal';
-import Modal from './addModal.vue'
+import Modal from './modal/addModal.vue'
 export default defineComponent({
   name: 'SimpleMenuTag',
   components: { Icon,Modal},

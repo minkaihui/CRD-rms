@@ -1,6 +1,7 @@
 <template>
   <div
     :class="[
+      getI18nName == '音频' ? 'mkh1-1' : '',
       getI18nName == '审核列表' ? 'mkh1' : '',
       getI18nName == '上传素材' ? 'mkh2' : '',
       getI18nName == '共享文件夹' ? 'mkh3' : '',
@@ -57,14 +58,19 @@
      padding-left: 30px !important;
 }
 
-.mkh1 {
+.mkh1-1 {
+  margin-bottom: 10px;
   ::v-deep(.vben-simple-menu__upload) {
-    display: block;
-    padding: 0;
-    padding-top: 18px;
-    padding-left: 0 !important;
-    margin: 9px 30px;
-    border-top: 1px solid #ddd;
+    
+  }
+}
+
+.mkh1 {
+  border-top: 1px solid #ddd;
+
+  ::v-deep(.vben-simple-menu__upload) {
+    margin-top: 10px;
+    
   }
 }
 
@@ -121,7 +127,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
 import { useModal } from '/@/components/Modal';
-import Modal from './fileModal.vue';
+import Modal from './modal/fileModal.vue';
 
 export default defineComponent({
   name: 'SimpleSubMenu',

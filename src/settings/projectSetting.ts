@@ -15,10 +15,10 @@ import { number } from 'vue-types';
 // ! 改动后需要清空浏览器缓存
 const setting: ProjectConfig = {
   // 是否显示SettingButton
-  showSettingButton: false,
+  showSettingButton: true,
 
   // 是否显示主题切换按钮
-  showDarkModeToggle: false,
+  showDarkModeToggle: true,
 
   // 设置按钮位置 可选项
   // SettingButtonPositionEnum.AUTO: 自动选择  SettingButtonPositionEnum.HEADER:位于头部 SettingButtonPositionEnum.FIXED 固定在右侧
@@ -82,7 +82,7 @@ const setting: ProjectConfig = {
     // 菜单折叠
     collapsed: false,
     // 折叠菜单时候是否显示菜单名
-    collapsedShowTitle: true,
+    collapsedShowTitle: false,
     // 是否可拖拽
     // Whether it can be dragged
     // Only limited to the opening of the left menu, the mouse has a drag bar on the right side of the menu
@@ -90,7 +90,7 @@ const setting: ProjectConfig = {
     // 是否显示
     show: true,
     // Whether to show dom
-    hidden: true,
+    hidden: false,
     // 菜单宽度
     menuWidth: 202,
     // 菜单模式
@@ -112,7 +112,7 @@ const setting: ProjectConfig = {
     // 左侧混合菜单模块切换触发方式
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
     // 是否固定左侧混合菜单
-    mixSideFixed: false,
+    mixSideFixed: true,
   },
 
   //多标签
@@ -156,7 +156,7 @@ const setting: ProjectConfig = {
   lockTime: 0,
 
   // 显示面包屑
-  showBreadCrumb: false,
+  showBreadCrumb: true,
 
   // 是否显示面包屑图标
   showBreadCrumbIcon: false,

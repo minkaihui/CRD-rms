@@ -1,16 +1,34 @@
 <template>
   <div>
     <!-- 头部 -->
-    <LayoutBreadcrumb :theme="getHeaderTheme" />
+    <LayoutBreadcrumb @checkboxChange="checkboxChange" :flag="true" :theme="getHeaderTheme" />
     <!-- 右键菜单 -->
-
+    <div class="bg-white down-tab">
+      <a-dropdown :trigger="['click']" v-for="(item, index) in sortDowns" :key="index">
+        <div class="ant-dropdown-link inline-block p-4 pr-0 bg-white" @click.prevent>
+          {{ item.tab }}
+          <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+        </div>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item key="0">
+              <a href="http://www.alipay.com/">1st menu item</a>
+            </a-menu-item>
+            <a-menu-item key="1">
+              <a href="http://www.taobao.com/">2nd menu item</a>
+            </a-menu-item>
+            <a-menu-item key="3">3rd menu item</a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
+    </div>
     <!-- 视图 -->
     <div class="p-5" id="viewerjs">
       <a-list>
         <a-row :gutter="16">
           <a-col
             :span="6"
-            class="p-0 mb-3"
+            class="p-0 mb-3 relative"
             style="max-width: 100%"
             v-for="(item, index) in bigImagesList"
             :key="index"
@@ -23,8 +41,8 @@
                 :hoverable="true"
                 :class="[
                   `${prefixCls}__card`,
-                  decideIndex == index ? 'click_card' : '',
-                  item.decide ? 'click_card' : '',
+                  decideIndex == index ? (!isShow_auditList?'click_card':'click_card-add') : '',
+                  item.decide ? (!isShow_auditList?'click_card':'click_card-add') : '',
                 ]"
               >
                 <div :class="`${prefixCls}__imgView`">
@@ -52,8 +70,8 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive } from 'vue';
-import { Card, Row, Col, List } from 'ant-design-vue';
+import { defineComponent, onMounted, computed, ref, reactive } from 'vue';
+import { Card, Row, Col, List, Dropdown, Menu } from 'ant-design-vue';
 import { useContextMenu } from '/@/hooks/web/useContextMenu';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { BasicTable, useTable } from '/@/components/Table';
@@ -75,8 +93,42 @@ export default defineComponent({
     [List.Item.name]: List.Item,
     [Row.name]: Row,
     [Col.name]: Col,
+    [Dropdown.name]: Dropdown,
+    [Menu.name]: Menu,
+    [Menu.Item.name]: Menu.Item,
+    [Menu.Divider.name]: Menu.Divider,
+  },
+  props:{
+    isShow_auditList:{
+      type:Boolean,
+      default: false
+    }
   },
   setup() {
+    const sortDown = reactive([
+      { tab: '名称', isShow: true },
+      { tab: '标签', isShow: true },
+      { tab: '文件夹名', isShow: true },
+      { tab: '注释', isShow: true },
+      { tab: '上传人员', isShow: true },
+    ]);
+
+    const sortDowns = computed(() => {
+      return sortDown.filter(function (item) {
+        return item.isShow == true;
+      });
+    });
+
+    function checkboxChange(e) {
+      sortDown.forEach((item, index) => {
+        if (!e.includes(item.tab)) {
+          sortDown[index].isShow = false;
+        } else {
+          sortDown[index].isShow = true;
+        }
+      });
+    }
+
     //右键
     const [createContextMenu] = useContextMenu();
     const { createMessage } = useMessage();
@@ -267,6 +319,11 @@ export default defineComponent({
     })();
 
     return {
+      //搜索分类
+      checkboxChange,
+      //分类
+      sortDown,
+      sortDowns,
       //右键
       handleContext,
       //列表
@@ -291,6 +348,11 @@ export default defineComponent({
   padding: 0;
 }
 
+.down-tab {
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 ::v-deep(.ant-card-body) {
   height: 100%;
   padding: 0;
@@ -298,6 +360,37 @@ export default defineComponent({
 
 .click_card {
   border: 2px solid #1665d8;
+}
+
+.click_card-add {
+  border: 2px solid #1665d8;
+
+  ::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 22px;
+    height: 22px;
+    overflow: hidden;
+    background: #1665d8;
+    border-radius: 50%;
+    box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.06);
+  }
+
+  ::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    right: 26px;
+     width: 11px;
+    height: 5px;
+    border: 0.8px solid #fff;
+    border-width: 0 0 2px 2px;
+    transform: rotate(-45deg);
+    z-index: 1;
+    vertical-align: baseline;
+  }
 }
 
 .list-card {

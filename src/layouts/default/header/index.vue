@@ -17,7 +17,7 @@
         :sider="false"
       />
       <!-- 面包屑换位置 -->
-      <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
+      <!-- <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" /> -->
     </div>
     <!-- left end -->
 

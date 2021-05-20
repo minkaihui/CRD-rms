@@ -11,10 +11,10 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { PageWrapper,RightPageWrapper,PageContentWrapper} from '/@/components/Page_RMS';
+  import { RightPageWrapper,PageContentWrapper} from '/@/components/Page_RMS';
   export default defineComponent({
     name: 'FilePage',
-    components: { PageWrapper, RightPageWrapper ,PageContentWrapper},
+    components: {RightPageWrapper ,PageContentWrapper},
     setup() {
 
     },
