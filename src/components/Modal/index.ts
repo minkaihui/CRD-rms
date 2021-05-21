@@ -1,4 +1,5 @@
 import './src/index.less';
+
 import BasicModal from './src/BasicModal.vue';
 
 export { BasicModal };

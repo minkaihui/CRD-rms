@@ -36,7 +36,7 @@
       useWrapper: propTypes.bool.def(true),
       modalHeaderHeight: propTypes.number.def(57),
       modalFooterHeight: propTypes.number.def(74),
-      minHeight: propTypes.number.def(200),
+      minHeight: propTypes.number.def(120),
       height: propTypes.number,
       footerOffset: propTypes.number.def(0),
       visible: propTypes.bool,

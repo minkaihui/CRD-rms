@@ -1,6 +1,5 @@
 <template>
   <BasicModal v-bind="$attrs" title="不通过原因">
-    <!-- v-model:value="" -->
     <InputTextArea class="textarea" :value="textarea" />
   </BasicModal>
 </template>
@@ -18,15 +17,26 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less">
 
-.scroll-container .scrollbar__wrap{
-  margin: 0 !important;
+<style lang="less" scoped>
+.ant-modal-wrap {
+  /deep/ .ant-modal-header {
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+
+  /deep/ .ant-modal-footer {
+    padding-top: 0 !important;
+    border-top: none !important;
+  }
+
+  /deep/ .scroll-container .scrollbar__wrap {
+    margin: 0 !important;
+  }
 }
 
 .textarea {
-  height: 100%;
-  border: none;
+  height: 7.5rem !important;
   resize: none;
 }
 </style>

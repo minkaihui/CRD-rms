@@ -1,11 +1,16 @@
 <template>
   <div>
     <!-- 头部 -->
-    <LayoutBreadcrumb @checkboxChange="checkboxChange" :flag="true" :theme="getHeaderTheme" />
-    <!-- 右键菜单 -->
+    <LayoutBreadcrumb
+      @checkboxChange="checkboxChange"
+      @sortord="sortord"
+      :flag="true"
+      :theme="getHeaderTheme"
+    />
+    <!-- 分类 -->
     <div class="bg-white down-tab">
       <a-dropdown :trigger="['click']" v-for="(item, index) in sortDowns" :key="index">
-        <div class="ant-dropdown-link inline-block p-4 pr-0 bg-white" @click.prevent>
+        <div class="ant-dropdown-link inline-block pr-0 bg-white" @click.prevent>
           {{ item.tab }}
           <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
         </div>
@@ -22,9 +27,20 @@
         </template>
       </a-dropdown>
     </div>
+
     <!-- 视图 -->
     <div class="p-5" id="viewerjs">
-      <a-list>
+      <BasicTable
+        @contextmenu="handleContext"
+        @register="registerTable"
+        v-if="sortordValue == 'ListView'"
+      >
+        <template #toolbar>
+          <!-- <a-button type="primary" @click="handleReloadCurrent"> 刷新当前页 </a-button>
+        <a-button type="primary" @click="handleReload"> 刷新并返回第一页 </a-button> -->
+        </template>
+      </BasicTable>
+      <a-list v-else-if="sortordValue == 'CardView'">
         <a-row :gutter="16">
           <a-col
             :span="6"
@@ -41,8 +57,8 @@
                 :hoverable="true"
                 :class="[
                   `${prefixCls}__card`,
-                  decideIndex == index ? (!isShow_auditList?'click_card':'click_card-add') : '',
-                  item.decide ? (!isShow_auditList?'click_card':'click_card-add') : '',
+                  decideIndex == index ? (!isShow_auditList ? 'click_card' : 'click_card-add') : '',
+                  item.decide ? (!isShow_auditList ? 'click_card' : 'click_card-add') : '',
                 ]"
               >
                 <div :class="`${prefixCls}__imgView`">
@@ -58,13 +74,6 @@
         </a-row>
       </a-list>
     </div>
-
-    <!-- <BasicTable @register="registerTable">
-      <template #toolbar>
-        <a-button type="primary" @click="handleReloadCurrent"> 刷新当前页 </a-button>
-        <a-button type="primary" @click="handleReload"> 刷新并返回第一页 </a-button>
-      </template>
-    </BasicTable> -->
   </div>
 </template>
 
@@ -98,11 +107,11 @@ export default defineComponent({
     [Menu.Item.name]: Menu.Item,
     [Menu.Divider.name]: Menu.Divider,
   },
-  props:{
-    isShow_auditList:{
-      type:Boolean,
-      default: false
-    }
+  props: {
+    isShow_auditList: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const sortDown = reactive([
@@ -127,6 +136,10 @@ export default defineComponent({
           sortDown[index].isShow = true;
         }
       });
+    }
+    let sortordValue = ref<String>('CardView');
+    function sortord(e) {
+      sortordValue.value = e;
     }
 
     //右键
@@ -178,7 +191,7 @@ export default defineComponent({
     // 列表
     const { getHeaderTheme } = useHeaderSetting();
     const [registerTable, { reload }] = useTable({
-      title: '全部', //标题
+      title: '', //标题
       api: demoListApi, //表格数据
       columns: getBasicColumns(), //表头数据
       showIndexColumn: false, //序号
@@ -187,7 +200,8 @@ export default defineComponent({
       canResize: true, //自动高度
       rowKey: 'id', //绑定id
       rowSelection: {
-        type: 'checkbox', //开启选中
+        type: 'radio', //开启选中
+        columnWidth: 0,
       },
     });
 
@@ -321,6 +335,8 @@ export default defineComponent({
     return {
       //搜索分类
       checkboxChange,
+      sortord,
+      sortordValue,
       //分类
       sortDown,
       sortDowns,
@@ -343,6 +359,38 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+#viewerjs {
+  background-color: #fbfbfd;
+}
+//列表选中处理
+::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr) {
+  height: 75px;
+}
+
+
+::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td) {
+  background: rgba(22, 101, 216, 0.04);
+   border-top: 2px solid #1665d8;
+   border-bottom: 2px solid #1665d8;
+}
+
+::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td:nth-child(2)) {
+   border-left: 2px solid #1665d8;
+}
+
+::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td:last-child) {
+   border-right: 2px solid #1665d8;
+}
+
+::v-deep(.ant-table-selection-column .ant-radio),
+::v-deep(.ant-table-selection-column .ant-checkbox) {
+  display: none;
+}
+
+::v-deep(.ant-table-thead > tr > th) {
+  background-color: #fff;
+}
+
 ::v-deep(.ant-list-item) {
   min-width: 212px;
   padding: 0;
@@ -351,6 +399,10 @@ export default defineComponent({
 .down-tab {
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+  .ant-dropdown-link {
+    padding: 0.875rem;
+  }
 }
 
 ::v-deep(.ant-card-body) {
@@ -375,7 +427,7 @@ export default defineComponent({
     overflow: hidden;
     background: #1665d8;
     border-radius: 50%;
-    box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.06);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.06);
   }
 
   ::before {
@@ -383,7 +435,7 @@ export default defineComponent({
     position: absolute;
     top: 28px;
     right: 26px;
-     width: 11px;
+    width: 11px;
     height: 5px;
     border: 0.8px solid #fff;
     border-width: 0 0 2px 2px;

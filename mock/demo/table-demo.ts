@@ -5,7 +5,7 @@ const demoList = (() => {
   const result: any[] = [];
   for (let index = 0; index < 60; index++) {
     result.push({
-      id: `${index}`,
+      id: '@ctitle',
       beginTime: '@datetime',
       endTime: '@datetime',
       address: '@city()',

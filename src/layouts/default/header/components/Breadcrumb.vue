@@ -20,8 +20,8 @@
         </div>
         <template #overlay>
           <a-menu style="padding-right: 15px">
-            <a-menu-item key="0">列表视图</a-menu-item>
-            <a-menu-item key="1">卡片视图</a-menu-item>
+            <a-menu-item key="0" @click="sortord">列表视图</a-menu-item>
+            <a-menu-item key="1"  @click="sortord">卡片视图</a-menu-item>
             <a-menu-item key="2">按时间排序</a-menu-item>
             <a-menu-item key="3">按名称排序</a-menu-item>
           </a-menu>
@@ -261,6 +261,17 @@ export default defineComponent({
       context.emit('checkboxChange', e);
     }
 
+    function sortord(e) {
+      let emit=null;
+      if(e.key==0){
+        emit='ListView'
+      }else if(e.key==1){
+        emit='CardView'
+      }
+      context.emit('sortord',emit);
+    }
+    
+
     return {
       routes,
       t,
@@ -272,6 +283,7 @@ export default defineComponent({
       //排序
       filterVisible,
       filterHide,
+      sortord,
       //筛选
       sortDownVisible,
       sortDownHide,

@@ -6,26 +6,23 @@ export function getBasicColumns(): BasicColumn[] {
     {
       title: '标题',
       dataIndex: 'id',
-      width: 400,
+      // width: 300,
+      align:'left'
     },
     {
       title: '格式',
       dataIndex: 'name',
-      width: 150,
-      filters: [
-        { text: 'Male', value: 'male' },
-        { text: 'Female', value: 'female' },
-      ],
+      width: 90,
     },
     {
       title: '大小',
-      width: 150,
+      width: 90,
       dataIndex: 'address',
     },
     {
       title: '添加日期',
-      width: 300,
-      sorter: true,
+      // width: 300,
+      // sorter: true,
       dataIndex: 'beginTime',
     }
   ];
