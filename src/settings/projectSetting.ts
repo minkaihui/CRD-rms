@@ -15,7 +15,7 @@ import { number } from 'vue-types';
 // ! 改动后需要清空浏览器缓存
 const setting: ProjectConfig = {
   // 是否显示SettingButton
-  showSettingButton: true,
+  showSettingButton: false,
 
   // 是否显示主题切换按钮
   showDarkModeToggle: true,

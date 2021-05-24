@@ -57,6 +57,8 @@
   }
   .@{prefix-cls} {
     padding-top: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
 
     &__overlay {
       max-width: 360px;
