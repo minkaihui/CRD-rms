@@ -397,11 +397,17 @@ export default defineComponent({
 }
 
 .down-tab {
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+
+  .click-tab{
+    border: 1px solid #e2e5ed;
+    border-radius: 5px;
+  }
 
   .ant-dropdown-link {
-    padding: 0.875rem;
+    padding: 3px 2px;
+    margin: 11px 12px;
   }
 }
 
