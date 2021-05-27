@@ -11,12 +11,28 @@
     />
   </BasicModal>
 </template>
+
+<style lang="less" scoped>
+// 单选改色
+::v-deep(.ant-radio-checked .ant-radio-inner) {
+    border-color: #34AA44;
+}
+
+::v-deep(.ant-radio-checked .ant-radio-inner::after) {
+    background-color: #34AA44;
+}
+// 多选改色
+::v-deep(.ant-checkbox-checked .ant-checkbox-inner) {
+    background-color: #34AA44;
+    border-color: #34AA44;
+}
+</style>
+
 <script lang="ts">
   import { defineComponent,ref} from 'vue';
   import { BasicModal } from '/@/components/Modal';
   import { BasicForm, FormSchema } from '/@/components/Form/index';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { optionsListApi } from '/@/api/demo/select';
 
   const schemas: FormSchema[] = [
     {
@@ -95,6 +111,7 @@
       colProps: {
         span: 14,
       },
+      defaultValue: '2',
       componentProps: {
         options: [
           {
@@ -128,7 +145,3 @@
     }
   });
 </script>
-
-<style lang="less" scoped>
-
-</style>

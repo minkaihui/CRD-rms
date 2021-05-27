@@ -19,21 +19,21 @@ export default defineComponent({
 
 
 <style lang="less" scoped>
-.ant-modal-wrap {
-  /deep/ .ant-modal-header {
-    padding-bottom: 0 !important;
-    border-bottom: none !important;
-  }
+// .ant-modal-wrap {
+//   ::v-deep(.ant-modal-header){
+//     padding-bottom: 0 !important;
+//     border-bottom: none !important;
+//   }
 
-  /deep/ .ant-modal-footer {
-    padding-top: 0 !important;
-    border-top: none !important;
-  }
+//   ::v-deep(.ant-modal-footer) {
+//     padding-top: 0 !important;
+//     border-top: none !important;
+//   }
 
-  /deep/ .scroll-container .scrollbar__wrap {
-    margin: 0 !important;
-  }
-}
+//   ::v-deep(.scroll-container .scrollbar__wrap) {
+//     margin: 0 !important;
+//   }
+// }
 
 .textarea {
   height: 7.5rem !important;

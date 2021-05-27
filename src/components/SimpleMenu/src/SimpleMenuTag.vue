@@ -4,7 +4,7 @@
 
     <span :class="getTagClass" v-if="getShowTag == -1" @click="openModal"><Icon :icon="getContent"></Icon></span>
 
-    <Modal @register="register" />
+    <Modal width="630px"  @register="register" />
   </div>
 </template>
 <style lang="less" scoped>

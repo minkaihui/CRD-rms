@@ -19,9 +19,9 @@
           <img class="inline-block" src="../../../../assets/images/men/sort-down.png" alt="" />
         </div>
         <template #overlay>
-          <a-menu style="padding-right: 15px">
+          <a-menu class="sort-down" style="padding-right: 15px">
             <a-menu-item key="0" @click="sortord">列表视图</a-menu-item>
-            <a-menu-item key="1"  @click="sortord">卡片视图</a-menu-item>
+            <a-menu-item key="1" @click="sortord">卡片视图</a-menu-item>
             <a-menu-item key="2">按时间排序</a-menu-item>
             <a-menu-item key="3">按名称排序</a-menu-item>
           </a-menu>
@@ -34,7 +34,7 @@
           <img class="inline-block" src="../../../../assets/images/men/filter.png" alt="" />
         </div>
         <template #overlay>
-          <a-menu style="padding-right: 15px">
+          <a-menu class="filter" style="padding-right: 15px">
             <a-menu-item key="0">列表视图</a-menu-item>
             <a-menu-item key="1">卡片视图</a-menu-item>
             <a-menu-item key="2">按时间排序</a-menu-item>
@@ -116,9 +116,9 @@ export default defineComponent({
   },
   props: {
     theme: propTypes.oneOf(['dark', 'light']),
-    flag:{
-      type:  Boolean,
-      default: false
+    flag: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, context) {
@@ -262,15 +262,14 @@ export default defineComponent({
     }
 
     function sortord(e) {
-      let emit=null;
-      if(e.key==0){
-        emit='ListView'
-      }else if(e.key==1){
-        emit='CardView'
+      let emit = null;
+      if (e.key == 0) {
+        emit = 'ListView';
+      } else if (e.key == 1) {
+        emit = 'CardView';
       }
-      context.emit('sortord',emit);
+      context.emit('sortord', emit);
     }
-    
 
     return {
       routes,
@@ -298,6 +297,27 @@ export default defineComponent({
 </script>
 <style lang="less">
 @prefix-cls: ~'@{namespace}-layout-breadcrumb';
+
+.sort-down {
+  width: 112px;
+  height: 119px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.06);
+
+  .ant-dropdown-menu-item {
+    width: 100%;
+    padding: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 17px;
+    text-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.06);
+  }
+}
 
 .search-img {
   position: absolute;

@@ -10,6 +10,7 @@ const dashboard: AppRouteModule = {
   redirect: '/sharedFolders/index',
   meta: {
     title: t('routes.dashboard.sharedFolders'),
+    icon: 'ant-design:plus-outlined',
   },
   children: [
     {
@@ -18,6 +19,7 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/sys/sharedFolders/index.vue'),
       meta: {
         title: t('routes.dashboard.sharedFolders'),
+        icon: 'ant-design:plus-outlined',
         hideTab:true,
         ignoreKeepAlive:true
       },

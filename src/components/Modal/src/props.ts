@@ -13,7 +13,7 @@ export const modalProps = {
   minHeight: propTypes.number,
   // open drag
   draggable: propTypes.bool.def(true),
-  centered: propTypes.bool,
+  centered: propTypes.bool.def(true),
   cancelText: propTypes.string.def(t('common.cancelText')),
   okText: propTypes.string.def(t('common.okText')),
 
@@ -23,7 +23,7 @@ export const modalProps = {
 export const basicProps = Object.assign({}, modalProps, {
   defaultFullscreen: propTypes.bool,
   // Can it be full screen
-  canFullscreen: propTypes.bool.def(true),
+  canFullscreen: propTypes.bool.def(false),
   // After enabling the wrapper, the bottom can be increased in height
   wrapperFooterOffset: propTypes.number.def(0),
   // Warm reminder message

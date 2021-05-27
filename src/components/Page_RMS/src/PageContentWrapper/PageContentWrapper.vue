@@ -12,7 +12,7 @@
       <a-dropdown :trigger="['click']" v-for="(item, index) in sortDowns" :key="index">
         <div class="ant-dropdown-link inline-block pr-0 bg-white" @click.prevent>
           {{ item.tab }}
-          <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+            <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
         </div>
         <template #overlay>
           <a-menu>

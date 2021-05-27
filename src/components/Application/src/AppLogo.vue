@@ -6,6 +6,7 @@
   <div
     class="anticon"
     :class="[prefixCls, theme, { 'collapsed-show-title': getCollapsedShowTitle }]"
+    :style="{'padding-left':showTitle?'':'15px'}"
     @click="handleGoHome"
   >
     <img src="../../../assets/images/logo.png" />
@@ -70,7 +71,7 @@
   .@{prefix-cls} {
     display: flex;
     align-items: center;
-    padding-left: 30px !important;
+    padding-left: 30px ;
     cursor: pointer;
     transition: all 0.2s ease;
 
