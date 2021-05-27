@@ -70,15 +70,10 @@
           <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
         </div>
         <!-- 名称 -->
-        <div class="mt-5">
+        <div class="my-5">
           <a-input :value="value" placeholder="名称" />
         </div>
-        <BasicForm
-          class="BasicForm"
-          @register="register"
-          @submit="handleSubmit"
-          :showActionButtonGroup="false"
-        />
+        <InputTextArea class=" textarea" onpropertychange="this.style.height=this.scrollHeight + 'px'" oninput="this.style.height=this.scrollHeight + 'px'"  :value="textarea" />
       </a-tab-pane>
     </a-tabs>
   </PageWrapper>
@@ -104,6 +99,7 @@ export default defineComponent({
     [Tabs.name]: Tabs,
     [Tabs.TabPane.name]: Tabs.TabPane,
     [Input.name]: Input,
+    InputTextArea: Input.TextArea,
     Description,
     Alert,
     Icon,
@@ -221,7 +217,7 @@ export default defineComponent({
     ];
 
     // 名称逻辑
-    let value = '';
+    let value = ref<String>('');
 
     // 标签逻辑
 
@@ -250,6 +246,10 @@ export default defineComponent({
     function unthread(){
       openModal();
     }
+
+    // 产品故事文本域
+    const textarea = ref<String>('以美丽而富饶的生命力的大自然为灵感 打造属于您的秘密花园 将花卉的细腻美态与蓬勃的生命力 化为一件件珠宝杰作「蜜蜂」 象征勤奋、智慧、秩序、尊贵 传说拿破仑婴儿时期,有只蜜蜂亲吻他的嘴唇 后来他便成了皇帝,从此对其能带来权利深信不疑 还把它绣在自己的斗篷上,当作法国王朝的图腾');
+
     return {
       // 名称
       value,
@@ -268,7 +268,9 @@ export default defineComponent({
       //审核特写
       unthread,
       unthreadText,
-        openModal,
+      openModal,
+      // 产品故事文本域
+      textarea
     };
   },
 });
@@ -280,6 +282,14 @@ export default defineComponent({
     margin-top: 20px;
     line-height: 36px;
   }
+}
+
+.textarea {
+  min-height: 255px;
+  overflow-x: hidden ;
+  overflow-y: hidden ;
+  color: rgba(0,0,0,0.45);
+  resize: none;
 }
 // 主体
 .vben-page-wrapper {

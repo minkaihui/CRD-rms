@@ -11,7 +11,7 @@
   >
     <img src="../../../assets/images/logo.png" />
     <div
-      class="ml-2 truncate md:opacity-100"
+      class="ml-4 truncate md:opacity-100"
       :class="[
         `${prefixCls}__title`,
         {

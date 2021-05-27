@@ -288,7 +288,7 @@ export default defineComponent({
         bigImagesList[index].decide = !bigImagesList[index].decide;
       } else {
         if (decideIndex.value == index || bigImagesList[index].decide) {
-          decideIndex.value = null;
+          decideIndex.value = -1;
           bigImagesList[index].decide = false;
         } else {
           decideIndex.value = index;
@@ -305,10 +305,12 @@ export default defineComponent({
 
     // 按键监听
     (function watchKeyEvent() {
+      
       const setKeyStatus = (keyCode, status) => {
         switch (keyCode) {
           case 32:
             //空格
+            if(decideIndex.value <= 0) return;
             viewer.isShown = false;
             viewer.played = false;
             viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
