@@ -1,5 +1,8 @@
 <template>
-  <BasicModal v-bind="$attrs" title="新增文件夹">
+  <BasicModal 
+  FooterGPS="justify-center"
+  title="新增文件夹"
+  v-bind="$attrs"  :HeaderStyle="{'font-size': '20px','font-weight': '500','color': '#000000'}" >
     <BasicForm
       autoFocusFirstItem
       :labelWidth="100"

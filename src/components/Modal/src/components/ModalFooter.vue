@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-between items-center" :style="FooterStyle">
-    <div class="FooterLeft flex-1" >
+  <div class="flex items-center" :class="[FooterGPS?FooterGPS:'justify-between']" :style="FooterStyle">
+    <div class="FooterLeft" >
       <div v-if="showLeftBtn">
-        <a-button v-bind="LeftButtonProps" :type="LeftType" shape="round" @click="handleLeft" >
+        <a-button v-bind="LeftButtonProps" :type="LeftType"  @click="handleLeft" >
         {{ LeftText }}
       </a-button>
       <span class="texts">{{ LeftExplainText }}</span>
@@ -10,7 +10,7 @@
     </div>
     <div>
       <slot name="insertFooter"></slot>
-      <a-button v-bind="cancelButtonProps" shape="round" @click="handleCancel" v-if="showCancelBtn">
+      <a-button v-bind="cancelButtonProps" :shape="FooterRound" @click="handleCancel" v-if="showCancelBtn">
         {{ cancelText }}
       </a-button>
       <slot name="centerFooter"></slot>
@@ -20,7 +20,7 @@
         :loading="confirmLoading"
         v-bind="okButtonProps"
         v-if="showOkBtn"
-        shape="round"
+        :shape="FooterRound"
       >
         {{ okText }}
       </a-button>

@@ -10,7 +10,8 @@
     </template>
 
     <template #title v-if="!$slots.title">
-      <ModalHeader
+      <ModalHeader  
+        :HeaderStyle="getMergeProps.HeaderStyle"
         :helpMessage="getProps.helpMessage"
         :title="getMergeProps.title"
         @dblclick="handleTitleDbClick"
@@ -35,6 +36,7 @@
       :minHeight="getProps.minHeight"
       :height="getWrapperHeight"
       :visible="visibleRef"
+      :bodyStyle="getProps.bodyStyle"
       :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
       v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
       @ext-height="handleExtHeight"

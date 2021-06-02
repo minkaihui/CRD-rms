@@ -1,10 +1,10 @@
 <template>
-  <BasicTitle :helpMessage="helpMessage" style="font-size: 14px;">
+  <BasicTitle :helpMessage="helpMessage" :style="HeaderStyle">
     {{ title }}
   </BasicTitle>
 </template>
 <script lang="ts">
-  import type { PropType } from 'vue';
+  import type {PropType, CSSProperties} from 'vue';
   import { defineComponent } from 'vue';
   import { BasicTitle } from '/@/components/Basic';
 
@@ -17,6 +17,7 @@
         type: [String, Array] as PropType<string | string[]>,
       },
       title: propTypes.string,
+      HeaderStyle: Object as PropType<CSSProperties>
     },
   });
 </script>

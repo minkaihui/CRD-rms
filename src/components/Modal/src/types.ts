@@ -66,9 +66,7 @@ export interface ModalProps {
    */
   bodyStyle?: CSSProperties;
 
-  // 页脚样式
-
-  FooterStyle?: CSSProperties;
+  
 
   /**
    * Text of the Cancel button
@@ -180,6 +178,15 @@ export interface ModalProps {
 
   // 自定义页脚左边
   LeftButtonProps?: ButtonProps;
+  //页脚取消保存按钮位置
+  FooterGPS?: string;
+  // 页脚按钮形状
+  FooterRound?: string;
+
+  // 页脚样式
+  FooterStyle?: CSSProperties;
+  // 页头样式
+  HeaderStyle?: CSSProperties;
 
   /**
    * The modal dialog's title

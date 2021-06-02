@@ -1,6 +1,12 @@
 <template>
-  <BasicModal v-bind="$attrs" title="不通过原因">
-    <InputTextArea class="textarea" :value="textarea" />
+  <BasicModal :closable="false" v-bind="$attrs" title="不通过原因"
+  :HeaderStyle="{'font-size': '14px','color': 'rgba(0,0,0,0.65)','padding':'14px 14px 0'}"
+  FooterRound="round"
+  >
+  <div style="padding: 0 36px;">
+     <InputTextArea class="textarea" :value="textarea" />
+  </div>
+   
   </BasicModal>
 </template>
 <script lang="ts">

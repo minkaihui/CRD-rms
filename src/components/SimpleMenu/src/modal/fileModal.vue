@@ -13,8 +13,9 @@
     LeftText="选择其他文件"
     LeftExplainText="(视频、音频、文档)"
     :FooterStyle="{'padding':'10px'}"
+    FooterRound="round"
   >
-  <!-- 自定义boxSizing,LeftText,LeftExplainText ，showLeftBtn,FooterStyle-->
+  <!-- 自定义boxSizing,LeftText,LeftExplainText ，showLeftBtn,FooterStyle,FooterRound-->
     <div class="flex fl w-full">
       <div>
         文件 <span class="text-xs text-gray-200" v-show="material.length > 0">(必填)</span>

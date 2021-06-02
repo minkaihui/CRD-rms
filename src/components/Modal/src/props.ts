@@ -52,6 +52,8 @@ export const basicProps = Object.assign({}, modalProps, {
 
   FooterStyle: Object as PropType<CSSProperties>,
 
+  HeaderStyle: Object as PropType<CSSProperties>,
+
   closable: propTypes.bool.def(true),
 
   closeIcon: Object as PropType<VueNode>,
@@ -90,4 +92,10 @@ export const basicProps = Object.assign({}, modalProps, {
   wrapClassName: propTypes.string,
 
   zIndex: propTypes.number,
+
+  FooterGPS: propTypes.string,
+
+  FooterRound: propTypes.string,
+
+  
 });
