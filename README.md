@@ -21,7 +21,7 @@ git clone
 - 安装依赖
 
 ```bash
-cd vue-vben-admin
+cd CRD-rms
 
 yarn install
 

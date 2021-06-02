@@ -8,11 +8,13 @@
       :theme="getHeaderTheme"
     />
     <!-- 分类 -->
-    <div class="bg-white down-tab">
-      <a-dropdown :trigger="['click']" v-for="(item, index) in sortDowns" :key="index">
-        <div class="ant-dropdown-link inline-block pr-0 bg-white" @click.prevent>
+    <div class="flex items-center bg-white down-tab">
+      <a-dropdown :trigger="['click','hover']" v-for="(item, index) in sortDowns" :key="index">
+        <div class="tab">
+          <div class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white" @click.prevent>
           {{ item.tab }}
-            <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+          <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+        </div>
         </div>
         <template #overlay>
           <a-menu>
@@ -45,7 +47,7 @@
           <a-col
             :span="6"
             class="p-0 mb-3 relative"
-            style="max-width: 100%"
+            style="max-width: 100%;"
             v-for="(item, index) in bigImagesList"
             :key="index"
             @click="clickDecide(item, index)"
@@ -305,12 +307,11 @@ export default defineComponent({
 
     // 按键监听
     (function watchKeyEvent() {
-      
       const setKeyStatus = (keyCode, status) => {
         switch (keyCode) {
           case 32:
             //空格
-            if(decideIndex.value <= 0) return;
+            if (decideIndex.value <= 0) return;
             viewer.isShown = false;
             viewer.played = false;
             viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
@@ -369,19 +370,22 @@ export default defineComponent({
   height: 75px;
 }
 
-
 ::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td) {
   background: rgba(22, 101, 216, 0.04);
-   border-top: 2px solid #1665d8;
-   border-bottom: 2px solid #1665d8;
+  border-top: 2px solid #1665d8;
+  border-bottom: 2px solid #1665d8;
 }
 
-::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td:nth-child(2)) {
-   border-left: 2px solid #1665d8;
+::v-deep(.vben-basic-table
+    .ant-table
+    .ant-table-tbody
+    > tr.ant-table-row-selected
+    td:nth-child(2)) {
+  border-left: 2px solid #1665d8;
 }
 
 ::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td:last-child) {
-   border-right: 2px solid #1665d8;
+  border-right: 2px solid #1665d8;
 }
 
 ::v-deep(.ant-table-selection-column .ant-radio),
@@ -399,17 +403,28 @@ export default defineComponent({
 }
 
 .down-tab {
+  height: 52px;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
 
-  .click-tab{
+  .tab{
+    padding: 10px 0 10px 14px;
+  }
+
+  .click-tab {
     border: 1px solid #e2e5ed;
     border-radius: 5px;
   }
 
   .ant-dropdown-link {
-    padding: 3px 2px;
-    margin: 11px 12px;
+    padding: 4px 3px;
+    border: 1px solid rgba(0, 0, 0, 0);
+  }
+
+  .ant-dropdown-link:hover {
+    background: #fbfbfd;
+    border: 1px solid #e2e5ed;
+    border-radius: 5px;
   }
 }
 

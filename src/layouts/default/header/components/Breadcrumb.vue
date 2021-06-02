@@ -14,7 +14,7 @@
     </a-breadcrumb>
     <div v-if="flag">
       <a-dropdown :trigger="['click']">
-        <div class="ant-dropdown-link inline-block bg-white" @click.prevent>
+        <div class="ant-dropdown-link inline-block cursor-pointer bg-white" @click.prevent>
           排序方式
           <img class="inline-block" src="../../../../assets/images/men/sort-down.png" alt="" />
         </div>
@@ -29,12 +29,12 @@
       </a-dropdown>
       &nbsp;
       <a-dropdown :trigger="['click']">
-        <div class="ant-dropdown-link inline-block bg-white" @click.prevent>
+        <div class="ant-dropdown-link inline-block cursor-pointer bg-white" @click.prevent>
           筛选
           <img class="inline-block" src="../../../../assets/images/men/filter.png" alt="" />
         </div>
         <template #overlay>
-          <a-menu class="filter" style="padding-right: 15px">
+          <a-menu class="sort-down" style="padding-right: 15px">
             <a-menu-item key="0">列表视图</a-menu-item>
             <a-menu-item key="1">卡片视图</a-menu-item>
             <a-menu-item key="2">按时间排序</a-menu-item>
@@ -57,7 +57,8 @@
             </div>
           </div>
           <template #overlay>
-            <a-menu style="padding: 15px 10px">
+            <a-menu class="checkbox-classify">
+              <div class="classify-head">搜索范围</div>
               <CheckboxGroup
                 class="search-checkbox"
                 v-model:value="value1"
@@ -69,7 +70,7 @@
           </template>
         </a-dropdown>
         <div class="pl-2 inline-block">
-          <a-input style="padding-left: 40px" placeholder="搜索" v-model:value="searchValue">
+          <a-input style="padding-left: 40px" placeholder="搜索" v-model="searchValue">
             <template #prefix> </template>
           </a-input>
         </div>
@@ -298,33 +299,63 @@ export default defineComponent({
 <style lang="less">
 @prefix-cls: ~'@{namespace}-layout-breadcrumb';
 
+.checkbox-classify {
+  width: 132px;
+  padding: 5px 10px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  box-shadow: 0 6 12px 0 rgba(0, 0, 0, 0.06);
+
+  .classify-head {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 12px;
+    line-height: 17px;
+    color: rgba(0, 0, 0, 0.45);
+    text-align: center;
+    text-shadow: 0 6px 12px 0 rgba(0,0,0,0.06);
+  }
+
+  .search-checkbox .ant-checkbox-group-item {
+    width: 100%;
+    height: 20px;
+    margin-right: 0;
+    margin-bottom: 11px;
+    line-height: 20px;
+    color: rgba(0, 0, 0, 0.65);
+    text-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
+  }
+
+}
+
+.search-img {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    z-index: 99;
+    transform: translateY(-50%);
+  }
+
 .sort-down {
   width: 112px;
   height: 119px;
   padding: 8px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 5px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
 
   .ant-dropdown-menu-item {
     width: 100%;
     padding: 4px;
     font-size: 12px;
     font-weight: 400;
-    text-align: left;
-    color: rgba(0, 0, 0, 0.65);
     line-height: 17px;
-    text-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.65);
+    text-align: left;
+    text-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
   }
-}
-
-.search-img {
-  position: absolute;
-  top: 50%;
-  left: 20px;
-  z-index: 99;
-  transform: translateY(-50%);
 }
 
 .t-h {
@@ -345,15 +376,6 @@ export default defineComponent({
 .ant-popover-inner-content {
   padding: 8px 12px !important;
   border-radius: 8px;
-}
-
-.search-checkbox .ant-checkbox-group-item {
-  display: block;
-  height: 25px;
-  margin-right: 0;
-  font-size: 0.875rem;
-  line-height: 25px;
-  color: rgba(0, 0, 0, 0.65);
 }
 
 .@{prefix-cls} {

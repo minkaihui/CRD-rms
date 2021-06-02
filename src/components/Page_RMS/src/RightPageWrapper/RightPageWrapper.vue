@@ -10,57 +10,67 @@
     >
       <!-- 文件详情 -->
       <a-tab-pane key="1" tab="文件详情">
-        <!-- 图片 -->
-        <div class="tab_right">
-          <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
+        <div class="mx-5">
+          <!-- 图片 -->
+          <div class="tab_right">
+            <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
+          </div>
+          <!-- 名称 -->
+          <div class="mt-5">
+            <a-input :value="value" placeholder="名称" />
+          </div>
+          <!-- 标签 -->
+          <BasicForm
+            @register="register"
+            class="BasicForm"
+            :showActionButtonGroup="false"
+            @submit="handleSubmit"
+          />
+          <!-- 注释 -->
+          <a-input :value="value" placeholder="添加注释" />
+          <!-- 详情 -->
+          <Description
+            class="mt-4 Description"
+            title="基本信息"
+            :bordered="false"
+            :collapseOptions="{ canExpand: true }"
+            :column="1"
+            size="12px"
+            :data="mockData"
+            :schema="schema"
+          />
         </div>
-        <!-- 名称 -->
-        <div class="mt-5">
-          <a-input :value="value" placeholder="名称" />
-        </div>
-        <!-- 标签 -->
-        <BasicForm
-          @register="register"
-          class="BasicForm"
-          :showActionButtonGroup="false"
-          @submit="handleSubmit"
-        />
-        <!-- 注释 -->
-        <a-input :value="value" placeholder="添加注释" />
-        <!-- 详情 -->
-        <Description
-          class="mt-4 Description"
-          title="基本信息"
-          :bordered="false"
-          :collapseOptions="{ canExpand: true }"
-          :column="1"
-          size="12px"
-          :data="mockData"
-          :schema="schema"
-        />
         <!-- 分类 -->
         <div class="classify mt-4">
-          <div class="mb-2">分类</div>
-          <div class="classify-file flex">
-            <div class="left" style="width: -webkit-fill-available">
-              <Icon icon="ant-design:folder-outlined" :size="14" />
+          <!-- 分类 -->
+          <div class="mb-2 mx-5" v-if="!isShow_auditList">分类</div>
+          <!-- 文件夹名 -->
+          
+          <div class="classify-border">
+            <div class="classify-file flex" v-if="!isShow_auditList">
+            <div class="left">
+              <Icon icon="ant-design:folder-outlined" :size="16" />
               文件夹名
-              <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer" />
+              <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer ml-3" />
             </div>
 
-            <div class="pl-2 w-40"
-              ><Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14"
-            /></div>
+            <div class="pl-2" style="line-height: 31px;">
+              <Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14"/>
+            </div>
           </div>
-          <div class="classify-download cursor-pointer text-sm" v-if="!isShow_auditList">
-            <Icon icon="ant-design:download-outlined" :size="14" />
-            下载附件
           </div>
-
-          <div class="but" v-if="isShow_auditList">
-            <a-button type="primary" shape="round" block>通过</a-button>
-            <a-button shape="round" block @click="unthread">不通过</a-button>
-            <ModalUnthread @register="unthreadText" />
+          <div class="mx-5">
+            <!-- 通过 不通过-->
+            <div class="but" v-if="isShow_auditList">
+              <a-button type="primary" shape="round" block>通过</a-button>
+              <a-button shape="round" block @click="unthread">不通过</a-button>
+              <ModalUnthread @register="unthreadText" />
+            </div>
+            <!-- 下载附件 -->
+            <div class="classify-download cursor-pointer text-sm" v-if="!isShow_auditList">
+              <Icon icon="ant-design:download-outlined" :size="14" />
+              下载附件
+            </div>
           </div>
         </div>
       </a-tab-pane>
@@ -73,7 +83,12 @@
         <div class="my-5">
           <a-input :value="value" placeholder="名称" />
         </div>
-        <InputTextArea class=" textarea" onpropertychange="this.style.height=this.scrollHeight + 'px'" oninput="this.style.height=this.scrollHeight + 'px'"  :value="textarea" />
+        <InputTextArea
+          class="textarea"
+          onpropertychange="this.style.height=this.scrollHeight + 'px'"
+          oninput="this.style.height=this.scrollHeight + 'px'"
+          :value="textarea"
+        />
       </a-tab-pane>
     </a-tabs>
   </PageWrapper>
@@ -104,7 +119,7 @@ export default defineComponent({
     Alert,
     Icon,
     useModal,
-    ModalUnthread
+    ModalUnthread,
   },
   props: {
     isShow_auditList: {
@@ -183,7 +198,7 @@ export default defineComponent({
       nickName: 'VB',
       age: 25,
       phone: '15695909xxx',
-      // email: '190848.com',
+      email: '190848.com',
       addr: '厦门市思明区',
       sex: '男',
       certy: '3504256199xxxxxxxxx',
@@ -240,15 +255,17 @@ export default defineComponent({
       show.value = activeKey;
     }
 
-     //审核特写
-    const [unthreadText, { openModal: openModal}] = useModal();
-    
-    function unthread(){
+    //审核特写
+    const [unthreadText, { openModal: openModal }] = useModal();
+
+    function unthread() {
       openModal();
     }
 
     // 产品故事文本域
-    const textarea = ref<String>('以美丽而富饶的生命力的大自然为灵感 打造属于您的秘密花园 将花卉的细腻美态与蓬勃的生命力 化为一件件珠宝杰作「蜜蜂」 象征勤奋、智慧、秩序、尊贵 传说拿破仑婴儿时期,有只蜜蜂亲吻他的嘴唇 后来他便成了皇帝,从此对其能带来权利深信不疑 还把它绣在自己的斗篷上,当作法国王朝的图腾');
+    const textarea = ref<String>(
+      '以美丽而富饶的生命力的大自然为灵感 打造属于您的秘密花园 将花卉的细腻美态与蓬勃的生命力 化为一件件珠宝杰作「蜜蜂」 象征勤奋、智慧、秩序、尊贵 传说拿破仑婴儿时期,有只蜜蜂亲吻他的嘴唇 后来他便成了皇帝,从此对其能带来权利深信不疑 还把它绣在自己的斗篷上,当作法国王朝的图腾'
+    );
 
     return {
       // 名称
@@ -270,7 +287,7 @@ export default defineComponent({
       unthreadText,
       openModal,
       // 产品故事文本域
-      textarea
+      textarea,
     };
   },
 });
@@ -286,9 +303,9 @@ export default defineComponent({
 
 .textarea {
   min-height: 255px;
-  overflow-x: hidden ;
-  overflow-y: hidden ;
-  color: rgba(0,0,0,0.45);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  color: rgba(0, 0, 0, 0.45);
   resize: none;
 }
 // 主体
@@ -298,9 +315,13 @@ export default defineComponent({
   box-shadow: -1px 0 0 0 #ececee;
 
   ::v-deep(.vben-page-wrapper-content) {
-    margin: 20px;
+    margin: 20px 0;
   }
 
+  
+   ::v-deep(.a-tabs .ant-tabs-nav) {
+    padding-left: 20px;
+  }
   //a-tabs
   ::v-deep(.a-tabs .ant-page-header) {
     padding: 15px;
@@ -344,12 +365,15 @@ export default defineComponent({
     margin-top: 15px;
   }
 
-  ::v-deep(.ant-descriptions-item > span) {
-    font-size: 12px;
+  ::v-deep(.ant-descriptions-row > td) {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 7px;
   }
 
-  ::v-deep(.ant-descriptions-row > td) {
-    padding-bottom: 7px;
+  ::v-deep(.ant-descriptions-item > span) {
+    font-size: 12px;
+    flex: none;
   }
 
   ::v-deep(.vben-basic-title-normal) {
@@ -386,14 +410,21 @@ export default defineComponent({
 
   //classify
   .classify {
+    
+    .classify-border{
+      border-bottom: 1px solid #e2e5ed;
+    }
+
+    .classify-file{
+      margin: 0 20px;
+    }
+
     .classify-file .left {
-      border: 1px solid #aaa;
+      padding: 8px 10px 0 10px;
+      border: 1px solid #e2e5ed;
       border-bottom: none;
     }
 
-    .classify-file {
-      border-bottom: 1px solid #aaa;
-    }
 
     .classify-download {
       padding: 20px 0;

@@ -269,11 +269,6 @@
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-basic-form';
-
-  .ant-checkbox-inner::after{
-    top: 48.3%;
-    left: 20%;
-  }
   .@{prefix-cls} {
     .ant-form-item {
       &-label label::after {

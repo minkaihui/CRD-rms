@@ -40,13 +40,8 @@ router.get('/getUserInfoById', (ctx) => {
     success: true,
     result: {
       userId: '1',
-<<<<<<< HEAD
-      username: 'vben',
-      realName: 'Vben Admin',
-=======
       username: 'mkh',
       realName: 'mkh Admin',
->>>>>>> b896a4530436029556ebfd8e70f83c2f4f0068b5
       desc: 'manager',
       password: '123456',
       token: 'fakeToken1',

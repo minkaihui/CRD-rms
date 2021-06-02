@@ -348,8 +348,15 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+/* .ant-modal-content .ant-modal-header {
+  display: none;
+} */
+</style>
 
 <style lang="less" scoped>
+
+
 // BasicForm
 
 ::v-deep(.BasicForm .ant-select-selector) {

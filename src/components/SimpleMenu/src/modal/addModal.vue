@@ -13,19 +13,7 @@
 </template>
 
 <style lang="less" scoped>
-// 单选改色
-::v-deep(.ant-radio-checked .ant-radio-inner) {
-    border-color: #34AA44;
-}
 
-::v-deep(.ant-radio-checked .ant-radio-inner::after) {
-    background-color: #34AA44;
-}
-// 多选改色
-::v-deep(.ant-checkbox-checked .ant-checkbox-inner) {
-    background-color: #34AA44;
-    border-color: #34AA44;
-}
 </style>
 
 <script lang="ts">

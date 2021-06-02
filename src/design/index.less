@@ -43,6 +43,41 @@ span {
   outline: none !important;
 }
 
+//鼠标小手
 .cursor-pointer{
   cursor: pointer;
 }
+// 多选中心位置
+.ant-checkbox-inner::after{
+  top: 48.3%;
+  left: 20%;
+}
+// 单选改色
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+  border-color: #34AA44;
+}
+
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner::after {
+  background-color: #34AA44;
+}
+// 多选改色
+.ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #34AA44;
+  border-color: #34AA44;
+}
+
+// 弹框上下线条处理
+.ant-modal-content .ant-modal-header {
+  border-bottom: none ;
+}
+
+.ant-modal-content .ant-modal-footer {
+  padding: 20px 30px ;
+  border-top: none;
+}
+
+.ant-modal .ant-modal-body .scrollbar {
+  padding: 30px 30px;
+}
+
+
