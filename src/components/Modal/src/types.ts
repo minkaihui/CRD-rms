@@ -66,6 +66,10 @@ export interface ModalProps {
    */
   bodyStyle?: CSSProperties;
 
+  // 页脚样式
+
+  FooterStyle?: CSSProperties;
+
   /**
    * Text of the Cancel button
    * @default 'cancel'
@@ -166,6 +170,17 @@ export interface ModalProps {
    */
   cancelButtonProps?: ButtonProps;
 
+
+  // 是否显示
+  showLeftBtn: boolean;
+  // 左边按钮文本
+  LeftText?: string;
+  // 左边按钮说明文本
+  LeftExplainText?: string;
+
+  // 自定义页脚左边
+  LeftButtonProps?: ButtonProps;
+
   /**
    * The modal dialog's title
    * @type any (string | slot)
@@ -203,4 +218,5 @@ export interface ModalWrapperProps {
   visible: boolean;
   fullScreen: boolean;
   useWrapper: boolean;
+  boxSizing: number;
 }

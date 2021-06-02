@@ -16,7 +16,8 @@ export const modalProps = {
   centered: propTypes.bool.def(true),
   cancelText: propTypes.string.def(t('common.cancelText')),
   okText: propTypes.string.def(t('common.okText')),
-
+  LeftText: propTypes.string.def(t('common.LeftText')),
+  LeftExplainText: propTypes.string.def(t('common.LeftExplainText')),
   closeFunc: Function as PropType<() => Promise<boolean>>,
 };
 
@@ -41,11 +42,15 @@ export const basicProps = Object.assign({}, modalProps, {
    */
   showOkBtn: propTypes.bool.def(true),
 
+  showLeftBtn: propTypes.bool.def(false),
+
   wrapperProps: Object as PropType<Partial<ModalWrapperProps>>,
 
   afterClose: Function as PropType<() => Promise<VueNode>>,
 
   bodyStyle: Object as PropType<CSSProperties>,
+
+  FooterStyle: Object as PropType<CSSProperties>,
 
   closable: propTypes.bool.def(true),
 
@@ -71,6 +76,10 @@ export const basicProps = Object.assign({}, modalProps, {
   okButtonProps: Object as PropType<ButtonProps>,
 
   cancelButtonProps: Object as PropType<ButtonProps>,
+
+  LeftButtonProps: Object as PropType<ButtonProps>,
+
+  LeftType: propTypes.string.def('link'),
 
   title: propTypes.string,
 

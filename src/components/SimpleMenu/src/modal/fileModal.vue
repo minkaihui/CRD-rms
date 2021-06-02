@@ -1,13 +1,20 @@
 <template>
   <BasicModal
-    title="上传素材"
     centered
+    :closable="false"
     v-bind="$attrs"
     okText="上传"
     okType="success"
     :cancelButtonProps="{ type: 'primary' }"
     cancelText="保存"
+    :wrapperProps="{viewClass:'CRDaddfile'}"
+    :boxSizing="32"
+    showLeftBtn
+    LeftText="选择其他文件"
+    LeftExplainText="(视频、音频、文档)"
+    :FooterStyle="{'padding':'10px'}"
   >
+  <!-- 自定义boxSizing,LeftText,LeftExplainText ，showLeftBtn,FooterStyle-->
     <div class="flex fl w-full">
       <div>
         文件 <span class="text-xs text-gray-200" v-show="material.length > 0">(必填)</span>
@@ -60,6 +67,7 @@
   </BasicModal>
 </template>
 <script lang="ts">
+ 
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { message, Upload } from 'ant-design-vue';
 import { defineComponent, ref } from 'vue';
@@ -327,6 +335,8 @@ export default defineComponent({
       console.log(e);
       visible.value = false;
     };
+
+    
     return {
       //上传
       schemas,
@@ -348,15 +358,14 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-/* .ant-modal-content .ant-modal-header {
-  display: none;
-} */
-</style>
+
 
 <style lang="less" scoped>
-
-
+// 高度处理boxSizing  30+2
+.fl{
+  padding: 30px 30px 0;
+  border: 1px solid rgba(0,0,0,0.06);
+}
 // BasicForm
 
 ::v-deep(.BasicForm .ant-select-selector) {

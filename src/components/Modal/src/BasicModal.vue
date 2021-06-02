@@ -2,7 +2,6 @@
   <Modal @cancel="handleCancel" v-bind="getBindValue">
     <template #closeIcon v-if="!$slots.closeIcon">
       <ModalClose
-      
         :canFullscreen="getProps.canFullscreen"
         :fullScreen="fullScreenRef"
         @cancel="handleCancel"

@@ -30,7 +30,7 @@
   export default defineComponent({
     name: 'ModalWrapper',
     components: { ScrollContainer },
-    inheritAttrs: false,
+    inheritAttrs: true,
     props: {
       loading: propTypes.bool,
       useWrapper: propTypes.bool.def(true),
@@ -42,6 +42,10 @@
       visible: propTypes.bool,
       fullScreen: propTypes.bool,
       loadingTip: propTypes.string,
+      boxSizing:  {
+        type: [Number,String],
+        default: 0
+      }
     },
     emits: ['height-change', 'ext-height'],
     setup(props: ModalWrapperProps, { emit }) {
@@ -65,7 +69,7 @@
           return {
             minHeight: `${props.minHeight}px`,
             // padding 28
-            height: `${unref(realHeightRef)}px`,
+            height: `${unref(realHeightRef)+parseInt( props.boxSizing ) }px`,
           };
         }
       );

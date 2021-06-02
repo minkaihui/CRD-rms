@@ -132,6 +132,11 @@
   });
 </script>
 <style lang="less">
+
+.CRDaddfile{
+  padding: 0 30px;
+}
+
   .scrollbar {
     position: relative;
     height: 100%;

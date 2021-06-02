@@ -122,13 +122,17 @@
       let baseRowStyle={
         "justify-content": "center"
       }
+      let FooterStyle={
+        "padding": "60px"
+      }
       return {
         schemas,
         handleSubmit: (values: any) => {
           createMessage.success('click search,values:' + JSON.stringify(values));
         },
         check,
-        baseRowStyle
+        baseRowStyle,
+        FooterStyle
       };
     }
   });
