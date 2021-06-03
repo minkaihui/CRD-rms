@@ -9,23 +9,71 @@
     />
     <!-- 分类 -->
     <div class="flex items-center bg-white down-tab">
-      <a-dropdown :trigger="['click','hover']" v-for="(item, index) in sortDowns" :key="index">
-        <div class="tab">
-          <div class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white" @click.prevent>
-          {{ item.tab }}
-          <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
-        </div>
+      <a-dropdown
+        :trigger="['click']"
+        v-for="(item, index) in sortDowns"
+        :key="index"
+        @visibleChange="tabDownChange"
+        @click="tabDownClick(index)"
+        v-model:visible="item.visible"
+      >
+        <div class="tab" @click.prevent>
+          <div
+            class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white"
+            :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
+          >
+            {{ item.tab }}
+            <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+          </div>
         </div>
         <template #overlay>
-          <a-menu>
-            <a-menu-item key="0">
-              <a href="http://www.alipay.com/">1st menu item</a>
-            </a-menu-item>
-            <a-menu-item key="1">
-              <a href="http://www.taobao.com/">2nd menu item</a>
-            </a-menu-item>
-            <a-menu-item key="3">3rd menu item</a-menu-item>
-          </a-menu>
+          <div class="flex justify-center tab-list">
+            <div class="flex flex-col justify-between" style="width: 139px">
+              <div>
+                <div class="p-3">全部</div>
+                <a-menu class="w-full" v-model:selectedKeys="selectedKeys">
+                  <a-menu-item :key="index">
+                    <a>1st menu item</a>
+                  </a-menu-item>
+                </a-menu>
+              </div>
+              <div class=" pt flex justify-between items-center" style="padding: 5px 8px 5px 10px;"
+                >逻辑
+                <a-dropdown :trigger="['click']">
+                  <div class="tab">
+                    <div
+                      class="flex items-center justify-center ant-dropdown-link ant-dropdown-link-hover inline-block cursor-pointer"
+                    >
+                      任意符合
+                      <img
+                        class="inline-block"
+                        src="../../../../assets/images/men/down.png"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                   <template #overlay>
+                     弹框多选
+                  </template>
+                </a-dropdown>
+              </div>
+            </div>
+            <div class="tab-classify">
+              <a-input placeholder="搜索" value="搜索" class="h-9">
+                <template #prefix>
+                  <img src="../../../../assets/images/men/search.png" alt="" />
+                </template>
+              </a-input>
+
+              <CheckboxGroup v-model:value="tabCheckboxValue">
+                <a-row>
+                  <a-col :span="24" v-for="(item, index) in 7" :key="index">
+                    <Checkbox :value="item">标签{{ item }}</Checkbox>
+                  </a-col>
+                </a-row>
+              </CheckboxGroup>
+            </div>
+          </div>
         </template>
       </a-dropdown>
     </div>
@@ -47,7 +95,7 @@
           <a-col
             :span="6"
             class="p-0 mb-3 relative"
-            style="max-width: 100%;"
+            style="max-width: 100%"
             v-for="(item, index) in bigImagesList"
             :key="index"
             @click="clickDecide(item, index)"
@@ -81,8 +129,8 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref, reactive } from 'vue';
-import { Card, Row, Col, List, Dropdown, Menu } from 'ant-design-vue';
+import { defineComponent, onMounted, computed, ref, reactive, toRefs } from 'vue';
+import { Card, Row, Col, List, Dropdown, Menu, Input, Checkbox } from 'ant-design-vue';
 import { useContextMenu } from '/@/hooks/web/useContextMenu';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { BasicTable, useTable } from '/@/components/Table';
@@ -108,6 +156,9 @@ export default defineComponent({
     [Menu.name]: Menu,
     [Menu.Item.name]: Menu.Item,
     [Menu.Divider.name]: Menu.Divider,
+    [Input.name]: Input,
+    Checkbox,
+    CheckboxGroup: Checkbox.Group,
   },
   props: {
     isShow_auditList: {
@@ -117,17 +168,45 @@ export default defineComponent({
   },
   setup() {
     const sortDown = reactive([
-      { tab: '名称', isShow: true },
-      { tab: '标签', isShow: true },
-      { tab: '文件夹名', isShow: true },
-      { tab: '注释', isShow: true },
-      { tab: '上传人员', isShow: true },
+      { tab: '名称', isShow: true, visible: false },
+      { tab: '标签', isShow: true, visible: false },
+      { tab: '文件夹名', isShow: true, visible: false },
+      { tab: '注释', isShow: true, visible: false },
+      { tab: '上传人员', isShow: true, visible: false },
     ]);
 
     const sortDowns = computed(() => {
       return sortDown.filter(function (item) {
         return item.isShow == true;
       });
+    });
+
+    const tabDownShow = ref(-1);
+
+    const tabDownChange = function (visible) {
+      if (!visible) {
+        tabDownShow.value = -1;
+      }
+    };
+
+    const tabVisible = ref(false);
+
+    const tabDownClick = function (index) {
+      tabDownShow.value = index;
+      sortDown[index].visible = !sortDown[index].visible;
+    };
+
+    const options = [
+      { label: 'Apple', value: 'Apple' },
+      { label: 'Pear', value: 'Pear' },
+      { label: 'Orange', value: 'Orange' },
+    ];
+
+    const state = reactive({
+      value1: [],
+      value2: ['Apple'],
+      value3: ['Pear'],
+      value4: ['Apple'],
     });
 
     function checkboxChange(e) {
@@ -343,6 +422,14 @@ export default defineComponent({
       //分类
       sortDown,
       sortDowns,
+      tabDownShow,
+      tabDownClick,
+      tabDownChange,
+      tabVisible,
+      tabCheckboxValue: ref([1]),
+      selectedKeys: ref([0, 1, 2, 3, 4, 5, 6, 7, 8]),
+      options, //tab分类数据
+      ...toRefs(state),
       //右键
       handleContext,
       //列表
@@ -362,6 +449,41 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+.tab-list {
+  width: 370px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
+
+  div {
+    color: rgba(0, 0, 0, 0.65);
+  }
+  
+
+  ::v-deep(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
+    border-left: #1665d8 solid 3px;
+  }
+}
+
+.tab-classify {
+  width: 231px;
+  padding: 12px 12px 54px;
+  background: #fbfbfd;
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06), 1px 0 0 0 rgba(0, 0, 0, 0.06);
+
+  .ant-row .ant-col {
+    height: 20px;
+    margin-top: 18px;
+    line-height: 20px;
+
+    ::v-deep(.ant-checkbox-wrapper) {
+      color: rgba(0, 0, 0, 0.65);
+      text-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
+    }
+  }
+}
+
 #viewerjs {
   background-color: #fbfbfd;
 }
@@ -407,26 +529,26 @@ export default defineComponent({
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
 
-  .tab{
+  .tab {
     padding: 10px 0 10px 14px;
   }
+}
 
-  .click-tab {
+.click-tab {
     border: 1px solid #e2e5ed;
     border-radius: 5px;
   }
 
   .ant-dropdown-link {
-    padding: 4px 3px;
+    padding: 5px 3px 5px 5px;
     border: 1px solid rgba(0, 0, 0, 0);
   }
 
-  .ant-dropdown-link:hover {
+  .ant-dropdown-link-hover {
     background: #fbfbfd;
     border: 1px solid #e2e5ed;
     border-radius: 5px;
   }
-}
 
 ::v-deep(.ant-card-body) {
   height: 100%;
