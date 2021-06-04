@@ -19,7 +19,7 @@
       >
         <div class="tab" @click.prevent>
           <div
-            class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white"
+            class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white text-black"
             :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
           >
             {{ item.tab }}
@@ -30,19 +30,19 @@
           <div class="flex justify-center tab-list">
             <div class="flex flex-col justify-between" style="width: 139px">
               <div>
-                <div class="p-3">全部</div>
+                <div class="text-black-65" style="padding: 10px 16px 6px;">已选定</div>
                 <a-menu class="w-full" v-model:selectedKeys="selectedKeys">
-                  <a-menu-item :key="index">
-                    <a>1st menu item</a>
+                  <a-menu-item :key="index" >
+                    <span class="text-black-65">全部</span>
                   </a-menu-item>
                 </a-menu>
               </div>
-              <div class=" pt flex justify-between items-center" style="padding: 5px 8px 5px 10px;"
+              <div class="text-black-65 pt flex justify-between items-center" style="padding: 5px 8px 5px 10px;"
                 >逻辑
                 <a-dropdown :trigger="['click']">
                   <div class="tab">
                     <div
-                      class="flex items-center justify-center ant-dropdown-link ant-dropdown-link-hover inline-block cursor-pointer"
+                      class="flex items-center justify-center ant-dropdown-link ant-dropdown-link-hover inline-block cursor-pointer text-black"
                     >
                       任意符合
                       <img
@@ -456,21 +456,18 @@ export default defineComponent({
   border-radius: 5px;
   box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
 
-  div {
-    color: rgba(0, 0, 0, 0.65);
-  }
-  
-
   ::v-deep(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
+    padding-left: 13px;
+     background: #f6f9fd;
     border-left: #1665d8 solid 3px;
   }
+
 }
 
 .tab-classify {
   width: 231px;
   padding: 12px 12px 54px;
   background: #fbfbfd;
-  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.06), 1px 0 0 0 rgba(0, 0, 0, 0.06);
 
   .ant-row .ant-col {
     height: 20px;

@@ -185,6 +185,9 @@ export interface ModalProps {
 
   // 页脚样式
   FooterStyle?: CSSProperties;
+
+  // 右边按钮样式
+  RButtonStyle?: CSSProperties;
   // 页头样式
   HeaderStyle?: CSSProperties;
 
@@ -213,6 +216,8 @@ export interface ModalProps {
    * @type number
    */
   zIndex?: number;
+
+  border?:boolean
 }
 
 export interface ModalWrapperProps {

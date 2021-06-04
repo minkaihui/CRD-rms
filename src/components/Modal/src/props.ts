@@ -52,6 +52,8 @@ export const basicProps = Object.assign({}, modalProps, {
 
   FooterStyle: Object as PropType<CSSProperties>,
 
+  RButtonStyle: Object as PropType<CSSProperties>,
+
   HeaderStyle: Object as PropType<CSSProperties>,
 
   closable: propTypes.bool.def(true),
@@ -97,5 +99,5 @@ export const basicProps = Object.assign({}, modalProps, {
 
   FooterRound: propTypes.string,
 
-  
+  border: propTypes.bool,
 });
