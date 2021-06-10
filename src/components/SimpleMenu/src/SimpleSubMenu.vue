@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div 
     :class="[
       getI18nName == '音频' ? 'mkh1-1' : '',
       getI18nName == '审核列表' ? 'mkh1' : '',
@@ -51,6 +51,7 @@
 
     <fileModal width="1019px" @register="fileRegister" />
     <addModal width="630px" @register="addRegister" />
+    <UploadModal />
   </div>
 </template>
 <style lang="less" scoped>
@@ -147,6 +148,7 @@ import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 import { useModal } from '/@/components/Modal';
 import fileModal from './modal/fileModal.vue';
 import addModal from './modal/addModal.vue';
+import UploadModal from './modal/UploadModal_RMS.vue';
 
 export default defineComponent({
   name: 'SimpleSubMenu',
@@ -156,7 +158,8 @@ export default defineComponent({
     SimpleMenuTag: createAsyncComponent(() => import('./SimpleMenuTag.vue')),
     Icon,
     fileModal,
-    addModal
+    addModal,
+    UploadModal
   },
   props: {
     item: {

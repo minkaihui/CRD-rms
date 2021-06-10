@@ -335,7 +335,7 @@ export default defineComponent({
     position: absolute;
     top: 50%;
     left: 20px;
-    z-index: 99;
+    z-index: 1;
     transform: translateY(-50%);
   }
 

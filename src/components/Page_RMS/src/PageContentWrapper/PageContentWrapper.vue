@@ -1,14 +1,58 @@
 <template>
-  <div>
+  <div class="h-full">
+    <div v-if="viewflag" @click="viewlist" class="viewflag flex justify-between items-center">
+      <div class="back"
+        ><LeftOutlined class="back" style="font-size: 8px" />
+        <span class="back" style="margin-left: 5px">返回</span></div
+      >
+      <div class="flex items-center justify-between">
+        <img
+          name="minus-small"
+          class="h-6"
+          src=".././../../../assets/images/men/minus-small.png"
+          alt=""
+        />
+        <div class="px-3">{{ viewNum }}</div>
+        <img
+          name="add-small"
+          class="h-6"
+          src=".././../../../assets/images/men/add-small.png"
+          alt=""
+        />
+      </div>
+      <div class="flex">
+        <img
+          name="rotate"
+          class="h-6 pr-5"
+          src=".././../../../assets/images/men/rotate.png"
+          alt=""
+        />
+        <img
+          name="OriginalSize"
+          class="h-6 pr-5"
+          src=".././../../../assets/images/men/OriginalSize.png"
+          alt=""
+        />
+        <img
+          name="AdaptiveWidth"
+          class="h-6 pr-5"
+          src=".././../../../assets/images/men/AdaptiveWidth.png"
+          alt=""
+        />
+        <img name="prev" class="h-6 pr-2.5" src=".././../../../assets/images/men/prev.png" alt="" />
+        <img name="next" class="h-6 pr-4" src=".././../../../assets/images/men/next.png" alt="" />
+      </div>
+    </div>
     <!-- 头部 -->
     <LayoutBreadcrumb
+      v-if="!viewflag"
       @checkboxChange="checkboxChange"
       @sortord="sortord"
       :flag="true"
       :theme="getHeaderTheme"
     />
     <!-- 分类 -->
-    <div class="flex items-center bg-white down-tab">
+    <div class="flex items-center bg-white down-tab" v-if="!viewflag">
       <a-dropdown
         :trigger="['click']"
         v-for="(item, index) in sortDowns"
@@ -19,7 +63,16 @@
       >
         <div class="tab" @click.prevent>
           <div
-            class="flex items-center justify-center ant-dropdown-link inline-block cursor-pointer bg-white text-black"
+            class="
+              flex
+              items-center
+              justify-center
+              ant-dropdown-link
+              inline-block
+              cursor-pointer
+              bg-white
+              text-black
+            "
             :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
           >
             {{ item.tab }}
@@ -30,19 +83,29 @@
           <div class="flex justify-center tab-list">
             <div class="flex flex-col justify-between" style="width: 139px">
               <div>
-                <div class="text-black-65" style="padding: 10px 16px 6px;">已选定</div>
+                <div class="text-black-65" style="padding: 10px 16px 6px">已选定</div>
                 <a-menu class="w-full" v-model:selectedKeys="selectedKeys">
-                  <a-menu-item :key="index" >
+                  <a-menu-item :key="index">
                     <span class="text-black-65">全部</span>
                   </a-menu-item>
                 </a-menu>
               </div>
-              <div class="text-black-65 pt flex justify-between items-center" style="padding: 5px 8px 5px 10px;"
+              <div
+                class="text-black-65 pt flex justify-between items-center"
+                style="padding: 5px 8px 5px 10px"
                 >逻辑
                 <a-dropdown :trigger="['click']">
                   <div class="tab">
                     <div
-                      class="flex items-center justify-center ant-dropdown-link ant-dropdown-link-hover inline-block cursor-pointer text-black"
+                      class="
+                        flex
+                        items-center
+                        justify-center
+                        ant-dropdown-link ant-dropdown-link-hover
+                        inline-block
+                        cursor-pointer
+                        text-black
+                      "
                     >
                       任意符合
                       <img
@@ -52,9 +115,7 @@
                       />
                     </div>
                   </div>
-                   <template #overlay>
-                     弹框多选
-                  </template>
+                  <template #overlay> 弹框多选 </template>
                 </a-dropdown>
               </div>
             </div>
@@ -79,73 +140,109 @@
     </div>
 
     <!-- 视图 -->
-    <div class="p-5" id="viewerjs">
-      <BasicTable
-        @contextmenu="handleContext"
-        @register="registerTable"
-        v-if="sortordValue == 'ListView'"
-      >
-        <template #toolbar>
-          <!-- <a-button type="primary" @click="handleReloadCurrent"> 刷新当前页 </a-button>
-        <a-button type="primary" @click="handleReload"> 刷新并返回第一页 </a-button> -->
-        </template>
-      </BasicTable>
-      <a-list v-else-if="sortordValue == 'CardView'">
-        <a-row :gutter="16">
-          <a-col
-            :span="6"
-            class="p-0 mb-3 relative"
-            style="max-width: 100%"
-            v-for="(item, index) in bigImagesList"
-            :key="index"
-            @click="clickDecide(item, index)"
-            @contextmenu="handleContext"
-          >
-            <a-list-item class="h-full">
-              <a-card
-                class="h-full"
-                :hoverable="true"
-                :class="[
-                  `${prefixCls}__card`,
-                  decideIndex == index ? (!isShow_auditList ? 'click_card' : 'click_card-add') : '',
-                  item.decide ? (!isShow_auditList ? 'click_card' : 'click_card-add') : '',
-                ]"
+    <div class="relative">
+      <div class="p-5" id="viewerjs">
+        <BasicTable
+          @contextmenu="handleContext"
+          @register="registerTable"
+          v-if="sortordValue == 'ListView'"
+        >
+          <template #toolbar>
+         <!-- 待定 -->
+          </template>
+        </BasicTable>
+        <ScrollContainer
+          :style="{ 'max-height': 'max-content', height: scrollHeight }"
+          ref="scrollRef"
+          v-else-if="sortordValue == 'CardView'"
+        >
+          <a-list>
+            <a-row :gutter="16">
+              <a-col
+                :span="6"
+                class="p-0 mb-3 relative"
+                style="max-width: 100%"
+                v-for="(item, index) in bigImagesList"
+                :key="index"
+                @click="clickDecide(item, index)"
+                @contextmenu="handleContext"
               >
-                <div :class="`${prefixCls}__imgView`">
-                  <img :src="item.src" @dblclick="dblclickDecide(index)" :key="item.src" />
-                </div>
-                <div :class="`${prefixCls}__card-pa`">
-                  <div :class="`${prefixCls}__card-detail`"> 秘密花园 </div>
-                  <div :class="`${prefixCls}__card-detail`"> 200*320 </div>
-                </div>
-              </a-card>
-            </a-list-item>
-          </a-col>
-        </a-row>
-      </a-list>
+                <a-list-item class="h-full">
+                  <a-card
+                    class="h-full"
+                    :hoverable="true"
+                    :class="[
+                      `${prefixCls}__card`,
+                      decideIndex == index
+                        ? !isShow_auditList
+                          ? 'click_card'
+                          : 'click_card-add'
+                        : '',
+                      item.decide ? (!isShow_auditList ? 'click_card' : 'click_card-add') : '',
+                    ]"
+                  >
+                    <div :class="`${prefixCls}__imgView`">
+                      <img :src="item.src" @dblclick="dblclickDecide(index)" :key="item.src" />
+                    </div>
+                    <div :class="`${prefixCls}__card-pa`">
+                      <div :class="`${prefixCls}__card-detail`"> 秘密花园 </div>
+                      <div :class="`${prefixCls}__card-detail`"> 200*320 </div>
+                    </div>
+                  </a-card>
+                </a-list-item>
+              </a-col>
+            </a-row>
+          </a-list>
+        </ScrollContainer>
+      </div>
     </div>
+
+    <div style="position: absolute; bottom: 0; left: 0; height: 0" id="content"></div>
   </div>
 </template>
 
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref, reactive, toRefs } from 'vue';
+import {
+  defineComponent,
+  onMounted,
+  computed,
+  watch,
+  ref,
+  reactive,
+  toRefs,
+  unref,
+  nextTick,
+} from 'vue';
 import { Card, Row, Col, List, Dropdown, Menu, Input, Checkbox } from 'ant-design-vue';
 import { useContextMenu } from '/@/hooks/web/useContextMenu';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { BasicTable, useTable } from '/@/components/Table';
-import { getBasicColumns } from './tableData';
+import { getBasicColumns,getBigImagesList } from './tableData';
 import { LayoutBreadcrumb } from '../../../../layouts/default/header/components';
 import { demoListApi } from '/@/api/demo/table';
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
+import { onKeyUp, onKeyDown } from '@vueuse/core';
 
-import Viewer from 'viewerjs';
+import { CollapseContainer } from '/@/components/Container/index';
+
+import { ScrollContainer, ScrollActionType } from '/@/components/Container/index';
+
+// import Viewer from 'viewerjs';
 import 'viewerjs/dist/viewer.css';
+import {LeftOutlined} from '@ant-design/icons-vue';
+
+
+// 预览逻辑
+import preview from './preview';
+
 
 export default defineComponent({
   components: {
-    Viewer,
+    LeftOutlined,
     LayoutBreadcrumb,
+    ScrollContainer,
+    CollapseContainer,
     BasicTable,
     [Card.name]: Card,
     [List.name]: List,
@@ -167,6 +264,10 @@ export default defineComponent({
     },
   },
   setup() {
+    // 自动高度
+    let scrollHeight = ref('300px');
+    const scrollRef = ref<Nullable<ScrollActionType>>(null);
+
     const sortDown = reactive([
       { tab: '名称', isShow: true, visible: false },
       { tab: '标签', isShow: true, visible: false },
@@ -286,135 +387,64 @@ export default defineComponent({
       },
     });
 
-    function handleReloadCurrent() {
-      reload();
-    }
-
-    function handleReload() {
-      reload({
-        page: 1,
-      });
-    }
+    
 
     //视图
-    let bigImagesList = reactive([
-      {
-        decide: false,
-        src:
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1522015854,2481348088&fm=26&gp=0.jpg',
-      },
-      {
-        decide: false,
-        src:
-          'https://th.bing.com/th/id/R688d6add3bd4d8519847b844a2bf967d?rik=%2fxKebRXyhfFGyQ&riu=http%3a%2f%2fbizhi.bcoderss.com%2fwp-content%2fuploads%2f2018%2f12%2f5b75201ba22b7.jpg&ehk=%2b9b3TwXYadBFani%2bgBs0mrTA30dblh3fp1TNanjvbZA%3d&risl=&pid=ImgRaw',
-      },
-      {
-        decide: false,
-        src:
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1522015854,2481348088&fm=26&gp=0.jpg',
-      },
-      {
-        decide: false,
-        src:
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1522015854,2481348088&fm=26&gp=0.jpg',
-      },
-      {
-        decide: false,
-        src:
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1522015854,2481348088&fm=26&gp=0.jpg',
-      },
-      {
-        decide: false,
-        src:
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1522015854,2481348088&fm=26&gp=0.jpg',
-      },
-      {
-        decide: false,
-        src: 'https://picsum.photos/id/68/346/216',
-      },
-    ]);
-    let viewer = null;
-    onMounted(() => {
-      //挂载
-      let image = document.getElementById('viewerjs');
-      image.addEventListener(
-        'click',
-        function () {
-          viewer.isShown = true;
-          viewer.played = true;
-        },
-        false
-      );
-      viewer = new Viewer(image as HTMLElement, {
-        // inline: true,
-        navbar: true,
-        title: true,
-        toolbar: {
-          prev: true,
-          next: true,
-        },
-      });
-      viewer.isShown = true;
-      viewer.played = true;
+    let bigImagesList = reactive(getBigImagesList());
+    
+
+    //预览逻辑
+    let {viewer,image,viewflag,viewNum,blankCtrlLogic,dblclickDecide,viewlist,ViewerMounted}= preview()
+    
+    onMounted(async () => {
+      let content = document.getElementById('content');
+       //自适应高度
+      await nextTick();
+      scrollHeight.value = content.offsetTop - (image.value.offsetTop + 40) + 'px';
+      viewer = ViewerMounted()
     });
 
-    let decideIndex = ref(-1);
-    let ctrlflag = null;
-    function clickDecide(item, index) {
-      //单击
-      if (ctrlflag) {
-        if (decideIndex.value > 0) {
-          bigImagesList[decideIndex.value].decide = true;
-        }
-        bigImagesList[index].decide = !bigImagesList[index].decide;
-      } else {
-        if (decideIndex.value == index || bigImagesList[index].decide) {
-          decideIndex.value = -1;
-          bigImagesList[index].decide = false;
-        } else {
-          decideIndex.value = index;
-        }
-      }
-    }
 
-    function dblclickDecide(index) {
-      //双击
-      viewer.isShown = false;
-      viewer.played = false;
-      viewer.view(index);
+    const decideIndex = ref(-1);
+    let ctrlflag=null;
+    function clickDecide(item, index) {
+        //单击
+        if (ctrlflag) {
+            if (decideIndex.value > 0) {
+                bigImagesList[decideIndex.value].decide = true;
+            }
+            bigImagesList[index].decide = !bigImagesList[index].decide;
+        } else {
+            if (decideIndex.value == index || bigImagesList[index].decide) {
+                decideIndex.value = -1;
+                bigImagesList[index].decide = false;
+            } else {
+                decideIndex.value = index;
+            }
+        }
     }
 
     // 按键监听
-    (function watchKeyEvent() {
-      const setKeyStatus = (keyCode, status) => {
-        switch (keyCode) {
-          case 32:
-            //空格
-            if (decideIndex.value <= 0) return;
-            viewer.isShown = false;
-            viewer.played = false;
-            viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
-            break;
-          case 17:
-            //ctrl
-            if (status) {
-              console.log(666);
-              ctrlflag = true;
-            } else {
-              ctrlflag = false;
-            }
-            break;
-        }
-      };
-      window.onkeydown = (e) => {
-        setKeyStatus(e.keyCode, true);
-      };
-      window.onkeyup = (e) => {
-        setKeyStatus(e.keyCode, false);
-      };
-    })();
+    function blankEvent() {
+        if (decideIndex.value < 0 || viewflag.value) return;
+        blankCtrlLogic(false,image.value);
+         console.log(viewer)
+        viewer.isShown = false;
+        viewer.played = false;
+        viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
+    }
+
+    //ctrl
+    onKeyUp('Control', () => (ctrlflag = false));
+    onKeyDown('Control', () => (ctrlflag = true));
+
+    // 空格
+    onKeyUp(' ', blankEvent);
+    
 
     return {
+      scrollHeight,
+      scrollRef,
       //搜索分类
       checkboxChange,
       sortord,
@@ -436,19 +466,56 @@ export default defineComponent({
       getHeaderTheme,
       prefixCls: 'list-card',
       registerTable,
-      handleReloadCurrent,
-      handleReload,
       //视图
       bigImagesList,
       clickDecide,
       dblclickDecide,
       decideIndex,
+      //局部预览和全屏预览切换
+      viewflag,
+      // 当前预览%
+      viewNum,
+      //事件委托
+      viewlist,
     };
   },
 });
 </script>
 
 <style lang="less" scoped>
+::v-deep(.scroll-container .scrollbar__wrap) {
+  width: 100%;
+  margin-bottom: 0 !important;
+  background: #fff;
+}
+
+::v-deep(.viewer-backdrop) {
+  z-index: 2 !important;
+  background-color: #fbfbfd;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 6%);
+}
+
+::v-deep(.viewer-button) {
+  display: none;
+}
+
+.viewflag {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  width: calc(100% - 280px);
+  height: 52px;
+  padding: 0 20px;
+  line-height: 52px;
+  background: #fff;
+  box-shadow: 0 1px 0 0 rgb(0 0 0 / 6%);
+
+  img,
+  .back {
+    cursor: pointer;
+  }
+}
+
 .tab-list {
   width: 370px;
   background: #fff;
@@ -458,10 +525,9 @@ export default defineComponent({
 
   ::v-deep(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
     padding-left: 13px;
-     background: #f6f9fd;
+    background: #f6f9fd;
     border-left: #1665d8 solid 3px;
   }
-
 }
 
 .tab-classify {
@@ -482,6 +548,7 @@ export default defineComponent({
 }
 
 #viewerjs {
+  height: max-content;
   background-color: #fbfbfd;
 }
 //列表选中处理
@@ -532,20 +599,20 @@ export default defineComponent({
 }
 
 .click-tab {
-    border: 1px solid #e2e5ed;
-    border-radius: 5px;
-  }
+  border: 1px solid #e2e5ed;
+  border-radius: 5px;
+}
 
-  .ant-dropdown-link {
-    padding: 5px 3px 5px 5px;
-    border: 1px solid rgba(0, 0, 0, 0);
-  }
+.ant-dropdown-link {
+  padding: 5px 3px 5px 5px;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
 
-  .ant-dropdown-link-hover {
-    background: #fbfbfd;
-    border: 1px solid #e2e5ed;
-    border-radius: 5px;
-  }
+.ant-dropdown-link-hover {
+  background: #fbfbfd;
+  border: 1px solid #e2e5ed;
+  border-radius: 5px;
+}
 
 ::v-deep(.ant-card-body) {
   height: 100%;

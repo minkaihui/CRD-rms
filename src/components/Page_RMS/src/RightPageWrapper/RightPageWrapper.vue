@@ -311,11 +311,12 @@ export default defineComponent({
 // 主体
 .vben-page-wrapper {
   width: 280px;
+  height: max-content;
   background-color: #fff;
   box-shadow: -1px 0 0 0 #ececee;
 
   ::v-deep(.vben-page-wrapper-content) {
-    margin: 20px 0;
+    margin: 20px 0 0 0;
   }
 
   
@@ -350,11 +351,12 @@ export default defineComponent({
 
   //图片
   .tab_right {
+    width: 244px;
     height: 180px;
+    padding: 0 32px;
     border: 1px solid #eee;
 
     img {
-      width: 100%;
       height: 100%;
     }
   }
