@@ -54,7 +54,6 @@ function preview() {
                 viewNum.value = Math.round(viewer.imageData.ratio * 100) + '%';
             },
         });
-        console.log(viewer,444)
         return viewer
     }
 

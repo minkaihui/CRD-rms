@@ -1,7 +1,7 @@
 <template>
   <PageWrapper>
     <a-tabs
-      class="a-tabs"
+      class="a-tabs h-full"
       default-active-key="1"
       size="small"
       :tabBarStyle="tabStyle"
@@ -26,9 +26,13 @@
             :showActionButtonGroup="false"
             @submit="handleSubmit"
           />
-          <!-- 注释 -->
+          
+    box-shadow: 0 1px 0 0 rgb(0 0 0 / 6%);
+
+
+           <!-- 注释  -->
           <a-input :value="value" placeholder="添加注释" />
-          <!-- 详情 -->
+           <!-- 详情  -->
           <Description
             class="mt-4 Description"
             title="基本信息"
@@ -45,19 +49,19 @@
           <!-- 分类 -->
           <div class="mb-2 mx-5" v-if="!isShow_auditList">分类</div>
           <!-- 文件夹名 -->
-          
+
           <div class="classify-border">
             <div class="classify-file flex" v-if="!isShow_auditList">
-            <div class="left">
-              <Icon icon="ant-design:folder-outlined" :size="16" />
-              文件夹名
-              <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer ml-3" />
-            </div>
+              <div class="left">
+                <Icon icon="ant-design:folder-outlined" :size="16" />
+                文件夹名
+                <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer ml-3" />
+              </div>
 
-            <div class="pl-2" style="line-height: 31px;">
-              <Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14"/>
+              <div class="pl-2" style="line-height: 31px">
+                <Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14" />
+              </div>
             </div>
-          </div>
           </div>
           <div class="mx-5">
             <!-- 通过 不通过-->
@@ -94,7 +98,7 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { PageWrapper } from '/@/components/Page';
 import { Tabs, Input } from 'ant-design-vue';
 import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
@@ -105,6 +109,7 @@ import { Description, DescItem } from '/@/components/Description/index';
 import { useModal } from '/@/components/Modal';
 import ModalUnthread from '../modal/Modal.vue';
 import { Icon } from '/@/components/Icon/index';
+import { useLocaleStoreWithOut } from '/@/store/modules/locale';
 
 export default defineComponent({
   components: {
@@ -267,6 +272,14 @@ export default defineComponent({
       '以美丽而富饶的生命力的大自然为灵感 打造属于您的秘密花园 将花卉的细腻美态与蓬勃的生命力 化为一件件珠宝杰作「蜜蜂」 象征勤奋、智慧、秩序、尊贵 传说拿破仑婴儿时期,有只蜜蜂亲吻他的嘴唇 后来他便成了皇帝,从此对其能带来权利深信不疑 还把它绣在自己的斗篷上,当作法国王朝的图腾'
     );
 
+    onMounted(() => {
+      const localeStore = useLocaleStoreWithOut();
+      setTimeout(() => {
+        let RightPage = document.querySelector('.vben-page-wrapper');
+        localeStore.setRightPage(RightPage.scrollHeight);
+      }, 0);
+    });
+
     return {
       // 名称
       value,
@@ -311,16 +324,16 @@ export default defineComponent({
 // 主体
 .vben-page-wrapper {
   width: 280px;
-  height: max-content;
+  height: 100%;
   background-color: #fff;
   box-shadow: -1px 0 0 0 #ececee;
 
   ::v-deep(.vben-page-wrapper-content) {
+    height: calc(100% - 20px);
     margin: 20px 0 0 0;
   }
 
-  
-   ::v-deep(.a-tabs .ant-tabs-nav) {
+  ::v-deep(.a-tabs .ant-tabs-nav) {
     padding-left: 20px;
   }
   //a-tabs
@@ -412,12 +425,11 @@ export default defineComponent({
 
   //classify
   .classify {
-    
-    .classify-border{
+    .classify-border {
       border-bottom: 1px solid #e2e5ed;
     }
 
-    .classify-file{
+    .classify-file {
       margin: 0 20px;
     }
 
@@ -426,7 +438,6 @@ export default defineComponent({
       border: 1px solid #e2e5ed;
       border-bottom: none;
     }
-
 
     .classify-download {
       padding: 20px 0;

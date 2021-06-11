@@ -141,18 +141,19 @@
 
     <!-- 视图 -->
     <div class="relative">
-      <div class="p-5" id="viewerjs">
+      <div id="viewerjs">
         <BasicTable
-          @contextmenu="handleContext"
+          @contextmenu="rightButtonEvent"
           @register="registerTable"
           v-if="sortordValue == 'ListView'"
         >
           <template #toolbar>
-         <!-- 待定 -->
+            <!-- 待定 -->
           </template>
         </BasicTable>
         <ScrollContainer
-          :style="{ 'max-height': 'max-content', height: scrollHeight }"
+          class="p-5"
+          :style="{ height: scrollHeight }"
           ref="scrollRef"
           v-else-if="sortordValue == 'CardView'"
         >
@@ -165,7 +166,7 @@
                 v-for="(item, index) in bigImagesList"
                 :key="index"
                 @click="clickDecide(item, index)"
-                @contextmenu="handleContext"
+                @contextmenu="rightButtonEvent"
               >
                 <a-list-item class="h-full">
                   <a-card
@@ -196,8 +197,6 @@
         </ScrollContainer>
       </div>
     </div>
-
-    <div style="position: absolute; bottom: 0; left: 0; height: 0" id="content"></div>
   </div>
 </template>
 
@@ -215,10 +214,9 @@ import {
   nextTick,
 } from 'vue';
 import { Card, Row, Col, List, Dropdown, Menu, Input, Checkbox } from 'ant-design-vue';
-import { useContextMenu } from '/@/hooks/web/useContextMenu';
-import { useMessage } from '/@/hooks/web/useMessage';
+
 import { BasicTable, useTable } from '/@/components/Table';
-import { getBasicColumns,getBigImagesList } from './tableData';
+import { getBasicColumns, getBigImagesList } from './tableData';
 import { LayoutBreadcrumb } from '../../../../layouts/default/header/components';
 import { demoListApi } from '/@/api/demo/table';
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
@@ -227,15 +225,16 @@ import { onKeyUp, onKeyDown } from '@vueuse/core';
 import { CollapseContainer } from '/@/components/Container/index';
 
 import { ScrollContainer, ScrollActionType } from '/@/components/Container/index';
-
+import { useLocaleStoreWithOut } from '/@/store/modules/locale';
 // import Viewer from 'viewerjs';
 import 'viewerjs/dist/viewer.css';
-import {LeftOutlined} from '@ant-design/icons-vue';
-
+import { LeftOutlined } from '@ant-design/icons-vue';
 
 // 预览逻辑
-import preview from './preview';
+import getPreview from './preview';
 
+// 右键逻辑
+import getRightButton from './rightButton';
 
 export default defineComponent({
   components: {
@@ -264,10 +263,7 @@ export default defineComponent({
     },
   },
   setup() {
-    // 自动高度
-    let scrollHeight = ref('300px');
-    const scrollRef = ref<Nullable<ScrollActionType>>(null);
-
+    // 分类筛选
     const sortDown = reactive([
       { tab: '名称', isShow: true, visible: false },
       { tab: '标签', isShow: true, visible: false },
@@ -275,41 +271,29 @@ export default defineComponent({
       { tab: '注释', isShow: true, visible: false },
       { tab: '上传人员', isShow: true, visible: false },
     ]);
-
     const sortDowns = computed(() => {
       return sortDown.filter(function (item) {
         return item.isShow == true;
       });
     });
-
     const tabDownShow = ref(-1);
-
+    const tabVisible = ref(false);
     const tabDownChange = function (visible) {
       if (!visible) {
         tabDownShow.value = -1;
       }
     };
-
-    const tabVisible = ref(false);
-
     const tabDownClick = function (index) {
       tabDownShow.value = index;
       sortDown[index].visible = !sortDown[index].visible;
     };
 
-    const options = [
-      { label: 'Apple', value: 'Apple' },
-      { label: 'Pear', value: 'Pear' },
-      { label: 'Orange', value: 'Orange' },
-    ];
 
-    const state = reactive({
-      value1: [],
-      value2: ['Apple'],
-      value3: ['Pear'],
-      value4: ['Apple'],
-    });
-
+    //搜索筛选
+    let sortordValue = ref<String>('CardView');
+    function sortord(e) {
+      sortordValue.value = e;
+    }
     function checkboxChange(e) {
       sortDown.forEach((item, index) => {
         if (!e.includes(item.tab)) {
@@ -319,58 +303,8 @@ export default defineComponent({
         }
       });
     }
-    let sortordValue = ref<String>('CardView');
-    function sortord(e) {
-      sortordValue.value = e;
-    }
-
-    //右键
-    const [createContextMenu] = useContextMenu();
-    const { createMessage } = useMessage();
-    function handleContext(e: MouseEvent) {
-      createContextMenu({
-        event: e,
-        items: [
-          {
-            label: '查看详情',
-            handler: () => {
-              createMessage.success('查看详情');
-            },
-          },
-          {
-            label: '移动至文件夹..',
-            handler: () => {
-              createMessage.success('移动至文件夹..');
-            },
-          },
-          {
-            label: '复制',
-            handler: () => {
-              createMessage.success('复制');
-            },
-          },
-          {
-            label: '重命名',
-            handler: () => {
-              createMessage.success('重命名');
-            },
-          },
-          {
-            label: '下载',
-            handler: () => {
-              createMessage.success('下载');
-            },
-          },
-          {
-            label: '删除',
-            handler: () => {
-              createMessage.success('删除');
-            },
-          },
-        ],
-      });
-    }
-    // 列表
+    
+    // 列表排序
     const { getHeaderTheme } = useHeaderSetting();
     const [registerTable, { reload }] = useTable({
       title: '', //标题
@@ -387,51 +321,67 @@ export default defineComponent({
       },
     });
 
-    
-
-    //视图
+    //视图排序
     let bigImagesList = reactive(getBigImagesList());
-    
 
     //预览逻辑
-    let {viewer,image,viewflag,viewNum,blankCtrlLogic,dblclickDecide,viewlist,ViewerMounted}= preview()
-    
+    let {
+      viewer,
+      image,
+      viewflag,
+      viewNum,
+      blankCtrlLogic,
+      dblclickDecide,
+      viewlist,
+      ViewerMounted,
+    } = getPreview();
+
+    //右键
+    let { rightButtonEvent } = getRightButton();
+
+
+    //scroll自适应滚轮
+    let scrollHeight = ref('300px');
+    const scrollRef = ref<Nullable<ScrollActionType>>(null);
     onMounted(async () => {
-      let content = document.getElementById('content');
-       //自适应高度
+
+      const localeStore = useLocaleStoreWithOut();
       await nextTick();
-      scrollHeight.value = content.offsetTop - (image.value.offsetTop + 40) + 'px';
-      viewer = ViewerMounted()
+      // viewer 初始化
+      viewer = ViewerMounted();
+      setTimeout(() => {
+        scrollHeight.value = localeStore.getRightPage - 105 + 'px';
+      }, 10);
     });
 
-
+    // 单击选中
     const decideIndex = ref(-1);
-    let ctrlflag=null;
+    let ctrlflag = null;
     function clickDecide(item, index) {
-        //单击
-        if (ctrlflag) {
-            if (decideIndex.value > 0) {
-                bigImagesList[decideIndex.value].decide = true;
-            }
-            bigImagesList[index].decide = !bigImagesList[index].decide;
-        } else {
-            if (decideIndex.value == index || bigImagesList[index].decide) {
-                decideIndex.value = -1;
-                bigImagesList[index].decide = false;
-            } else {
-                decideIndex.value = index;
-            }
+      //单击
+      if (ctrlflag) {
+        if (decideIndex.value > 0) {
+          bigImagesList[decideIndex.value].decide = true;
         }
+        bigImagesList[index].decide = !bigImagesList[index].decide;
+      } else {
+        if (decideIndex.value == index || bigImagesList[index].decide) {
+          decideIndex.value = -1;
+          bigImagesList[index].decide = false;
+        } else {
+          decideIndex.value = index;
+        }
+      }
     }
 
     // 按键监听
     function blankEvent() {
-        if (decideIndex.value < 0 || viewflag.value) return;
-        blankCtrlLogic(false,image.value);
-         console.log(viewer)
-        viewer.isShown = false;
-        viewer.played = false;
-        viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
+      if (decideIndex.value < 0 || viewflag.value) return;
+      blankCtrlLogic(false, image.value);
+      console.log(viewer);
+      viewer.isShown = false;
+      viewer.played = false;
+      viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
     }
 
     //ctrl
@@ -440,7 +390,6 @@ export default defineComponent({
 
     // 空格
     onKeyUp(' ', blankEvent);
-    
 
     return {
       scrollHeight,
@@ -458,10 +407,8 @@ export default defineComponent({
       tabVisible,
       tabCheckboxValue: ref([1]),
       selectedKeys: ref([0, 1, 2, 3, 4, 5, 6, 7, 8]),
-      options, //tab分类数据
-      ...toRefs(state),
       //右键
-      handleContext,
+      rightButtonEvent,
       //列表
       getHeaderTheme,
       prefixCls: 'list-card',
@@ -483,10 +430,15 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+
 ::v-deep(.scroll-container .scrollbar__wrap) {
   width: 100%;
   margin-bottom: 0 !important;
-  background: #fff;
+  border-right: none;
+}
+
+::v-deep(.ant-card-bordered){
+  border: none;
 }
 
 ::v-deep(.viewer-backdrop) {
@@ -591,6 +543,7 @@ export default defineComponent({
 .down-tab {
   height: 52px;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
 
   .tab {

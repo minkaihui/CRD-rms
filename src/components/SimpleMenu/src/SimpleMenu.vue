@@ -158,4 +158,9 @@
 </script>
 <style lang="less">
   @import './index.less';
+  
+  .scroll-container .scrollbar__wrap{
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  
 </style>
