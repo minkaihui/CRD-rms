@@ -16,8 +16,8 @@ export const modalProps = {
   centered: propTypes.bool.def(true),
   cancelText: propTypes.string.def(t('common.cancelText')),
   okText: propTypes.string.def(t('common.okText')),
-  LeftText: propTypes.string.def(t('common.LeftText')),
-  LeftExplainText: propTypes.string.def(t('common.LeftExplainText')),
+  LeftText: propTypes.string.def(t('')),
+  LeftExplainText: propTypes.string.def(t('')),
   closeFunc: Function as PropType<() => Promise<boolean>>,
 };
 
@@ -41,8 +41,6 @@ export const basicProps = Object.assign({}, modalProps, {
    * @description: Show confirmation button
    */
   showOkBtn: propTypes.bool.def(true),
-
-  showLeftBtn: propTypes.bool.def(false),
 
   wrapperProps: Object as PropType<Partial<ModalWrapperProps>>,
 
@@ -99,5 +97,5 @@ export const basicProps = Object.assign({}, modalProps, {
 
   FooterRound: propTypes.string,
 
-  border: propTypes.bool,
+  HeaderBorder: propTypes.bool,
 });

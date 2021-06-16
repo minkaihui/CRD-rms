@@ -7,7 +7,7 @@
         </span>
       </span>
       <img :class="`${prefixCls}__header`" class="ml-2" :src="headerImg" />
-      <img src="../../../../../assets/images/men/down.png" alt="">
+      <img src="/src/assets/images/men/down.png" alt="">
     </span>
 
     <template #overlay>

@@ -7,36 +7,45 @@
     okType="success"
     :cancelButtonProps="{ type: 'primary' }"
     cancelText="保存"
-    :wrapperProps="{viewClass:'CRDaddfile'}"
-    :boxSizing="32"
+    :wrapperProps="{ viewClass: 'CRDaddfile' }"
     showLeftBtn
     LeftText="选择其他文件"
     LeftExplainText="(视频、音频、文档)"
-    :FooterStyle="{'padding':'10px'}"
+    :FooterStyle="{ padding: '30px' }"
     FooterRound="round"
   >
-  <!-- 自定义boxSizing,LeftText,LeftExplainText ，showLeftBtn,FooterStyle,FooterRound-->
-    <div class="flex fl w-full">
+    <div class="flex fl h-full w-full">
       <div>
-        文件 <span class="text-xs text-gray-200" v-show="material.length > 0">(必填)</span>
+        <div class="mb-2.5"
+          >文件 <span class="text-xs text-gray-200" v-show="material.length > 0">(必填)</span></div
+        >
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           list-type="picture"
           v-model:file-list="material"
         >
-          <div v-show="material.length <= 0" class="flex justify-center items-center up1">
+          <div
+            v-show="material.length <= 0"
+            class="flex justify-center items-center up1"
+            :style="{ border: material.length > 0 ? 'none' : '1px dashed #ccc' }"
+          >
             <span class="text-blue-600">
               <Icon icon="ant-design:upload-outlined"></Icon>
               <a-button type="link" style="padding: 0px">上传素材</a-button>
             </span>
           </div>
         </Upload>
-
+        <div
+          v-if="material.length > 0"
+          class="mt-5"
+          style="height: 1px; background-color: rgba(0, 0, 0, 0.06)"
+        ></div>
         <Upload
           v-model:file-list="fileList"
           name="avatar"
           list-type="picture-card"
-          class="avatar-uploader"
+          class="avatar-uploader mt-5"
+          :class="material.length > 0 ? 'border-solid' : 'border-dashed'"
           :show-upload-list="false"
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           :before-upload="beforeUpload"
@@ -53,6 +62,7 @@
             <span class="text-gray-400 text-xs">GIF文件将不进行动画处理</span>
           </div>
         </Upload>
+        <a-button style="padding-left: 0" type="link">编辑封面图片</a-button>
       </div>
       <BasicForm
         class="BasicForm"
@@ -68,7 +78,6 @@
   </BasicModal>
 </template>
 <script lang="ts">
- 
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { message, Upload } from 'ant-design-vue';
 import { defineComponent, ref } from 'vue';
@@ -296,7 +305,73 @@ export default defineComponent({
     const loading = ref<boolean>(false);
     const imageUrl = ref<string>('');
 
+  let commonConfig={
+       /*百度云配置 begin */
+	bcebosEndPoint: 'https://hone-rts-new.gz.bcebos.com', //百度云url
+	bcebosDownUrl: 'https://hone-rts-new.cdn.bcebos.com', //百度云下载查看url（cdn）
+	baiduAccessKey: '8761034e71ca4b77be09c022394d43d1', //授权账号
+	baiduSecretKey: 'b412a03e8e6942fdadc4cd87b605748d', //百度云授权密码
+	bcebosBucket: 'hone-rts-new', //百度云RTS上传的域名
+	/*百度云配置 end */
+  }
+ 
+
+
+  //  async function uploadFileToBCS(context: any, files: Array<{ raw: { name: string; path: string } }>, categoryCode: any) {
+    
+  //   if (files.length > 0) {
+  //     for (var i = 0; i < files.length; i++) {
+  //       var file = files[i];
+  //       if (!file.raw) {
+  //         continue;
+  //       }
+  //       var ext = file.raw.name.substr(file.raw.name.lastIndexOf(".") + 1); // 后缀
+  //       //后台数据字典中系统配置的根目录
+  //       // var rBcebosRootPath: any = systemConfigBll.BcebosRootPath();
+  //       // if (!rBcebosRootPath.Success) {
+  //       //   return rBcebosRootPath;
+  //       // }
+  //       // let key = rBcebosRootPath.Data;
+  //       let key = 'Bqm' //未配置，暂时写固定值
+  //       let fileName =
+  //         Math.random()
+  //           .toFixed(20)
+  //           .substring(2, 20) +
+  //         "." +
+  //         ext;
+  //       if (categoryCode) {
+  //         key += "/" + categoryCode;
+  //       }
+  //       key += "/" + util.format.formatDate(new Date()) + "/" + fileName;
+  //       let expiration = {
+  //         expiration: util.format.formatTime2(new Date(), "yyyy-MM-ddThh:mm:ssZ"),
+  //         conditions: [{ bucket: commonConfig.bcebosBucket }, { key: key }]
+  //       };
+  //       let str = JSON.stringify(expiration);
+  //       var basePolicy = base64.encode(str);
+  //       var signature = cryptoJS.HmacSHA256(basePolicy, commonConfig.baiduSecretKey).toString();
+  //       let formData = new FormData();
+  //       formData.append("key", key);
+  //       formData.append("accessKey", commonConfig.baiduAccessKey);
+  //       formData.append("policy", basePolicy);
+  //       formData.append("signature", signature);
+  //       formData.append("file", file.raw as any);
+  //       debugger;
+  //       var res = await axios.post(commonConfig.bcebosEndPoint, formData, {
+  //         headers: { "content-type": "multipart/form-data;" }
+  //       });
+  //       debugger;
+  //       if (res.status == 200) {
+         
+  //       } else {
+         
+  //       }
+  //     }
+  //   }
+  // }
+
     const handleChange = (info: FileInfo) => {
+      console.log(info)
       if (info.file.status === 'uploading') {
         loading.value = true;
         return;
@@ -315,6 +390,7 @@ export default defineComponent({
     };
 
     const beforeUpload = (file: FileItem) => {
+      console.log(file)
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
         message.error('You can only upload JPG file!');
@@ -337,7 +413,6 @@ export default defineComponent({
       visible.value = false;
     };
 
-    
     return {
       //上传
       schemas,
@@ -362,10 +437,18 @@ export default defineComponent({
 
 
 <style lang="less" scoped>
-// 高度处理boxSizing  30+2
-.fl{
-  padding: 30px 30px 0;
+.border-dashed {
+  border: 1px dashed rgba(0, 0, 0, 0.25);
+}
+
+.border-solid {
   border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 2px;
+}
+
+.fl {
+  padding: 30px 30px 0;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 // BasicForm
 
@@ -376,8 +459,49 @@ export default defineComponent({
   align-content: start;
 }
 
+::v-deep(.ant-upload-list-picture .ant-upload-list-item) {
+  height: 70px;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+::v-deep(.ant-upload.ant-upload-select) {
+  display: block;
+}
+
+::v-deep(.ant-upload-list-picture .ant-upload-list-item-thumbnail) {
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;
+  border: 1px solid #e2e5ed;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+::v-deep(.ant-upload.ant-upload-select-picture-card > .ant-upload){
+  padding: 0;
+}
+
+::v-deep(.ant-upload-list-picture .ant-upload-list-item-thumbnail img) {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+}
+
+::v-deep(.ant-upload-list-picture .ant-upload-list-item-name) {
+  padding-left: 74px;
+}
+
+::v-deep(.ant-select-multiple .ant-select-selection-item) {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 //表单
 ::v-deep(.ant-form-item) {
+  margin-bottom: 19px !important;
   flex-direction: column;
   align-content: center;
 }
@@ -404,7 +528,6 @@ export default defineComponent({
   width: 17.5rem;
   height: 4.375rem;
   margin-top: 0.625rem;
-  border: 1px dashed #ccc;
 }
 
 .upload-list-inline ::v-deep(.ant-upload-list-item) {
@@ -422,11 +545,10 @@ export default defineComponent({
 }
 
 ::v-deep(.avatar-uploader > .ant-upload) {
+  display: table;
   width: 17.5rem;
   height: 17.5rem;
   margin: 0;
-  margin-top: 1.25rem;
-  border: 1px dashed #ccc;
 }
 
 ::v-deep(.ant-upload-select-picture-card i) {

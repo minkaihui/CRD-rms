@@ -1,9 +1,8 @@
-import {ref,onMounted,reactive} from 'vue';
+import {ref,onMounted} from 'vue';
 import Viewer from 'viewerjs';
 
-function preview() {
+function preview(viewflag,viewflagEnum) {
     let viewer;
-    const viewflag = ref<boolean>(false);
     const viewNum = ref<string>();
     const image = ref();
     
@@ -33,7 +32,7 @@ function preview() {
             toolbar: 0,
             tooltip: false,
             hide() {
-                viewflag.value = false;
+                viewflag.preview = viewflagEnum.default;
                 console.log('hide');
             },
             hidden() {
@@ -47,7 +46,7 @@ function preview() {
                 // 9 methods are available here: "hide", "view", "prev", "next", "play", "stop", "full", "exit" and "destroy".
             },
             viewed() {
-                viewflag.value = true;
+                viewflag.preview = viewflagEnum.preview;
                 viewNum.value = Math.round(viewer.imageData.ratio * 100) + '%';
             },
             zoom() {
@@ -68,7 +67,7 @@ function preview() {
         let target = event.target;
         if (target.className == 'back') {
             viewer.destroy();
-            viewflag.value = false;
+            viewflag.preview = viewflagEnum.default;
             return;
         }
         switch (target.name) {
@@ -99,7 +98,7 @@ function preview() {
     return{
         image,
         viewer,
-        viewflag,
+        preview:viewflag.preview,
         viewNum,
         blankCtrlLogic,
         dblclickDecide,

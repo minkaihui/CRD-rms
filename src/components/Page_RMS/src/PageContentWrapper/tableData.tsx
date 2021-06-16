@@ -56,7 +56,27 @@ export function getBigImagesList() {
     {
       decide: false,
       src: 'https://picsum.photos/id/68/346/216',
-    }
+    },
+    {
+      decide: false,
+      src: 'https://th.bing.com/th/id/R688d6add3bd4d8519847b844a2bf967d?rik=%2fxKebRXyhfFGyQ&riu=http%3a%2f%2fbizhi.bcoderss.com%2fwp-content%2fuploads%2f2018%2f12%2f5b75201ba22b7.jpg&ehk=%2b9b3TwXYadBFani%2bgBs0mrTA30dblh3fp1TNanjvbZA%3d&risl=&pid=ImgRaw',
+    },
+    {
+      decide: false,
+      src: 'https://th.bing.com/th/id/R688d6add3bd4d8519847b844a2bf967d?rik=%2fxKebRXyhfFGyQ&riu=http%3a%2f%2fbizhi.bcoderss.com%2fwp-content%2fuploads%2f2018%2f12%2f5b75201ba22b7.jpg&ehk=%2b9b3TwXYadBFani%2bgBs0mrTA30dblh3fp1TNanjvbZA%3d&risl=&pid=ImgRaw',
+    },
+    {
+      decide: false,
+      src: 'https://th.bing.com/th/id/R688d6add3bd4d8519847b844a2bf967d?rik=%2fxKebRXyhfFGyQ&riu=http%3a%2f%2fbizhi.bcoderss.com%2fwp-content%2fuploads%2f2018%2f12%2f5b75201ba22b7.jpg&ehk=%2b9b3TwXYadBFani%2bgBs0mrTA30dblh3fp1TNanjvbZA%3d&risl=&pid=ImgRaw',
+    },
+    {
+      decide: false,
+      src: 'https://th.bing.com/th/id/R688d6add3bd4d8519847b844a2bf967d?rik=%2fxKebRXyhfFGyQ&riu=http%3a%2f%2fbizhi.bcoderss.com%2fwp-content%2fuploads%2f2018%2f12%2f5b75201ba22b7.jpg&ehk=%2b9b3TwXYadBFani%2bgBs0mrTA30dblh3fp1TNanjvbZA%3d&risl=&pid=ImgRaw',
+    },
+    {
+      decide: false,
+      src: 'https://picsum.photos/id/68/346/216',
+    },
   ];
 }
 

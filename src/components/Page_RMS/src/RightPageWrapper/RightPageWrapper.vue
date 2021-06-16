@@ -13,7 +13,7 @@
         <div class="mx-5">
           <!-- 图片 -->
           <div class="tab_right">
-            <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
+            <img src="/src/assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
           </div>
           <!-- 名称 -->
           <div class="mt-5">
@@ -26,13 +26,10 @@
             :showActionButtonGroup="false"
             @submit="handleSubmit"
           />
-          
-    box-shadow: 0 1px 0 0 rgb(0 0 0 / 6%);
 
-
-           <!-- 注释  -->
+          <!-- 注释  -->
           <a-input :value="value" placeholder="添加注释" />
-           <!-- 详情  -->
+          <!-- 详情  -->
           <Description
             class="mt-4 Description"
             title="基本信息"
@@ -47,19 +44,20 @@
         <!-- 分类 -->
         <div class="classify mt-4">
           <!-- 分类 -->
-          <div class="mb-2 mx-5" v-if="!isShow_auditList">分类</div>
+          <div class="mb-2 mx-5" style="font-weight: 500;color: rgba(0,0,0,0.45);" v-if="!isShow_auditList">分类</div>
           <!-- 文件夹名 -->
 
           <div class="classify-border">
             <div class="classify-file flex" v-if="!isShow_auditList">
               <div class="left">
-                <Icon icon="ant-design:folder-outlined" :size="16" />
+                <Icon icon="ant-design:folder-outlined"  :size="16" />
                 文件夹名
-                <Icon icon="ant-design:close-outlined" :size="14" class="cursor-pointer ml-3" />
+                <Icon icon="ant-design:close-outlined" :size="14"  class="cursor-pointer ml-3" />
               </div>
 
               <div class="pl-2" style="line-height: 31px">
-                <Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14" />
+                <!-- <Icon class="cursor-pointer" icon="ant-design:plus-circle-twotone" :size="14" /> -->
+                <img class="inline-block" src="/src/assets/images/men/add.png" alt="" srcset="">
               </div>
             </div>
           </div>
@@ -80,19 +78,21 @@
       </a-tab-pane>
       <!-- 产品故事 -->
       <a-tab-pane key="2" tab="产品故事" v-if="!isShow_auditList">
-        <div class="tab_right">
-          <img src="../../../../assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
+        <div class="p-5">
+          <div class="tab_right">
+            <img src="/src/assets/images/BaiduHi_2021-4-30_17-2-41.png" alt="" />
+          </div>
+          <!-- 名称 -->
+          <div class="my-5">
+            <a-input :value="value" placeholder="名称" />
+          </div>
+          <InputTextArea
+            class="textarea"
+            onpropertychange="this.style.height=this.scrollHeight + 'px'"
+            oninput="this.style.height=this.scrollHeight + 'px'"
+            :value="textarea"
+          />
         </div>
-        <!-- 名称 -->
-        <div class="my-5">
-          <a-input :value="value" placeholder="名称" />
-        </div>
-        <InputTextArea
-          class="textarea"
-          onpropertychange="this.style.height=this.scrollHeight + 'px'"
-          oninput="this.style.height=this.scrollHeight + 'px'"
-          :value="textarea"
-        />
       </a-tab-pane>
     </a-tabs>
   </PageWrapper>
@@ -306,6 +306,21 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="less">
+::v-deep(.ant-tabs-nav .ant-tabs-tab){
+  font-weight: 500;
+  color: rgba(0,0,0,0.25);
+}
+
+::v-deep(.ant-tabs-nav .ant-tabs-tab-active){
+  font-weight: 500;
+  color: rgba(0,0,0,0.65);
+}
+
+::v-deep(.vben-basic-arrow .anticon){
+   color: #000;
+  opacity: 0.2;
+}
+
 .but {
   button {
     height: 36px;
@@ -386,6 +401,15 @@ export default defineComponent({
     padding-bottom: 7px;
   }
 
+  ::v-deep(.ant-descriptions-row > td span:first-of-type) {
+    color: rgba(0,0,0,0.45);
+  }
+
+  ::v-deep(.ant-descriptions-row > td span:last-of-type) {
+    color: rgba(0,0,0,0.65);
+  }
+
+
   ::v-deep(.ant-descriptions-item > span) {
     font-size: 12px;
     flex: none;
@@ -393,6 +417,8 @@ export default defineComponent({
 
   ::v-deep(.vben-basic-title-normal) {
     font-size: 12px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.45);
   }
 
   ::v-deep(.BasicForm .ant-select-selector) {
@@ -404,6 +430,7 @@ export default defineComponent({
 
   ::v-deep(.ant-select-multiple .ant-select-selection-item) {
     margin: 10px 0 0 10px;
+    color: rgba(0,0,0,0.65);
   }
 
   ::v-deep(.BasicForm .ant-select-multiple .ant-select-selection-placeholder) {
@@ -435,12 +462,14 @@ export default defineComponent({
 
     .classify-file .left {
       padding: 8px 10px 0 10px;
+      color: rgba(0,0,0,0.65);
       border: 1px solid #e2e5ed;
       border-bottom: none;
     }
 
     .classify-download {
       padding: 20px 0;
+      color: #828488;
       text-align: center;
     }
   }

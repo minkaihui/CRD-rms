@@ -14,7 +14,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useGo, useRedo } from '/@/hooks/web/usePage';
 
-  import { PageEnum } from '/@/enums/pageEnum';
+  import { PageEnum } from '/@/enums/pageEnum'; 
 
   interface MapValue {
     title: string;
@@ -52,7 +52,7 @@
     setup(props) {
       const statusMapRef = ref(new Map<string | number, MapValue>());
 
-      const { query } = useRoute();
+      const { query,path } = useRoute();
       const go = useGo();
       const redo = useRedo();
       const { t } = useI18n();
@@ -84,7 +84,7 @@
       unref(statusMapRef).set(ExceptionEnum.PAGE_NOT_FOUND, {
         title: '404',
         status: `${ExceptionEnum.PAGE_NOT_FOUND}`,
-        subTitle: t('sys.exception.subTitle404'),
+        subTitle: t('sys.exception.subTitle404')+path,
         btnText: props.full ? backLoginI18n : backHomeI18n,
         handler: () => (props.full ? go(PageEnum.BASE_LOGIN) : go()),
       });

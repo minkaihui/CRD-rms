@@ -16,7 +16,7 @@
       <a-dropdown :trigger="['click']">
         <div class="ant-dropdown-link inline-block cursor-pointer text-black-65 bg-white" @click.prevent>
           排序方式
-          <img class="inline-block" src="../../../../assets/images/men/sort-down.png" alt="" />
+          <img class="inline-block" src="/src/assets/images/men/sort-down.png" alt="" />
         </div>
         <template #overlay>
           <a-menu class="sort-down" style="padding-right: 15px">
@@ -31,7 +31,7 @@
       <a-dropdown :trigger="['click']">
         <div class="ant-dropdown-link text-black-65 inline-block cursor-pointer bg-white" @click.prevent>
           筛选
-          <img class="inline-block" src="../../../../assets/images/men/filter.png" alt="" />
+          <img class="inline-block" src="/src/assets/images/men/filter.png" alt="" />
         </div>
         <template #overlay>
           <a-menu class="sort-down" style="padding-right: 15px">
@@ -49,10 +49,10 @@
           <div class="ant-dropdown-link inline-block bg-white" @click.prevent>
             <div class="inline-block search-img">
               <span class="cursor-pointer" style="vertical-align: middle; display: inline-block"
-                ><img src="../../../../assets/images/men/search.png" alt=""
+                ><img src="/src/assets/images/men/search.png" alt=""
               /></span>
               <span class="cursor-pointer" style="vertical-align: middle; display: inline-block"
-                ><img src="../../../../assets/images/men/down-small.png" alt=""
+                ><img src="/src/assets/images/men/down-small.png" alt=""
               /></span>
             </div>
           </div>

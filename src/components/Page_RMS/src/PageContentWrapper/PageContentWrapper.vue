@@ -1,6 +1,10 @@
 <template>
   <div class="h-full">
-    <div v-if="viewflag" @click="viewlist" class="viewflag flex justify-between items-center">
+    <div
+      v-show="viewflag.preview == viewflagEnum.preview"
+      @click="viewlist"
+      class="viewflag flex justify-between items-center"
+    >
       <div class="back"
         ><LeftOutlined class="back" style="font-size: 8px" />
         <span class="back" style="margin-left: 5px">返回</span></div
@@ -9,14 +13,14 @@
         <img
           name="minus-small"
           class="h-6"
-          src=".././../../../assets/images/men/minus-small.png"
+          src="/src/assets/images/men/minus-small.png"
           alt=""
         />
         <div class="px-3">{{ viewNum }}</div>
         <img
           name="add-small"
           class="h-6"
-          src=".././../../../assets/images/men/add-small.png"
+          src="/src/assets/images/men/add-small.png"
           alt=""
         />
       </div>
@@ -24,35 +28,38 @@
         <img
           name="rotate"
           class="h-6 pr-5"
-          src=".././../../../assets/images/men/rotate.png"
+          src="/src/assets/images/men/rotate.png"
           alt=""
         />
         <img
           name="OriginalSize"
           class="h-6 pr-5"
-          src=".././../../../assets/images/men/OriginalSize.png"
+          src="/src/assets/images/men/OriginalSize.png"
           alt=""
         />
         <img
           name="AdaptiveWidth"
           class="h-6 pr-5"
-          src=".././../../../assets/images/men/AdaptiveWidth.png"
+          src="/src/assets/images/men/AdaptiveWidth.png"
           alt=""
         />
-        <img name="prev" class="h-6 pr-2.5" src=".././../../../assets/images/men/prev.png" alt="" />
-        <img name="next" class="h-6 pr-4" src=".././../../../assets/images/men/next.png" alt="" />
+        <img name="prev" class="h-6 pr-2.5" src="/src/assets/images/men/prev.png" alt="" />
+        <img name="next" class="h-6 pr-4" src="/src/assets/images/men/next.png" alt="" />
       </div>
     </div>
     <!-- 头部 -->
     <LayoutBreadcrumb
-      v-if="!viewflag"
+      v-show="viewflag.preview == viewflagEnum.default"
       @checkboxChange="checkboxChange"
       @sortord="sortord"
       :flag="true"
       :theme="getHeaderTheme"
     />
     <!-- 分类 -->
-    <div class="flex items-center bg-white down-tab" v-if="!viewflag">
+    <div
+      class="flex items-center bg-white down-tab"
+      v-if="viewflag.preview == viewflagEnum.default"
+    >
       <a-dropdown
         :trigger="['click']"
         v-for="(item, index) in sortDowns"
@@ -76,7 +83,7 @@
             :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
           >
             {{ item.tab }}
-            <img class="inline-block" src="../../../../assets/images/men/down.png" alt="" />
+            <img class="inline-block" src="/src/assets/images/men/down.png" alt="" />
           </div>
         </div>
         <template #overlay>
@@ -110,7 +117,7 @@
                       任意符合
                       <img
                         class="inline-block"
-                        src="../../../../assets/images/men/down.png"
+                        src="/src/assets/images/men/down.png"
                         alt=""
                       />
                     </div>
@@ -122,7 +129,7 @@
             <div class="tab-classify">
               <a-input placeholder="搜索" value="搜索" class="h-9">
                 <template #prefix>
-                  <img src="../../../../assets/images/men/search.png" alt="" />
+                  <img src="/src/assets/images/men/search.png" alt="" />
                 </template>
               </a-input>
 
@@ -137,6 +144,15 @@
           </div>
         </template>
       </a-dropdown>
+    </div>
+
+    <div v-show="viewflag.preview == viewflagEnum.check">
+      <div class="flex items-center bg-white check">
+        <div :class="checkKey==1?'check-click':''" @click="checkKey=1">全部</div>
+        <div :class="checkKey==2?'check-click':''" @click="checkKey=2">待审核</div>
+        <div :class="checkKey==3?'check-click':''" @click="checkKey=3">未通过</div>
+        <div :class="checkKey==4?'check-click':''" @click="checkKey=4">已通过</div>
+      </div>
     </div>
 
     <!-- 视图 -->
@@ -213,14 +229,15 @@ import {
   unref,
   nextTick,
 } from 'vue';
+import { useRoute } from 'vue-router';
 import { Card, Row, Col, List, Dropdown, Menu, Input, Checkbox } from 'ant-design-vue';
 
 import { BasicTable, useTable } from '/@/components/Table';
 import { getBasicColumns, getBigImagesList } from './tableData';
-import { LayoutBreadcrumb } from '../../../../layouts/default/header/components';
+import { LayoutBreadcrumb } from '/@/layouts/default/header/components';
 import { demoListApi } from '/@/api/demo/table';
 import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
-import { onKeyUp, onKeyDown } from '@vueuse/core';
+import { onKeyUp, onKeyDown, useDebounceFn } from '@vueuse/core';
 
 import { CollapseContainer } from '/@/components/Container/index';
 
@@ -263,6 +280,11 @@ export default defineComponent({
     },
   },
   setup() {
+    const route = useRoute();
+    //枚举default 默认的时候，preview预览的时候
+    const viewflagEnum = reactive({ default: 'default', preview: 'preview', check: 'check' });
+    const viewflag = reactive({ preview: route.path == '/auditList/index' ? 'check' : 'default' });
+
     // 分类筛选
     const sortDown = reactive([
       { tab: '名称', isShow: true, visible: false },
@@ -288,7 +310,6 @@ export default defineComponent({
       sortDown[index].visible = !sortDown[index].visible;
     };
 
-
     //搜索筛选
     let sortordValue = ref<String>('CardView');
     function sortord(e) {
@@ -303,7 +324,7 @@ export default defineComponent({
         }
       });
     }
-    
+
     // 列表排序
     const { getHeaderTheme } = useHeaderSetting();
     const [registerTable, { reload }] = useTable({
@@ -328,30 +349,29 @@ export default defineComponent({
     let {
       viewer,
       image,
-      viewflag,
+      preview,
       viewNum,
       blankCtrlLogic,
       dblclickDecide,
       viewlist,
       ViewerMounted,
-    } = getPreview();
+    } = getPreview(viewflag, viewflagEnum);
+    viewflag.preview = preview;
 
     //右键
     let { rightButtonEvent } = getRightButton();
 
-
     //scroll自适应滚轮
-    let scrollHeight = ref('300px');
+    let scrollHeight = ref('770px');
     const scrollRef = ref<Nullable<ScrollActionType>>(null);
     onMounted(async () => {
-
       const localeStore = useLocaleStoreWithOut();
       await nextTick();
       // viewer 初始化
       viewer = ViewerMounted();
       setTimeout(() => {
         scrollHeight.value = localeStore.getRightPage - 105 + 'px';
-      }, 10);
+      }, 500);
     });
 
     // 单击选中
@@ -365,9 +385,11 @@ export default defineComponent({
         }
         bigImagesList[index].decide = !bigImagesList[index].decide;
       } else {
-        if (decideIndex.value == index || bigImagesList[index].decide) {
+        bigImagesList.map((item) => {
+          if (item.decide) item.decide = false;
+        });
+        if (decideIndex.value == index) {
           decideIndex.value = -1;
-          bigImagesList[index].decide = false;
         } else {
           decideIndex.value = index;
         }
@@ -376,7 +398,7 @@ export default defineComponent({
 
     // 按键监听
     function blankEvent() {
-      if (decideIndex.value < 0 || viewflag.value) return;
+      if (decideIndex.value < 0 || viewflag.preview == viewflagEnum.preview) return;
       blankCtrlLogic(false, image.value);
       console.log(viewer);
       viewer.isShown = false;
@@ -385,19 +407,35 @@ export default defineComponent({
     }
 
     //ctrl
-    onKeyUp('Control', () => (ctrlflag = false));
-    onKeyDown('Control', () => (ctrlflag = true));
+
+    const debouncedDownControl = useDebounceFn(() => {
+      keyDownControl(true);
+    }, 200);
+    const debouncedUpControl = useDebounceFn(() => {
+      keyDownControl(false);
+    }, 200);
+    onKeyDown('Control', debouncedDownControl);
+    onKeyUp('Control', debouncedUpControl);
+    function keyDownControl(flag) {
+      ctrlflag = flag;
+    }
 
     // 空格
     onKeyUp(' ', blankEvent);
 
     return {
+      //审核
+      checkKey:ref(1),
+
+
       scrollHeight,
       scrollRef,
+
       //搜索分类
       checkboxChange,
       sortord,
       sortordValue,
+
       //分类
       sortDown,
       sortDowns,
@@ -407,12 +445,15 @@ export default defineComponent({
       tabVisible,
       tabCheckboxValue: ref([1]),
       selectedKeys: ref([0, 1, 2, 3, 4, 5, 6, 7, 8]),
+
       //右键
       rightButtonEvent,
+
       //列表
       getHeaderTheme,
       prefixCls: 'list-card',
       registerTable,
+
       //视图
       bigImagesList,
       clickDecide,
@@ -420,6 +461,7 @@ export default defineComponent({
       decideIndex,
       //局部预览和全屏预览切换
       viewflag,
+      viewflagEnum,
       // 当前预览%
       viewNum,
       //事件委托
@@ -430,14 +472,13 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-
 ::v-deep(.scroll-container .scrollbar__wrap) {
   width: 100%;
   margin-bottom: 0 !important;
   border-right: none;
 }
 
-::v-deep(.ant-card-bordered){
+::v-deep(.ant-card-bordered) {
   border: none;
 }
 
@@ -465,6 +506,21 @@ export default defineComponent({
   img,
   .back {
     cursor: pointer;
+  }
+}
+
+.check{
+  height: 52px;
+  line-height: 52px;
+
+  div{
+    padding: 0 20px;
+    color: rgba(0,0,0,0.45);
+    cursor: pointer;
+  }
+
+  .check-click{
+    border-bottom: 3px solid #1665d8;
   }
 }
 
@@ -644,7 +700,7 @@ export default defineComponent({
 
     &-detail {
       font-size: 14px;
-      color: @text-color-secondary;
+      color: #000;
       text-align: center;
     }
   }

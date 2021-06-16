@@ -2,7 +2,7 @@
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
       <Badge :count="count" :numberStyle="numberStyle" >
-        <img class=" mt-6" src="../../../../../assets/images/men/Message.png" alt="">
+        <img class=" mt-6" src="/src/assets/images/men/Message.png" alt="">
       </Badge>
       <template #content>
         <Tabs>

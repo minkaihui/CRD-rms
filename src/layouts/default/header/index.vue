@@ -39,7 +39,7 @@
       <!-- 搜搜 -->
       <AppSearch :class="`${prefixCls}-action__item `" />
       <div class=" text-xs flex justify-center items-center  occupation">
-          <img src="../../../assets/images/men/occupation.png" alt="">
+          <img src="/src/assets/images/men/occupation.png" alt="">
           管理员
       </div>
       <!-- 错误日志 -->

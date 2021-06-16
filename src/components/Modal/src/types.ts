@@ -169,8 +169,6 @@ export interface ModalProps {
   cancelButtonProps?: ButtonProps;
 
 
-  // 是否显示
-  showLeftBtn: boolean;
   // 左边按钮文本
   LeftText?: string;
   // 左边按钮说明文本
@@ -217,7 +215,7 @@ export interface ModalProps {
    */
   zIndex?: number;
 
-  border?:boolean
+  HeaderBorder?:boolean
 }
 
 export interface ModalWrapperProps {
@@ -230,5 +228,4 @@ export interface ModalWrapperProps {
   visible: boolean;
   fullScreen: boolean;
   useWrapper: boolean;
-  boxSizing: number;
 }

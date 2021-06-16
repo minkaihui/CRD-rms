@@ -1,11 +1,11 @@
 <template>
     <div
       class="flex items-center p-5" 
-      :class="[FooterGPS ? FooterGPS : 'justify-between',border?'border-T':'']"
+      :class="[FooterGPS ? FooterGPS : 'justify-between',HeaderBorder?'border-T':'']"
       :style="FooterStyle"
     >
       <div class="FooterLeft">
-        <div v-if="showLeftBtn">
+        <div v-if="LeftText">
           <a-button v-bind="LeftButtonProps" :type="LeftType" @click="handleLeft">
             {{ LeftText }}
           </a-button>

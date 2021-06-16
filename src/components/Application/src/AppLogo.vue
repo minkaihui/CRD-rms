@@ -9,7 +9,7 @@
     :style="{'padding-left':showTitle?'':'15px'}"
     @click="handleGoHome"
   >
-    <img src="../../../assets/images/logo.png" />
+    <img src="/src/assets/images/logo.png" />
     <div
       class="ml-4 truncate md:opacity-100"
       :class="[

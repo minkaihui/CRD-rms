@@ -4,7 +4,7 @@ import { isDevMode } from '/@/utils/env';
 export const DEFAULT_CACHE_TIME = 60 * 60 * 24 * 7;
 
 // 屏幕固定比例
-export const ScreenFixedScale = 0.8;
+export const ScreenFixedScale = 1;
 
 // aes encryption key
 export const cacheCipher = {
