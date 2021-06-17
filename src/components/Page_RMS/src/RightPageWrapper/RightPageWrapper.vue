@@ -109,7 +109,7 @@ import { Description, DescItem } from '/@/components/Description/index';
 import { useModal } from '/@/components/Modal';
 import ModalUnthread from '../modal/Modal.vue';
 import { Icon } from '/@/components/Icon/index';
-import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+ import { setDOM } from '/@/utils/HeightScroll';
 
 export default defineComponent({
   components: {
@@ -273,11 +273,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      const localeStore = useLocaleStoreWithOut();
-      setTimeout(() => {
-        let RightPage = document.querySelector('.vben-page-wrapper');
-        localeStore.setRightPage(RightPage.scrollHeight);
-      }, 0);
+       setDOM('setRightPage','.vben-page-wrapper')
     });
 
     return {

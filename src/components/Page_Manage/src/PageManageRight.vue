@@ -1,96 +1,149 @@
 <template>
-  <div class="pagecontent bg-white">
-    <div class="pb-6 tag-herder">
-      常用标签
-      <span class="tag ml-16">戒指&nbsp;&nbsp;(36)</span>
-    </div>
-    <div class="pt-6 flex flex-wrap">
-      <span class="mr-1"> 按拼音首字母选择： </span>
-      <div
-        class="zimu cursor-pointer"
-        :class="num == index ? 'zimuClick' : ''"
-        v-for="(index, item) in 22"
-        :key="index"
-        @click="num = index"
-        >A</div
-      >
-    </div>
-    <div class="li" v-for="(j, item) in 22" :key="j">
-      <div class="mb-5">
-        <div class="zimu-li">A</div>
+  <div class="scroll-wrap" :style="{ height: scrollHeight + 'px' }">
+    <ScrollContainer ref="scrollRef" @handleScroll="handleScroll">
+      <div class="pagecontent bg-white">
+        <div class="az pt-6 flex flex-col">
+          <div
+            class="zimu cursor-pointer"
+            v-for="(item, index) in generateSmall"
+            :key="index"
+            @click="AZindexClick(index)"
+            :class="AZindex == index ? 'zimuClick' : ''"
+            >{{ item }}</div
+          >
+        </div>
+        <div class="li" v-for="(item, j) in generateSmall" :key="j">
+          <div class="mb-5">
+            <div class="zimu-li">{{ item }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="tag mb-5" v-for="(item,k ) in 15" :key="k">戒指&nbsp;&nbsp;<span class="text-black-45">{{k}}</span></span>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap">
-        <span class="tag mb-5" v-for="(k, item) in 15" :key="k">戒指&nbsp;&nbsp;(36)</span>
-      </div>
-    </div>
+    </ScrollContainer>
   </div>
 </template>
 <style lang="less" scoped>
-.pagecontent {
-  min-height: 100%;
-  padding: 2.5rem;
-  margin: 1.25rem 5rem;
+::v-deep(.scrollbar__thumb) {
+  background-color: rgba(144, 147, 153, 0);
+}
 
-  .tag-herder {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
+::v-deep(.scroll-container .scrollbar__wrap) {
+  border-right: none;
+}
 
-  .li {
-    padding: .625rem 1.25rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+.scroll-wrap {
+  width: calc(100% - 20px);
+  padding: 20px 128px 0 60px;
+  margin: 20px 20px 0 0;
+  background: #fff;
+
+  .pagecontent {
+    .az {
+      position: fixed;
+      top: calc((100% + 90px) / 2);
+      right: 54px;
+      transform: translateY(-50%);
+    }
+
+    .li {
+      padding: 30px 0 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+      .tag {
+        margin-right: 1.875rem;
+        color: rgba(0,0,0,0.65);
+        background: #f4f5f7;
+        border: 1px solid #f4f5f7;
+        border-radius: 5px;
+      }
+    }
+
+    .zimu {
+      height: 20.3px;
+      color: rgba(0, 0, 0, 0.65);
+      transition: all 0.5s;
+    }
+
+    .zimuClick {
+      color: #000;
+    }
+
+    .zimu-li {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1665d8;
+    }
 
     .tag {
-      margin-right: 1.875rem;
+      width: 4.8125rem;
+      height: 1.75rem;
+      padding: 0.25rem;
+      line-height: initial;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.3125rem;
     }
-  }
-
-  .zimu {
-    width: 1.625rem;
-    height: 1.625rem;
-    margin: 0 0.125rem;
-    line-height: 1.625rem;
-    text-align: center;
-    border-radius: 50%;
-    box-shadow: 0px 0.125rem 0px 0px rgba(255, 255, 255, 0.06) inset;
-  }
-
-  .zimuClick {
-    background: rgba(0, 0, 0, 0.05);
-  }
-
-  .zimu-li {
-    width: 2rem;
-    height: 2rem;
-    line-height: 2rem;
-    text-align: center;
-    background: linear-gradient(0deg, #1665d8 2%, #1665d8 98%);
-    border-radius: 50%;
-    box-shadow: 0px 0.125rem 0px 0px rgba(255, 255, 255, 0.06) inset;
-  }
-
-  .tag {
-    width: 4.8125rem;
-    height: 1.75rem;
-    padding: 0.25rem;
-    line-height: initial;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 0.3125rem;
   }
 }
 </style>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { Tag } from 'ant-design-vue';
+import { CollapseContainer } from '/@/components/Container/index';
+import { ScrollContainer } from '/@/components/Container/index';
+import { HeightScroll } from '/@/utils/HeightScroll';
 export default defineComponent({
   name: 'PageManageRight',
-  components: { Tag },
+  components: { Tag, CollapseContainer, ScrollContainer },
   setup() {
-    let num = ref(1);
+    //自动高度
+    const { scrollTo, scrollRef, scrollBottom, scrollHeight } = HeightScroll('getLeftPage');
+
+    // 点击滚动
+    let zimuList;
+    onMounted(() => {
+      zimuList = document.querySelectorAll('.zimu-li');
+    })
+
+    const AZindex = ref(1);
+
+    function handleScroll(e,height) {
+      AZindex.value = Math.round(e / (height / 26));
+    }
+
+    function AZindexClick(index){
+      AZindex.value=index;
+      scrollTo(zimuList[index].offsetTop)
+    }
+
+    //a-z
+    function generateBig_1() {
+      var str = [];
+      for (var i = 65; i < 91; i++) {
+        str.push(String.fromCharCode(i));
+      }
+      return str;
+    }
+
+    let generateSmall = generateBig_1();
+
+    
 
     return {
-      num,
+      //a-z 当前下标
+      AZindex,
+      generateSmall,
+      AZindexClick,
+
+      //自动高度
+      scrollRef,
+      scrollHeight,
+      scrollTo,
+      scrollBottom,
+      handleScroll
     };
   },
 });

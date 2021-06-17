@@ -1,12 +1,10 @@
 
 <template>
   <div class="flex justify-start h-full">
-    <div class="w-full">
-     <!-- 中心模块1 -->
-      <PageContentWrapper isShow_auditList></PageContentWrapper>
-    </div>
+    <!-- 中心模块1 -->
+      <PageContentWrapper></PageContentWrapper>
     <!-- 右侧模块1 -->
-      <RightPageWrapper isShow_auditList></RightPageWrapper>
+      <RightPageWrapper></RightPageWrapper>
   </div>
 </template>
 <script lang="ts">

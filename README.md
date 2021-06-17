@@ -190,9 +190,7 @@ yarn build
     
 #### 2.使用Vue-Vben-Admin组件时请查看双文档 [https://vvbin.cn/doc-next/](https://vvbin.cn/doc-next/)        [https://2x.antdv.com/docs/vue/introduce-cn/](https://2x.antdv.com/docs/vue/introduce-cn/)
 
-#### 3.使用Vue-Vben-Admin中 BasicModal弹框组件时请请查看双文档和新增参数
-    
-    列如使用  import { BasicModal } from '/@/components/Modal' 时
+#### 3.使用Vue-Vben-Admin中 BasicModal弹框组件时请查看双文档和新增参数
     
     已经做了全局处理
     // 弹框上下线条处理
@@ -207,6 +205,7 @@ yarn build
     }
     
     新增参数
+    名称                       类型                                     说明
     boxSizing               [Number,String](默认0)             所占弹框高度的上中下组件的padding和margin
     HeaderBorder            boolean(默认false)                 是否开启弹框头部和底部下划线
     LeftText                String(默认空不显示)               底部左边文字
@@ -215,4 +214,41 @@ yarn build
     HeaderStyle             CSSProperties                      头部Style
     FooterRound             String                             设置底部按钮形状，可选值为 circle、 round 或者不设        
     RButtonStyle            CSSProperties                      底部右边按钮Style
+
+
+#### 3.使用Vue-Vben-Admin中 ScrollContainer滚动容器组件时请查看新增参数
+    
+    因原组件没有提供滚动事件
+
+    新增参数
+    名称                       类型                                     说明
+    handleScroll             function(e,height)                         滚动事件
+                             返回的第一个参数代表向上被覆盖的距离(Number)
+                             返回的第二个参数代表滚动容器的整体高度(Number)
+        
+
+    另外新增自动高度方法     用于ScrollContainer滚动容器组件   填写固定高度时，解决无法使用百分比高度，项目中需要100%
+
+    这里采用的是读取其他组件高度，赋值给ScrollContainer组件需要的固定高度
+    适用于两个组件需保持高度一致
+    getLeftPage和setLeftPage需要在store/locale 中注册获取方法和存储方法(这里采用vuex存储)
+    
+    自动高度页面
+    <ScrollContainer :style="{ height: scrollHeight +'px' }"></ScrollContainer>
+
+    import { HeightScroll } from '/@/utils/HeightScroll';  详见HeightScroll.ts（根据方法名自动读写）
+
+    const {scrollHeight} = HeightScroll('getLeftPage')//传入获取方法名
+
+    
+    需要读取高度的页面       .ManageLeft是需要读取高度的DOM节点的类名也可以是ID
+    import { setDOM } from '/@/utils/HeightScroll';
+    setDOM('setLeftPage','.ManageLeft')//传入存储方法名
+
+
+
+
+
+
+
 

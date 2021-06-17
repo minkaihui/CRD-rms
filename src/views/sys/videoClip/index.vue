@@ -1,10 +1,8 @@
 
 <template>
   <div class="flex justify-start h-full">
-    <div class="w-full">
-     <!-- 中心模块1 -->
+    <!-- 中心模块1 -->
       <PageContentWrapper></PageContentWrapper>
-    </div>
     <!-- 右侧模块1 -->
       <RightPageWrapper></RightPageWrapper>
   </div>

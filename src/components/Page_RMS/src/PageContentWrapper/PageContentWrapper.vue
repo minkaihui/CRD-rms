@@ -169,7 +169,7 @@
         </BasicTable>
         <ScrollContainer
           class="p-5"
-          :style="{ height: scrollHeight }"
+          :style="{ height: scrollHeight-104+'px' }"
           ref="scrollRef"
           v-else-if="sortordValue == 'CardView'"
         >
@@ -241,8 +241,8 @@ import { onKeyUp, onKeyDown, useDebounceFn } from '@vueuse/core';
 
 import { CollapseContainer } from '/@/components/Container/index';
 
-import { ScrollContainer, ScrollActionType } from '/@/components/Container/index';
-import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+import { ScrollContainer } from '/@/components/Container/index';
+import { HeightScroll } from '/@/utils/HeightScroll';
 // import Viewer from 'viewerjs';
 import 'viewerjs/dist/viewer.css';
 import { LeftOutlined } from '@ant-design/icons-vue';
@@ -361,17 +361,13 @@ export default defineComponent({
     //右键
     let { rightButtonEvent } = getRightButton();
 
-    //scroll自适应滚轮
-    let scrollHeight = ref('770px');
-    const scrollRef = ref<Nullable<ScrollActionType>>(null);
+    //自动高度
+    const {scrollTo,scrollRef,scrollBottom,scrollHeight} = HeightScroll('getRightPage')
+  
     onMounted(async () => {
-      const localeStore = useLocaleStoreWithOut();
       await nextTick();
       // viewer 初始化
       viewer = ViewerMounted();
-      setTimeout(() => {
-        scrollHeight.value = localeStore.getRightPage - 105 + 'px';
-      }, 500);
     });
 
     // 单击选中
