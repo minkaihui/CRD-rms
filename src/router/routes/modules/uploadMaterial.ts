@@ -7,7 +7,6 @@ const dashboard: AppRouteModule = {
   path: '/uploadMaterial',
   name: 'UploadMaterial',
   component: LAYOUT,
-  redirect: '/uploadMaterial/index',
   meta: {
     icon: 'ant-design:upload-outlined',
     title: t('routes.dashboard.uploadMaterial'),
@@ -16,7 +15,6 @@ const dashboard: AppRouteModule = {
     {
       path: 'index',
       name: 'UploadMaterialPage',
-      component: () => import('/@/views/sys/uploadMaterial/index.vue'),
       meta: {
         title: t('routes.dashboard.uploadMaterial'),
         icon: 'ant-design:upload-outlined',
@@ -24,10 +22,7 @@ const dashboard: AppRouteModule = {
         ignoreKeepAlive:true
       },
     },
-  ], 
-  beforeEnter: (to, from, next) => {
-    next(false)
-  }
+  ]
 };
 
 export default dashboard;

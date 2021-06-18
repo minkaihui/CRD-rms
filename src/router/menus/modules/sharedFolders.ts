@@ -2,7 +2,7 @@ import type { MenuModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
 
 const sharedFolders: MenuModule = {
-  orderNo: 10,
+  orderNo: 11,
   menu: {
     path: '/sharedFolders/index',
     name: t('routes.dashboard.sharedFolders'),

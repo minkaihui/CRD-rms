@@ -6,6 +6,7 @@ export default {
   audioFrequency: 'audioFrequency',
   auditList: 'auditList',
   labelManagement: 'labelManagement',
+  userManagement: 'userManagement',
   recycleBin: 'recycleBin',
   uploadMaterial: 'uploadMaterial',
   sharedFolders: 'sharedFolders',

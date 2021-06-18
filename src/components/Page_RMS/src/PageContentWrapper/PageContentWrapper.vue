@@ -251,7 +251,7 @@ import { LeftOutlined } from '@ant-design/icons-vue';
 import getPreview from './preview';
 
 // 右键逻辑
-import getRightButton from './rightButton';
+import {rightButtonEvent} from './rightButton';
 
 export default defineComponent({
   components: {
@@ -357,9 +357,6 @@ export default defineComponent({
       ViewerMounted,
     } = getPreview(viewflag, viewflagEnum);
     viewflag.preview = preview;
-
-    //右键
-    let { rightButtonEvent } = getRightButton();
 
     //自动高度
     const {scrollTo,scrollRef,scrollBottom,scrollHeight} = HeightScroll('getRightPage')

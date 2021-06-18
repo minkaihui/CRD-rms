@@ -17,3 +17,15 @@ export const demoListApi = (params: DemoParams) =>
       ignoreCancelToken: true,
     },
   });
+
+
+export const userDemoListApis = (params: DemoParams) =>
+  defHttp.get<DemoListGetResultModel>({
+    url: Api.DEMO_LIST,
+    params,
+    headers: {
+      ignoreCancelToken: true,
+    },
+  });
+
+

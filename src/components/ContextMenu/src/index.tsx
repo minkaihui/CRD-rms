@@ -14,14 +14,18 @@ const prefixCls = 'context-menu';
 
 const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
   const { item } = props;
+  let sty={
+    'display':'inline-block','width':'-webkit-fill-available','height':'inherit',...item.textStyle}
   return (
     <span
-      style="display: inline-block; width: 100%; "
-      class="px-4"
+      // style="
+      class="mx-4"
+      style={sty}
       onClick={props.handler.bind(null, item)}
     >
       {props.showIcon && item.icon && <Icon class="mr-2" icon={item.icon} />}
       <span>{item.label}</span>
+      {props.showIcon && item.righticon && <Icon class="mr-2" icon={item.righticon} />}
     </span>
   );
 };
