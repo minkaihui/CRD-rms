@@ -246,9 +246,18 @@ yarn build
     setDOM('setLeftPage','.ManageLeft')//传入存储方法名
 
 
+#### 4使用Vue-Vben-Admin中 Table表格组件中ActionItem组件时请查看新增参数
 
 
+    新增参数
+    名称                       类型                                     说明
+    StopClick                   boolean(默认false)                      可阻止ActionItem中onClick事件向上冒泡
 
+#### 5使用Vue-Vben-Admin中 ContextMenu 右键菜单组件时请查看新增参数
 
+    新增参数
+    名称                       类型                                     说明
+    textStyle                   Object                                  行文字样式
+    righticon                   string                                  右边icon
 
 

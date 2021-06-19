@@ -4,30 +4,40 @@
     <div class="ManageLeft">
       <div class="p-4">
         <!-- 上 -->
-        <div class="tab-up flex justify-between items-center"
-         v-for="(item, index) in 3" :key="index" :class="checkedBg==index?'checked-bg':''" 
-          @click="checkedBg=index">
-          <div class="h-5 w-5">
-            <!-- /src/assets/images/men/icon-tab.png -->
-            <!-- <img src="" alt="" /> -->
+        <div
+          class="tab-up flex justify-between items-center"
+          v-for="(item, index) in TagNameList"
+          :key="index"
+          :class="checkedBg == index ? 'checked-bg' : ''"
+          @click="checkedBg = index"
+        >
+          <div class="h-6 w-7">
+            <img :src="item.tagImg" alt="" />
           </div>
-          <div class="tab flex-1">全部标签</div>
-          <div class="text-right">{{item}}</div>
+          <div class="tab flex-1">{{ item.name }}</div>
+          <div class="text-right">{{ item.num }}</div>
         </div>
         <!-- 中 -->
         <div class="tab-centre flex justify-between items-center">
           <div class="tab">标签群组</div>
-          <div class="cursor-pointer">+</div>
+          <div class="cursor-pointer">
+            <Icon icon="ant-design:plus-outlined" color="#9ea0a5" :size="13"></Icon>
+          </div>
         </div>
         <!-- 下 -->
-        <div class="tab-up flex justify-between items-center" 
-        v-for="(item, index) in 3" :key="index" :class="checkedBg==index+3?'checked-bg':''"
-         @contextmenu="rightButton_left"  @click="checkedBg=index+3">
-          <div class="h-5 w-5">
-            .
+        <div
+          class="tab-up flex justify-between items-center"
+          v-for="(item, index) in 3"
+          :key="index"
+          :class="checkedBg == index + 3 ? 'checked-bg' : ''"
+          @contextmenu="rightButton_left"
+          @click="checkedBg = index + 3"
+        >
+          <div class="h-6 w-4">
+            <div class="roundDot"></div>
           </div>
-          <div class="tab flex-1">群组{{item}}</div>
-          <div class="text-right">{{item}}</div>
+          <div class="tab flex-1">群组{{ item }}</div>
+          <div class="text-right">{{ item }}</div>
         </div>
       </div>
     </div>
@@ -76,7 +86,7 @@
     border-right: 1px solid rgba(0, 0, 0, 0.06);
     border-left: 1px solid rgba(0, 0, 0, 0.06);
 
-    .checked-bg{
+    .checked-bg {
       background-color: #f4f5f7;
     }
 
@@ -90,8 +100,20 @@
         color: #3e3f42;
       }
 
-      .h5 {
-        line-height: 20px;
+      .h-6 {
+        line-height: 23px;
+
+        img {
+          display: inline-block;
+        }
+      }
+
+      .roundDot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #d8d8d8;
+        border-radius: 50%;
       }
 
       .text-right {
@@ -181,13 +203,14 @@ import { defineComponent, onMounted, ref } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { CollapseContainer } from '/@/components/Container/index';
 import { ScrollContainer } from '/@/components/Container/index';
+import { Icon } from '/@/components/Icon';
 import { HeightScroll, setDOM } from '/@/utils/HeightScroll';
 // 右键逻辑
-import {rightButton_left,rightButton_right} from './rightButton';
+import { rightButton_left, rightButton_right } from './rightButton';
 
 export default defineComponent({
   name: 'labelManagement',
-  components: { Tag, CollapseContainer, ScrollContainer },
+  components: { Tag, CollapseContainer, ScrollContainer, Icon },
   setup() {
     // 左
     onMounted(() => {
@@ -227,9 +250,25 @@ export default defineComponent({
 
     return {
       // 左
-      checkedBg:ref(0),
+      checkedBg: ref(0),
       rightButton_left,
-
+      TagNameList: [
+        {
+          name: '全部标签',
+          tagImg: '/src/assets/images/men/Tag.png',
+          num: 142,
+        },
+        {
+          name: '未分类',
+          tagImg: '/src/assets/images/men/TagSimpleLight.png',
+          num: 7,
+        },
+        {
+          name: '常用标签',
+          tagImg: '/src/assets/images/men/five-pointed-star.png',
+          num: 2,
+        },
+      ],
 
       // 右
       rightButton_right,

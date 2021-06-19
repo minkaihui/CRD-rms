@@ -4,24 +4,25 @@ export function getBasicColumns(): BasicColumn[] {
   return [
     {
       title: '姓名',
-      dataIndex: 'id',
-      // width: 300,
+      dataIndex: 'name',
+      width: 120,
       align:'left'
     },
     {
       title: '部门',
-      dataIndex: 'name',
-      width: 90,
+      dataIndex: 'id',
+      width: 150,
+      align:'left',
     },
     {
       title: '角色',
-      width: 90,
+      width: 165,
+      align:'left',
       dataIndex: 'address',
     },
     {
       title: '最后操作',
-      // width: 300,
-      // sorter: true,
+      align:'left',
       dataIndex: 'beginTime',
     }
   ];

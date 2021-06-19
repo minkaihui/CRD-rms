@@ -1,5 +1,5 @@
 <template>
-  <Button v-bind="getBindValue" :class="[getColor, $attrs.class]" @click="onClick">
+  <Button v-bind="getBindValue" :class="[getColor, $attrs.class]" @click="onClickStop">
     <template #default="data">
       <Icon :icon="preIcon" v-if="preIcon" :size="14" />
       <slot v-bind="data"></slot>
@@ -27,6 +27,7 @@
       preIcon: propTypes.string,
       postIcon: propTypes.string,
       onClick: propTypes.func,
+      StopClick:propTypes.bool
     },
     setup(props, { attrs }) {
       const getColor = computed(() => {
@@ -37,11 +38,20 @@
         };
       });
 
+      const { onClick ,StopClick} = props;
+
+      function onClickStop(e){
+        if(StopClick){
+          e.stopPropagation()
+        }
+        return onClick;
+      }
+
       const getBindValue = computed((): any => {
         return { ...attrs, ...props };
       });
 
-      return { getBindValue, getColor };
+      return { getBindValue, getColor,onClickStop};
     },
   });
 </script>
