@@ -27,3 +27,21 @@ export function getBasicColumns(): BasicColumn[] {
     }
   ];
 }
+
+
+export function getBasicColumnsSm(): BasicColumn[] {
+  return [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      width: 120,
+      align:'left'
+    },
+    {
+      title: '部门',
+      dataIndex: 'id',
+      width: 150,
+      align:'left',
+    }
+  ];
+}

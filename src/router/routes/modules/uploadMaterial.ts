@@ -22,7 +22,10 @@ const dashboard: AppRouteModule = {
         ignoreKeepAlive:true
       },
     },
-  ]
+  ],
+  beforeEnter: (to, from, next) => {
+    next(false)
+  }
 };
 
 export default dashboard;

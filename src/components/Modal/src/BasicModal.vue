@@ -11,7 +11,7 @@
 
     <template #title v-if="!$slots.title">
       <ModalHeader  
-        :border="getMergeProps.border"
+        :TB_Border="getMergeProps.TB_Border"
         :HeaderStyle="getMergeProps.HeaderStyle"
         :helpMessage="getProps.helpMessage"
         :title="getMergeProps.title"

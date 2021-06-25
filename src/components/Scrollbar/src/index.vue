@@ -139,8 +139,12 @@
 </script>
 <style lang="less">
 
-.CRDaddfile{
+.CRDaddfile-30{
   padding: 0 30px;
+}
+
+.CRDaddfile-60{
+  padding: 0 60px;
 }
 
   .scrollbar {

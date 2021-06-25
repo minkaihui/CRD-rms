@@ -1,6 +1,6 @@
 <template>
 <!-- :class="Border.B" -->
-    <div class="p-4 h-full w-full" :class="HeaderBorder?'border-B':''">
+    <div class="p-4 h-full w-full" :class="TB_Border?'border-B':''">
       <BasicTitle :helpMessage="helpMessage" :style="HeaderStyle">
         {{ title }}
       </BasicTitle>
@@ -22,7 +22,7 @@ export default defineComponent({
     },
     title: propTypes.string,
     HeaderStyle: Object as PropType<CSSProperties>,
-    HeaderBorder:propTypes.boolean
+    TB_Border:propTypes.boolean
   },
 });
 </script>

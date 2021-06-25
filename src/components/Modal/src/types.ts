@@ -215,7 +215,7 @@ export interface ModalProps {
    */
   zIndex?: number;
 
-  HeaderBorder?:boolean
+  TB_Border?:boolean
 }
 
 export interface ModalWrapperProps {

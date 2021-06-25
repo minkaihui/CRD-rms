@@ -9,8 +9,9 @@ import { isFunction } from '/@/utils/is';
 import { cloneDeep } from 'lodash-es';
 
 import { errorResult } from './const';
-import { ContentTypeEnum } from '/@/enums/httpEnum';
-import { RequestEnum } from '../../../enums/httpEnum';
+import { RequestEnum, ContentTypeEnum } from '/@/enums/httpEnum';
+
+import {requestData} from '../../CRD_http';
 
 export * from './axiosTransform';
 
@@ -155,6 +156,7 @@ export class VAxios {
 
   // support form-data
   supportFormData(config: AxiosRequestConfig) {
+   
     const headers = config.headers;
     const contentType = headers?.['Content-Type'] || headers?.['content-type'];
 
@@ -166,6 +168,7 @@ export class VAxios {
       return config;
     }
 
+   
     return {
       ...config,
       data: qs.stringify(config.data, { arrayFormat: 'brackets' }),
@@ -192,15 +195,18 @@ export class VAxios {
     let conf: AxiosRequestConfig = cloneDeep(config);
     const transform = this.getTransform();
 
-    const { requestOptions } = this.options;
-
+    const { requestOptions ,headers} = this.options;
+    console.log()
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
-
+    
     const { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
-
+    conf.headers=headers;
+    //CRD特配
+    conf.data=requestData(conf.data);
+    
     conf = this.supportFormData(conf);
 
     return new Promise((resolve, reject) => {

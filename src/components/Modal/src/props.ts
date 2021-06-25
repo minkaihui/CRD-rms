@@ -97,5 +97,5 @@ export const basicProps = Object.assign({}, modalProps, {
 
   FooterRound: propTypes.string,
 
-  HeaderBorder: propTypes.bool,
+  TB_Border: propTypes.bool,
 });

@@ -1,3 +1,4 @@
+import { ContentTypeEnum } from '/@/enums/httpEnum';
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
 
 export interface RequestOptions {
@@ -19,10 +20,12 @@ export interface RequestOptions {
 }
 
 export interface Result<T = any> {
-  code: number;
-  type: 'success' | 'error' | 'warning';
-  message: string;
-  result: T;
+  StatusCode?:any;
+  SubErrorCode?: any;
+  ErrorCode?: any;
+  type?: 'success' | 'error' | 'warning';
+  ErrorMessage?: any;
+  Data?:T
 }
 
 // multipart/form-data: upload file

@@ -1,4 +1,4 @@
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp,TokenHttp } from '/@/utils/http/axios';
 import {
   LoginParams,
   LoginResultModel,
@@ -7,24 +7,39 @@ import {
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
+import { ContentTypeEnum } from '/@/enums/httpEnum';
 
 enum Api {
-  Login = '/login1',
+  Login = '/api/User/LoginByUserName',
   GetUserInfoById = '/getUserInfoById',
   GetPermCodeByUserId = '/getPermCodeByUserId',
+  Token ='/authorizeserver//api/Auth/token'
 }
 
 /**
  * @description: user login api
  */
 export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<LoginResultModel>(
+  // <LoginResultModel>
+  return defHttp.post(
     {
       url: Api.Login,
       params,
     },
     {
       errorMessageMode: mode,
+    }
+  );
+}
+
+/**
+ * @description: Token login api
+ */
+export function TokenApi(params) {
+  return TokenHttp.post(
+    {
+    url: Api.Token,
+    params,
     }
   );
 }

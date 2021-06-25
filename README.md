@@ -207,7 +207,7 @@ yarn build
     新增参数
     名称                       类型                                     说明
     boxSizing               [Number,String](默认0)             所占弹框高度的上中下组件的padding和margin
-    HeaderBorder            boolean(默认false)                 是否开启弹框头部和底部下划线
+    TB_Border               boolean(默认false)                 是否开启弹框中间区域  上下 划线
     LeftText                String(默认空不显示)               底部左边文字
     LeftExplainText         String(默认空)                     底部左边说明文字
     FooterStyle             CSSProperties                      底部Style

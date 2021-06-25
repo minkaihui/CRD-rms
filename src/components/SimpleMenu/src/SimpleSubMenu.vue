@@ -206,7 +206,7 @@ export default defineComponent({
       if (getI18nName.value == '上传素材') {
         fileOpenModal();
       }else if (getI18nName.value == '共享文件夹' && getIsCollapseParent.value) {
-         addOpenModal();
+        addOpenModal();
       }
     }
 

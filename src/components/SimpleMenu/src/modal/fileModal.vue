@@ -7,7 +7,7 @@
     okType="success"
     :cancelButtonProps="{ type: 'primary' }"
     cancelText="保存"
-    :wrapperProps="{ viewClass: 'CRDaddfile' }"
+    :wrapperProps="{ viewClass: 'CRDaddfile-30' }"
     showLeftBtn
     LeftText="选择其他文件"
     LeftExplainText="(视频、音频、文档)"

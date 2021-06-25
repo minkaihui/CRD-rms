@@ -1,9 +1,8 @@
 <template>
   <div class="p-5">
-    <!-- @contextmenu="rightButtonEvent" -->
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="link" size="large">添加人员</a-button>
+        <a-button type="link" size="large" @click="open">添加人员</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -17,6 +16,8 @@
         />
       </template>
     </BasicTable>
+
+    <addModal width="647px" @register="addRegister" />
   </div>
 </template>
 <script lang="ts">
@@ -24,9 +25,11 @@ import { defineComponent } from 'vue';
 import { BasicTable, useTable, TableAction } from '/@/components/Table';
 import { getBasicColumns } from './tableData';
 import { demoListApi } from '/@/api/demo/table';
+import { useModal } from '/@/components/Modal';
+import addModal from './addModal.vue';
 export default defineComponent({
   name: 'UserManagementPage',
-  components: { BasicTable,TableAction },
+  components: { BasicTable,TableAction ,addModal},
   setup() {
     const [registerTable, { reload }] = useTable({
       title: '用户管理', //标题
@@ -51,15 +54,41 @@ export default defineComponent({
     function handleAuthority(record: Recordable) {
       console.log('点击了编辑', record);
     }
+
+
+    //弹框
+    const [addRegister, { openModal: addOpenModal }] = useModal();
+
+    function open() {
+      addOpenModal();
+    }
     return {
       registerTable,
       handleAuthority,
+
+      // 弹框
+      addRegister,
+      open
     };
   },
 });
 </script>
 
 <style lang="less" scoped>
+::v-deep(.vben-basic-table .ant-table .ant-table-tbody > tr.ant-table-row-selected td){
+  background-color: #f4f5f7 !important;
+}
+
+::v-deep(.ant-table-thead > tr > th){
+  background-color: #fff;
+}
+
+::v-deep(.vben-basic-title){
+    font-size: 20px;
+    font-weight: 600;
+    color: #474a57;
+}
+
 ::v-deep(.ant-table-thead){
   height: 40px;
 }
@@ -77,8 +106,8 @@ export default defineComponent({
   margin-right: -7px;
 }
 
-
 ::v-deep(.vben-basic-table .ant-table-wrapper) {
-  padding: 0;
+  // padding: 0;
 }
+
 </style>

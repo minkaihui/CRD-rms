@@ -1,7 +1,7 @@
 <template>
     <div
       class="flex items-center p-5" 
-      :class="[FooterGPS ? FooterGPS : 'justify-between',HeaderBorder?'border-T':'']"
+      :class="[FooterGPS ? FooterGPS : 'justify-between',TB_Border?'border-T':'']"
       :style="FooterStyle"
     >
       <div class="FooterLeft">

@@ -4,11 +4,12 @@
     RButtonStyle="color: rgba(0,0,0,0.65);"
     title="新增文件夹"
     v-bind="$attrs"
-    border
+    :TB_Border="true"
     :HeaderStyle="{
       'font-size': '20px',
       'font-weight': '500',
-      color: '#000',
+      'color': '#000',
+      'padding': '5px 14px'
     }"
   >
     <div class="mt-9">
@@ -34,26 +35,24 @@
   color: #404040;
 }
 
+
 ::v-deep(.ant-form-item-control .ant-checkbox-group) {
   display: flex;
   height: 39.9px;
   align-items: center;
 }
 
-::v-deep(.ant-checkbox-wrapper) {
-  flex: 1;
-}
-
 ::v-deep(.ant-radio-group .ant-radio-wrapper:nth-of-type(1)) {
-  margin-right: 63px;
+  margin-right: 40px;
 }
 
 ::v-deep(.ant-row .ant-col) {
-  height: 52px;
+  height: 40px;
+  padding-right: 4px;
 }
 
-::v-deep(.ant-row .ant-col:nth-of-type(4)) {
-  height: 104px;
+::v-deep(.ant-row .ant-col:last-of-type) {
+  height: 88px;
 }
 </style>
 
@@ -84,7 +83,7 @@ const schemas: FormSchema[] = [
     },
   },
   {
-    field: 'field4',
+    field: 'field2',
     component: 'Select',
     label: '选择人员',
     colProps: {
@@ -106,35 +105,27 @@ const schemas: FormSchema[] = [
     },
   },
   {
-    field: 'field5',
+    field: 'field3',
     component: 'CheckboxGroup',
-    label: '文件夹权限',
+    label: '选择权限',
     colProps: {
       span: 14,
     },
     componentProps: {
       options: [
         {
-          label: '无',
+          label: '查看',
           value: '1',
         },
         {
-          label: '增加',
+          label: '编辑',
           value: '2',
-        },
-        {
-          label: '删除',
-          value: '3',
-        },
-        {
-          label: '修改',
-          value: '4',
-        },
+        }
       ],
     },
   },
   {
-    field: 'field7',
+    field: 'field4',
     component: 'RadioGroup',
     label: '是否需要审核',
     colProps: {
@@ -144,11 +135,32 @@ const schemas: FormSchema[] = [
     componentProps: {
       options: [
         {
-          label: '需要',
+          label: '是',
           value: '1',
         },
         {
-          label: '不需要',
+          label: '否',
+          value: '2',
+        },
+      ],
+    },
+  },
+  {
+    field: 'field5',
+    component: 'RadioGroup',
+    label: '是否共享',
+    colProps: {
+      span: 14,
+    },
+    defaultValue: '2',
+    componentProps: {
+      options: [
+        {
+          label: '是',
+          value: '1',
+        },
+        {
+          label: '否',
           value: '2',
         },
       ],

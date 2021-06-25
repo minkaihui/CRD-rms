@@ -3,7 +3,7 @@
 
 import type { AxiosResponse } from 'axios';
 import type { RequestOptions, Result } from './types';
-import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
+import type { CreateAxiosOptions,AxiosTransform } from './axiosTransform';
 
 import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
@@ -49,41 +49,35 @@ const transform: AxiosTransform = {
       return errorResult;
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    let { StatusCode, SubErrorCode, ErrorCode ,ErrorMessage,Data}=data;
 
-    // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    let Code;
+    if(typeof(StatusCode) == "number")Code=StatusCode;
+    if(typeof(SubErrorCode) == "number")Code=SubErrorCode;
+    if(typeof(ErrorCode) == "number")Code=ErrorCode;
+
+    let Message=ErrorMessage;
+    let result=Data;
+    if(Message==null)Message=undefined;
+
+    // 这里逻辑可以根据项目进行修改 && Reflect.has(data, 'StatusCode')
+    const hasSuccess = data  && Code === ResultEnum.SUCCESS;
     if (!hasSuccess) {
-      if (message) {
+      if (Message) {
         // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
         if (options.errorMessageMode === 'modal') {
-          createErrorModal({ title: t('sys.api.errorTip'), content: message });
+          createErrorModal({ title: t('sys.api.errorTip'), content: Message });
         } else if (options.errorMessageMode === 'message') {
-          createMessage.error(message);
+          createMessage.error(Message);
         }
       }
-      Promise.reject(new Error(message));
+      console.log(Message)
+      Promise.reject(new Error(Message));
       return errorResult;
     }
 
-    // 接口请求成功，直接返回结果
-    if (code === ResultEnum.SUCCESS) {
-      return result;
-    }
-    // 接口请求错误，统一提示错误信息
-    if (code === ResultEnum.ERROR) {
-      if (message) {
-        createMessage.error(data.message);
-        Promise.reject(new Error(message));
-      } else {
-        const msg = t('sys.api.errorMessage');
-        createMessage.error(msg);
-        Promise.reject(new Error(msg));
-      }
-      return errorResult;
-    }
     // 登录超时
-    if (code === ResultEnum.TIMEOUT) {
+    if (Code === ResultEnum.TIMEOUT) {
       const timeoutMsg = t('sys.api.timeoutMessage');
       createErrorModal({
         title: t('sys.api.operationFailed'),
@@ -92,7 +86,24 @@ const transform: AxiosTransform = {
       Promise.reject(new Error(timeoutMsg));
       return errorResult;
     }
-    return errorResult;
+    
+
+    // 接口请求成功，直接返回结果
+    if (Code === ResultEnum.SUCCESS) {
+      return result;
+    }else {
+      // 接口请求错误，统一提示错误信息
+      if (Message) {
+        createMessage.error(Message);
+        Promise.reject(new Error(Message));
+      } else {
+        const msg = t('sys.api.errorMessage');
+        createMessage.error(msg);
+        Promise.reject(new Error(msg));
+      }
+      return errorResult;
+    }
+    
   },
 
   // 请求之前处理config
@@ -138,21 +149,30 @@ const transform: AxiosTransform = {
    */
   requestInterceptors: (config) => {
     // 请求之前处理config
-    const token = getToken();
-    if (token) {
-      // jwt token
-      config.headers.Authorization = token;
-    }
+    // const token = getToken();
+    // if (token) {
+    //   // jwt token
+    //   config.headers.Authorization = token;
+    // }
     return config;
   },
 
   /**
    * @description: 响应错误处理
    */
-  responseInterceptorsCatch: (error: any) => {
+   responseInterceptorsCatch: (error: any) => {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
+
+    console.log(error,'***********************************')
+    // let { StatusCode, SubErrorCode,ErrorMessage,Data}=error || {};
+
+    // let Code= SubErrorCode || StatusCode;
+    // let Message=ErrorMessage;
+    // let result=Data;
+    // if(Message==null)Message='';
+
     const { response, code, message } = error || {};
     const msg: string = response?.data?.error?.message ?? '';
     const err: string = error?.toString?.() ?? '';
@@ -174,7 +194,11 @@ const transform: AxiosTransform = {
   },
 };
 
-function createAxios(opt?: Partial<CreateAxiosOptions>) {
+
+
+function createAxios(opt?: Partial<CreateAxiosOptions>, headers?:Partial<string | undefined>) {
+  let headersValue=headers
+  console.log(headers)
   return new VAxios(
     deepMerge(
       {
@@ -183,9 +207,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // baseURL: globSetting.apiUrl,
         // 接口可能会有通用的地址部分，可以统一抽取出来
         prefixUrl: prefix,
-        headers: { 'Content-Type': ContentTypeEnum.JSON },
-        // 如果是form-data格式
-        // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
+        headers:  { 'Content-Type': headersValue },
         // 数据处理方式
         transform,
         // 配置项，下面的选项都可以在独立的接口请求中覆盖
@@ -212,11 +234,15 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     )
   );
 }
-export const defHttp = createAxios();
 
-// other api url
-// export const otherHttp = createAxios({
-//   requestOptions: {
-//     apiUrl: 'xxx',
-//   },
-// });
+// 默认 api url
+export const defHttp = createAxios({},ContentTypeEnum.FORM_URLENCODED);
+
+// TokenHttp api url
+export const TokenHttp = createAxios({
+  requestOptions: {
+    apiUrl: 'http://121.201.110.194:16180',
+  }
+},ContentTypeEnum.JSON);
+
+
