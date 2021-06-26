@@ -162,7 +162,6 @@
         }
         return false;
       }
-
       // 删除
       function handleRemove(record: FileItem) {
         const index = fileListRef.value.findIndex((item) => item.uuid === record.uuid);

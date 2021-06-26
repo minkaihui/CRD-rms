@@ -3,6 +3,8 @@ import { isClient } from '/@/utils/is';
 import { CreateContextOptions, ContextMenuProps } from './typing';
 import { createVNode, render } from 'vue';
 
+import {ScreenFixedScale}  from '/@/settings/encryptionSetting';
+
 const menuManager: {
   domList: Element[];
   resolve: Fn;
@@ -34,7 +36,7 @@ export const createContextMenu = function (options: CreateContextOptions) {
 
     if (options.event) {
       propsData.customEvent = event;
-      propsData.axis = { x: event.clientX, y: event.clientY };
+      propsData.axis = { x: event.clientX / ScreenFixedScale * window.devicePixelRatio, y: event.clientY / ScreenFixedScale * window.devicePixelRatio};
     }
 
     const vm = createVNode(contextMenuVue, propsData);

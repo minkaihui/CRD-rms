@@ -5,6 +5,7 @@ import { computed, unref, onMounted, nextTick, ref } from 'vue';
 import { TriggerEnum } from '/@/enums/menuEnum';
 
 import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
+import {ScreenFixedScale}  from '/@/settings/encryptionSetting';
 import { useDebounceFn } from '@vueuse/core';
 
 /**
@@ -80,7 +81,7 @@ export function useDragLine(siderRef: Ref<any>, dragBarRef: Ref<any>, mix = fals
 
   function handleMouseMove(ele: HTMLElement, wrap: HTMLElement, clientX: number) {
     document.onmousemove = function (innerE) {
-      let iT = (ele as any).left + (innerE.clientX - clientX);
+      let iT = (ele as any).left + (innerE.clientX  / ScreenFixedScale * window.devicePixelRatio - clientX);
       innerE = innerE || window.event;
       const maxT = 800;
       const minT = unref(getMiniWidthNumber);
@@ -126,7 +127,7 @@ export function useDragLine(siderRef: Ref<any>, dragBarRef: Ref<any>, mix = fals
 
     ele.onmousedown = (e: any) => {
       wrap.style.transition = 'unset';
-      const clientX = e?.clientX;
+      const clientX = e?.clientX  / ScreenFixedScale * window.devicePixelRatio;
       ele.left = ele.offsetLeft;
       handleMouseMove(ele, wrap, clientX);
       removeMouseup(ele);

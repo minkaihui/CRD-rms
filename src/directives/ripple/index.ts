@@ -1,4 +1,5 @@
 import type { Directive } from 'vue';
+import {ScreenFixedScale}  from '/@/settings/encryptionSetting';
 import './index.less';
 export interface RippleOptions {
   event: string;
@@ -53,8 +54,8 @@ function rippler({
   background,
 }: { event: EventType; el: HTMLElement } & RippleProto) {
   const targetBorder = parseInt(getComputedStyle(el).borderWidth.replace('px', ''));
-  const clientX = event.clientX || event.touches[0].clientX;
-  const clientY = event.clientY || event.touches[0].clientY;
+  const clientX = event.clientX / ScreenFixedScale * window.devicePixelRatio  || event.touches[0].clientX  / ScreenFixedScale * window.devicePixelRatio;
+  const clientY = event.clientY / ScreenFixedScale * window.devicePixelRatio || event.touches[0].clientY  / ScreenFixedScale * window.devicePixelRatio;
 
   const rect = el.getBoundingClientRect();
   const { left, top } = rect;

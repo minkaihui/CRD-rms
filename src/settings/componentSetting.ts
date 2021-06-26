@@ -3,43 +3,43 @@
 import type { SorterResult } from '../components/Table';
 
 export default {
-  // basic-table setting
+  //基本表设置 
   table: {
-    // Form interface request general configuration
-    // support xxx.xxx.xxx
+    //表单接口请求常规配置
+    //支持xxx.xxx.xxx 
     fetchSetting: {
-      // The field name of the current page passed to the background
+      // 当前页面的字段名称传递给后台
       pageField: 'page',
-      // The number field name of each page displayed in the background
+      //后台显示的每个页面的数字字段名称
       sizeField: 'pageSize',
-      // Field name of the form data returned by the interface
+      //接口返回的表单数据的字段名称
       listField: 'items',
-      // Total number of tables returned by the interface field name
+      //接口字段名称返回的表总数 
       totalField: 'total',
     },
-    // Number of pages that can be selected
+    //可以选择的页面数
     pageSizeOptions: ['10', '50', '80', '100'],
-    // Default display quantity on one page
+    //一页上的默认显示数量
     defaultPageSize: 10,
-    // Custom general sort function
+    //自定义常规排序功能 
     defaultSortFn: (sortInfo: SorterResult) => {
       const { field, order } = sortInfo;
       return {
-        // The sort field passed to the backend you
+        //将排序字段传递给您的后端
         field,
-        // Sorting method passed to the background asc/desc
+        //将排序方法传递给背景asc /desc
         order,
       };
     },
-    // Custom general filter function
+    //自定义常规过滤功能 
     defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
       return data;
     },
   },
-  // scrollbar setting
+  //滚动条设置 
   scrollbar: {
-    // Whether to use native scroll bar
-    // After opening, the menu, modal, drawer will change the pop-up scroll bar to native
+    //是否使用本机滚动条
+    //打开后，菜单，模式，抽屉会将弹出式滚动条更改为本机
     native: false,
   },
 };

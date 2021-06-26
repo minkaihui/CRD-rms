@@ -3,7 +3,7 @@
  * @Description: logo component
 -->
 <template>
-  <div class="anticon" :class="getAppLogoClass" @click="goHome">
+  <div class="anticon" :class="getAppLogoClass" :style="{'padding-left':showTitle?'':'15px'}" @click="goHome">
     <img src="../../../assets/images/logo.png" />
     <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
       {{ title }}
@@ -76,7 +76,7 @@
   .@{prefix-cls} {
     display: flex;
     align-items: center;
-    padding-left: 7px;
+    padding-left: 30px ;
     cursor: pointer;
     transition: all 0.2s ease;
 

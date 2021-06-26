@@ -41,16 +41,31 @@ const transform: AxiosTransform = {
     }
     // 错误的时候返回
 
-    const { data } = res;
+    const { data } = res; 
     if (!data) {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
-    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
 
-    // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
+    let { StatusCode, SubErrorCode, ErrorCode ,ErrorMessage,Data,output}=data;
+
+    // code  兼容
+    let code;
+    if(typeof(StatusCode) == "number")code=StatusCode;
+    if(typeof(SubErrorCode) == "number")code=SubErrorCode;
+    if(typeof(ErrorCode) == "number")code=ErrorCode;
+
+    let message=ErrorMessage;
+    
+    // result  兼容
+    let result;
+    if(output)result=output;
+    if(Data)result=Data
+    if(message==null)message=undefined;
+
+    // 这里逻辑可以根据项目进行修改 && Reflect.has(data, 'StatusCode')
+    const hasSuccess = data  && code === ResultEnum.SUCCESS;
     if (hasSuccess) {
       return result;
     }
@@ -121,13 +136,13 @@ const transform: AxiosTransform = {
    */
   requestInterceptors: (config, options) => {
     // 请求之前处理config
-    const token = getToken();
-    if (token) {
-      // jwt token
-      config.headers.Authorization = options.authenticationScheme
-        ? `${options.authenticationScheme} ${token}`
-        : token;
-    }
+    // const token = getToken();
+    // if (token) {
+    //   // jwt token
+    //   config.headers.Authorization = options.authenticationScheme
+    //     ? `${options.authenticationScheme} ${token}`
+    //     : token;
+    // }
     return config;
   },
 
@@ -145,6 +160,15 @@ const transform: AxiosTransform = {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
+
+    console.log(error,'***********************************')
+    // let { StatusCode, SubErrorCode,ErrorMessage,Data}=error || {};
+
+    // let Code= SubErrorCode || StatusCode;
+    // let Message=ErrorMessage;
+    // let result=Data;
+    // if(Message==null)Message='';
+
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
     const msg: string = response?.data?.error?.message ?? '';
@@ -176,7 +200,7 @@ const transform: AxiosTransform = {
   },
 };
 
-function createAxios(opt?: Partial<CreateAxiosOptions>) {
+function createAxios(opt?: Partial<CreateAxiosOptions>, headers?:Partial<string | undefined>) {
   return new VAxios(
     deepMerge(
       {
@@ -189,7 +213,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // baseURL: globSetting.apiUrl,
         // 接口可能会有通用的地址部分，可以统一抽取出来
         urlPrefix: urlPrefix,
-        headers: { 'Content-Type': ContentTypeEnum.JSON },
+        headers: { 'Content-Type': headers },
         // 如果是form-data格式
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
         // 数据处理方式
@@ -220,11 +244,15 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     )
   );
 }
-export const defHttp = createAxios();
 
-// other api url
-// export const otherHttp = createAxios({
-//   requestOptions: {
-//     apiUrl: 'xxx',
-//   },
-// });
+// 默认 api url
+export const defHttp = createAxios({},ContentTypeEnum.FORM_URLENCODED);
+
+// TokenHttp api url
+export const TokenHttp = createAxios({
+  requestOptions: {
+    apiUrl: 'http://121.201.110.194:16180',
+  }
+},ContentTypeEnum.JSON);
+
+

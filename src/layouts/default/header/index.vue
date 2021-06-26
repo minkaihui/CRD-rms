@@ -16,6 +16,7 @@
         :theme="getHeaderTheme"
         :sider="false"
       />
+      <!-- 面包屑换位置 -->
       <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
     </div>
     <!-- left end -->
@@ -41,15 +42,28 @@
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
+      <!-- 全屏 -->
+      <!-- <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" /> -->
+      <!-- 搜搜 -->
+      <!-- <AppSearch :class="`${prefixCls}-action__item `" /> -->
+      <!-- <div class=" text-xs flex justify-center items-center  occupation">
+          <img src="/src/assets/images/men/occupation.png" alt="">
+          管理员
+      </div> -->
+      <!-- 错误日志 -->
+      <!-- <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" /> -->
+      <!-- 消息 -->
+      <!-- <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" /> -->
+      <!-- 语言切换 -->
       <AppLocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
         :showText="false"
         :class="`${prefixCls}-action__item`"
       />
-
-      <UserDropDown :theme="getHeaderTheme" />
-
+      <!-- 个人 -->
+      <UserDropDown  :theme="getHeaderTheme" />
+        <!-- 设置 -->
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
     </div>
   </Header>
@@ -198,4 +212,14 @@
 </script>
 <style lang="less">
   @import './index.less';
+
+  .occupation{
+    height: 4.375rem;
+    padding: 0 10px;
+    color: rgba(0,0,0,0.65);
+
+    img{
+      margin-right: 10px;
+    }
+  }
 </style>

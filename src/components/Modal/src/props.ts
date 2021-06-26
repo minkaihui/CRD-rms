@@ -15,7 +15,8 @@ export const modalProps = {
   centered: { type: Boolean },
   cancelText: { type: String, default: t('common.cancelText') },
   okText: { type: String, default: t('common.okText') },
-
+  LeftText:{ type: String, default: t('') },
+  LeftExplainText: { type: String, default: t('') },
   closeFunc: Function as PropType<() => Promise<boolean>>,
 };
 
@@ -53,6 +54,11 @@ export const basicProps = Object.assign({}, modalProps, {
   confirmLoading: { type: Boolean },
 
   destroyOnClose: { type: Boolean },
+  FooterStyle: Object as PropType<CSSProperties>,
+
+  RButtonStyle: Object as PropType<CSSProperties>,
+
+  HeaderStyle: Object as PropType<CSSProperties>,
 
   footer: Object as PropType<VueNode>,
 
@@ -80,4 +86,13 @@ export const basicProps = Object.assign({}, modalProps, {
   wrapClassName: { type: String },
 
   zIndex: { type: Number },
+  LeftButtonProps: Object as PropType<ButtonProps>,
+
+  LeftType: { type: String, default: 'link' },
+
+  FooterGPS: { type: String, default: '' },
+
+  FooterRound: { type: String, default: '' },
+
+  TB_Border: { type: Boolean, default: false },
 });

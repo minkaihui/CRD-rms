@@ -40,7 +40,6 @@ const backRoute = {
     },
   ],
 };
-
 const authRoute = {
   path: '/permission',
   name: 'Permission',

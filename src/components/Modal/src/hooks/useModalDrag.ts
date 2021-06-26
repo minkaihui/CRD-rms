@@ -1,5 +1,6 @@
 import { Ref, unref, watchEffect } from 'vue';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
+import {ScreenFixedScale}  from '/@/settings/encryptionSetting';
 
 export interface UseModalDragMoveContext {
   draggable: Ref<boolean>;
@@ -24,8 +25,8 @@ export function useModalDragMove(context: UseModalDragMoveContext) {
     dialogHeaderEl.onmousedown = (e: any) => {
       if (!e) return;
       // 鼠标按下，计算当前元素距离可视区的距离
-      const disX = e.clientX;
-      const disY = e.clientY;
+      const disX = e.clientX  / ScreenFixedScale * window.devicePixelRatio;
+      const disY = e.clientY  / ScreenFixedScale * window.devicePixelRatio;
       const screenWidth = document.body.clientWidth; // body当前宽度
       const screenHeight = document.documentElement.clientHeight; // 可见区域高度(应为body高度，可某些环境下无法获取)
 
@@ -54,8 +55,8 @@ export function useModalDragMove(context: UseModalDragMoveContext) {
 
       document.onmousemove = function (e) {
         // 通过事件委托，计算移动的距离
-        let left = e.clientX - disX;
-        let top = e.clientY - disY;
+        let left = e.clientX / ScreenFixedScale * window.devicePixelRatio - disX;
+        let top = e.clientY / ScreenFixedScale * window.devicePixelRatio - disY;
 
         // 边界处理
         if (-left > minDragDomLeft) {

@@ -39,7 +39,6 @@
       const attrs = useAttrs();
       // Embedded in the form, just use the hook binding to perform form verification
       const [state] = useRuleFormItem(props);
-
       // Processing options value
       const getOptions = computed((): OptionsItem[] => {
         const { options } = props;

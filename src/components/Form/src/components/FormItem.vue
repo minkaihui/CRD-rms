@@ -179,7 +179,6 @@
         const requiredRuleIndex: number = rules.findIndex(
           (rule) => Reflect.has(rule, 'required') && !Reflect.has(rule, 'validator')
         );
-
         if (requiredRuleIndex !== -1) {
           const rule = rules[requiredRuleIndex];
           const { isShow } = getShow();

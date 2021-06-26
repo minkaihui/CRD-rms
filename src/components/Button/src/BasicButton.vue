@@ -1,5 +1,5 @@
 <template>
-  <Button v-bind="getBindValue" :class="getButtonClass" @click="onClick">
+  <Button v-bind="getBindValue" :class="getButtonClass" @click="onClickStop">
     <template #default="data">
       <Icon :icon="preIcon" v-if="preIcon" :size="iconSize" />
       <slot v-bind="data"></slot>
@@ -50,10 +50,19 @@
         ];
       });
 
+      const { onClick ,StopClick} = props;
+
+      function onClickStop(e){
+        if(StopClick){
+          e.stopPropagation()
+        }
+        return onClick;
+      }
+
       // get inherit binding value
       const getBindValue = computed(() => ({ ...attrs, ...props }));
 
-      return { getBindValue, getButtonClass };
-    },
+      return { getBindValue, getButtonClass ,onClickStop};
+    }
   });
 </script>

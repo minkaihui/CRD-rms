@@ -25,7 +25,6 @@ export function useUploadType({
       .map((item) => `.${item}`)
       .join(',');
   });
-
   // 支持jpg、jpeg、png格式，不超过2M，最多可选择10张图片，。
   const getHelpText = computed(() => {
     const helpText = unref(helpTextRef);

@@ -19,6 +19,7 @@
 <script lang="ts">
   import { addResizeListener, removeResizeListener } from '/@/utils/event';
   import componentSetting from '/@/settings/componentSetting';
+  import { useThrottleFn } from '@vueuse/core';
   const { scrollbar } = componentSetting;
   import { toObject } from './util';
   import {
@@ -64,7 +65,8 @@
         default: 'div',
       },
     },
-    setup(props) {
+    emits: ['handleScroll'],
+    setup(props,{emit}) {
       const sizeWidth = ref('0');
       const sizeHeight = ref('0');
       const moveX = ref(0);
@@ -81,12 +83,16 @@
         return props.wrapStyle;
       });
 
-      const handleScroll = () => {
+     
+
+      const handleScroll = useThrottleFn(() => {
+        
         if (!props.native) {
           moveY.value = (unref(wrap).scrollTop * 100) / unref(wrap).clientHeight;
           moveX.value = (unref(wrap).scrollLeft * 100) / unref(wrap).clientWidth;
+          emit("handleScroll",unref(wrap).scrollTop,unref(wrap).scrollHeight)
         }
-      };
+      }, 100)
 
       const update = () => {
         if (!unref(wrap)) return;

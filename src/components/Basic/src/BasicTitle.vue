@@ -43,7 +43,6 @@
         { [`${prefixCls}-show-span`]: props.span && slots.default },
         { [`${prefixCls}-normal`]: props.normal },
       ]);
-
       return { prefixCls, getClass };
     },
   });

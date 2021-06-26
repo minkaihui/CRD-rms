@@ -1,0 +1,6 @@
+（1） config.ts配置基础的URL
+（2）apiConfig配置各个模块后台的api方法 通过config.ts中配置的基础url和方法的相对路径拼接
+（3）以模块命名的文件保存相关模块的处理方法 比如order下
+（4）apiOffline保存离线情况下的处理方法
+（5）离线的处理方式：在模块方法中根据config.ts中配置的IsOnline判断，如果离线调用在apiOffline中实现的处理本地数据库的方法，否则调用后台接口处理
+ (6)接口帮助文档，连接去掉api  再加上help就可以查看接口帮助文档

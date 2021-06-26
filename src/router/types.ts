@@ -17,11 +17,11 @@ export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   props?: Recordable;
   fullPath?: string;
 }
-
 export interface MenuTag {
   type?: 'primary' | 'error' | 'warn' | 'success';
   content?: string;
   dot?: boolean;
+  icon?:string
 }
 
 export interface Menu {

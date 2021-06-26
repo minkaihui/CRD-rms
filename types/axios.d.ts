@@ -21,10 +21,16 @@ export interface RequestOptions {
 }
 
 export interface Result<T = any> {
-  code: number;
-  type: 'success' | 'error' | 'warning';
-  message: string;
-  result: T;
+  code?: number;
+  StatusCode?:number;
+  SubErrorCode?: number;
+  ErrorCode?: number;
+  type?: 'success' | 'error' | 'warning';
+  ErrorMessage?: any;
+  message?: any;
+  Data?:T;
+  result?: T;
+  output?: T;
 }
 
 // multipart/form-data: upload file

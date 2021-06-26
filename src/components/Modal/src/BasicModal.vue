@@ -1,5 +1,5 @@
 <template>
-  <Modal v-bind="getBindValue">
+  <Modal @cancel="handleCancel" v-bind="getBindValue">
     <template #closeIcon v-if="!$slots.closeIcon">
       <ModalClose
         :canFullscreen="getProps.canFullscreen"
@@ -10,7 +10,9 @@
     </template>
 
     <template #title v-if="!$slots.title">
-      <ModalHeader
+      <ModalHeader  
+        :TB_Border="getMergeProps.TB_Border"
+        :HeaderStyle="getMergeProps.HeaderStyle"
         :helpMessage="getProps.helpMessage"
         :title="getMergeProps.title"
         @dblclick="handleTitleDbClick"
@@ -18,7 +20,7 @@
     </template>
 
     <template #footer v-if="!$slots.footer">
-      <ModalFooter v-bind="getProps" @ok="handleOk" @cancel="handleCancel">
+      <ModalFooter   v-bind="getProps" @ok="handleOk" @cancel="handleCancel">
         <template #[item]="data" v-for="item in Object.keys($slots)">
           <slot :name="item" v-bind="data"></slot>
         </template>
@@ -35,6 +37,7 @@
       :minHeight="getProps.minHeight"
       :height="getWrapperHeight"
       :visible="visibleRef"
+      :bodyStyle="getProps.bodyStyle"
       :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
       v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
       @ext-height="handleExtHeight"

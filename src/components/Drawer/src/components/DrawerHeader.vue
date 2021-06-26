@@ -40,7 +40,6 @@
       function handleClose() {
         emit('close');
       }
-
       return { prefixCls, handleClose };
     },
   });
