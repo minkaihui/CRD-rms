@@ -1,5 +1,5 @@
 import {ref,onMounted} from 'vue';
-// import Viewer from 'viewerjs';
+import '/@/utils/viewerjs/viewer.min.js';
 
 function preview(viewflag,viewflagEnum) {
     let viewer;
@@ -32,8 +32,8 @@ function preview(viewflag,viewflagEnum) {
             toolbar: 0,
             tooltip: false,
             hide() {
-                viewflag.preview = viewflagEnum.default;
-                console.log('hide');
+                if(inline)viewflag.preview = viewflagEnum.default;
+                console.log('hide',inline);
             },
             hidden() {
                 console.log('hidden');
@@ -46,7 +46,7 @@ function preview(viewflag,viewflagEnum) {
                 // 9 methods are available here: "hide", "view", "prev", "next", "play", "stop", "full", "exit" and "destroy".
             },
             viewed() {
-                viewflag.preview = viewflagEnum.preview;
+                if(inline)viewflag.preview = viewflagEnum.preview;
                 viewNum.value = Math.round(viewer.imageData.ratio * 100) + '%';
             },
             zoom() {

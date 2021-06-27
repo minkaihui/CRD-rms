@@ -3,7 +3,7 @@
     <div
       v-show="viewflag.preview == viewflagEnum.preview"
       @click="viewlist"
-      class="viewflag flex justify-between items-center"
+      class="flex items-center justify-between viewflag"
     >
       <div class="back"
         ><LeftOutlined class="back" style="font-size: 8px" />
@@ -70,16 +70,7 @@
       >
         <div class="tab" @click.prevent>
           <div
-            class="
-              flex
-              items-center
-              justify-center
-              ant-dropdown-link
-              inline-block
-              cursor-pointer
-              bg-white
-              text-black
-            "
+            class="flex items-center justify-center inline-block text-black bg-white cursor-pointer ant-dropdown-link"
             :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
           >
             {{ item.tab }}
@@ -98,21 +89,13 @@
                 </a-menu>
               </div>
               <div
-                class="text-black-65 pt flex justify-between items-center"
+                class="flex items-center justify-between text-black-65 pt"
                 style="padding: 5px 8px 5px 10px"
                 >逻辑
                 <a-dropdown :trigger="['click']">
                   <div class="tab">
                     <div
-                      class="
-                        flex
-                        items-center
-                        justify-center
-                        ant-dropdown-link ant-dropdown-link-hover
-                        inline-block
-                        cursor-pointer
-                        text-black
-                      "
+                      class="flex items-center justify-center inline-block text-black cursor-pointer ant-dropdown-link ant-dropdown-link-hover"
                     >
                       任意符合
                       <img
@@ -177,7 +160,7 @@
             <a-row :gutter="16">
               <a-col
                 :span="6"
-                class="p-0 mb-3 relative"
+                class="relative p-0 mb-3"
                 style="max-width: 100%"
                 v-for="(item, index) in bigImagesList"
                 :key="index"
@@ -243,8 +226,8 @@ import { CollapseContainer } from '/@/components/Container/index';
 
 import { ScrollContainer } from '/@/components/Container/index';
 import { HeightScroll } from '/@/utils/HeightScroll';
-// import Viewer from 'viewerjs';
-// import 'viewerjs/dist/viewer.css';
+
+import '/@/utils/viewerjs/viewer.min.css';
 import { LeftOutlined } from '@ant-design/icons-vue';
 
 // 预览逻辑
@@ -393,7 +376,6 @@ export default defineComponent({
     function blankEvent() {
       if (decideIndex.value < 0 || viewflag.preview == viewflagEnum.preview) return;
       blankCtrlLogic(false, image.value);
-      console.log(viewer);
       viewer.isShown = false;
       viewer.played = false;
       viewer.view(decideIndex.value < 0 ? 0 : decideIndex.value);
@@ -465,11 +447,13 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+
 ::v-deep(.scroll-container .scrollbar__wrap) {
   width: 100%;
   margin-bottom: 0 !important;
   border-right: none;
 }
+
 
 ::v-deep(.ant-card-bordered) {
   border: none;
