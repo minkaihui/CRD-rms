@@ -1,3 +1,30 @@
+## 2.5.2(2021-06-27)
+
+### ⚡ Performance Improvements
+
+- **Icon** Remove the global registration of Icon components to prevent hot update issues under certain circumstances
+
+### ✨ Features
+
+- **Menu** Added `permissionMode=PermissionModeEnum.ROUTE_MAPPING` mode
+  - The project is changed to this mode by default, and the original menu file is deleted
+  - If you have written the menu before, you can change to `PermissionModeEnum.ROLE` mode
+
+## 2.5.1(2021-06-26)
+
+### ⚡ Performance Improvements
+
+- Upgrade `vue` and `ant-design-vue` versions to solve compatibility issues
+- **Tree** Performance optimization
+
+### 🐛 Bug Fixes
+
+- **Table** Fix page jitter problem
+- **Upload** Make sure to carry custom parameters
+- **Dropdown** Fix the icon display problem of popConfirm
+- **Table** Fix the problem that the editing event of the tree table is abnormal
+- **Table** Fix the problem that when the table data is empty, the value returned by getDataSource is not the data source used by the table
+
 ## 2.5.0(2021-06-20)
 
 ## (Breaking changes) Breaking changes
