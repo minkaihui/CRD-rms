@@ -42,7 +42,7 @@ async function bootstrap() {
   setupRouter(app);
 
   //路由器防护 
-  setupRouterGuard();
+  setupRouterGuard(router);
 
   //注册全局指令 
   setupGlobDirectives(app);

@@ -9,8 +9,10 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/userManagement/index',
   meta: {
+    hideChildrenInMenu: true,
     icon: 'ant-design:user-outlined',
     title: t('routes.dashboard.userManagement'),
+    orderNo: 8,
   },
   children: [
     {

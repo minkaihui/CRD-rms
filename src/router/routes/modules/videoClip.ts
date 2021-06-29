@@ -9,6 +9,8 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/videoClip/index',
   meta: {
+    hideChildrenInMenu: true,
+    orderNo: 3,
     icon: 'ant-design:play-circle-outlined',
     title: t('routes.dashboard.videoClip'),
   },

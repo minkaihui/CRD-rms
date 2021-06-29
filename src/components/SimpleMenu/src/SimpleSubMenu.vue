@@ -3,8 +3,6 @@
     :class="[
       getI18nName == '音频' ? 'mkh1-1' : '',
       getI18nName == '审核列表' ? 'mkh1' : '',
-      getI18nName == '上传素材' ? 'mkh2' : '',
-      getI18nName == '共享文件夹' ? 'mkh3' : '',
       getIsCollapseParent ? 'men' : 'menleft',
     ]"
   >
@@ -14,10 +12,9 @@
       v-bind="$props"
       :id="collapse?'':'items'"
       :class="getLevelClass"
-      @click="open"
     >
       <Icon
-        v-if="(getIcon && getI18nName != '共享文件夹') || getIsCollapseParent"
+        v-if="getIcon || getIsCollapseParent"
         :icon="getIcon"
         :size="16"
       />
@@ -54,9 +51,7 @@
       </template>
     </SubMenu>
 
-    <fileModal width="1019px" @register="fileRegister" />
-    <addModal width="630px" @register="addRegister" />
-    <UploadModal />
+   
   </div>
 </template>
 <script lang="ts">
@@ -74,10 +69,6 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
 
-import { useModal } from '/@/components/Modal';
-import fileModal from './modal/fileModal.vue';
-import addModal from './modal/addModal.vue';
-import UploadModal from './modal/UploadModal_RMS.vue';
 export default defineComponent({
   name: 'SimpleSubMenu',
   components: {
@@ -85,9 +76,6 @@ export default defineComponent({
     MenuItem,
     SimpleMenuTag: createAsyncComponent(() => import('./SimpleMenuTag.vue')),
     Icon,
-    fileModal,
-    addModal,
-    UploadModal
   },
   props: {
     item: {
@@ -126,18 +114,7 @@ export default defineComponent({
       );
     }
 
-    //打开弹框
-    const [fileRegister, { openModal: fileOpenModal }] = useModal();
-    const [addRegister, { openModal: addOpenModal }] = useModal();
-
-    function open() {
-      if (getI18nName.value == '上传素材') {
-        fileOpenModal();
-      } else if (getI18nName.value == '共享文件夹' && getIsCollapseParent.value) {
-        addOpenModal();
-      }
-    }
-
+   
     return {
       prefixCls,
       menuHasChildren,
@@ -147,10 +124,6 @@ export default defineComponent({
       getShowSubTitle,
       getLevelClass,
       getIsCollapseParent,
-      //打开弹框
-      fileRegister,
-      addRegister,
-      open,
     };
   },
 });

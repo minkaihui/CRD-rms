@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY,TOKEN_EXPIRE } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
 import { getUserInfo, loginApi, TokenApi } from '/@/api/sys/user';
@@ -91,6 +91,8 @@ export const useUserStore = defineStore({
          // save token
         this.setToken(Data.AccessToken);
 
+        Data.Expire * 1000
+
         
         const userInfo = await loginApi(loginParams, mode);
         // get user info
@@ -99,8 +101,8 @@ export const useUserStore = defineStore({
         const sessionTimeout = this.sessionTimeout;
         sessionTimeout && this.setSessionTimeout(false);
         !sessionTimeout && goHome && (await router.replace(PageEnum.BASE_HOME));
-        this.setUserInfo(userInfo);
-        this.setRoleList(userInfo);
+        this.setUserInfo(userInfo[0].value);
+        this.setRoleList(userInfo[0].value);
         return userInfo[0].value;
       }catch (error) {
         return Promise.reject(error);
@@ -140,6 +142,6 @@ export const useUserStore = defineStore({
 });
 
 // Need to be used outside the setup
-export function useUserStoreWidthOut() {
+export function useUserStoreWithOut() {
   return useUserStore(store);
 }

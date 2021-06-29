@@ -43,3 +43,15 @@ export interface GetUserInfoModel {
   UserId: string;
   UserName: string;
 }
+
+/**
+ * @description: Get user list return value
+ */
+export interface GetUserListParams {
+  /// 用户ID string
+  ECode: string;
+  /// 用户名称 string
+  EName: string;
+  /// 部门完整名称 string
+  DeptFullName: string;
+}

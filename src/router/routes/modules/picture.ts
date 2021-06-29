@@ -9,8 +9,10 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/picture/index',
   meta: {
+    hideChildrenInMenu: true,
     icon: 'ant-design:picture-outlined',
     title: t('routes.dashboard.picture'),
+    orderNo: 2,
   },
   children: [
     {

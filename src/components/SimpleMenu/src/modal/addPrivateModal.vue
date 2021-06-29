@@ -72,11 +72,9 @@
   import { defineComponent, ref, reactive, computed } from 'vue';
   import { BasicModal } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
-  import { AddFolder } from '/@/api/sys/folder';
-  import { GetUserList } from '/@/api/sys/user';
-
+  import { AddPrivateFolder } from '/@/api/sys/folder';
+    import { GetUserList } from '/@/api/sys/user';
   import { useUserStore } from '/@/store/modules/user';
-  import { buildUUID } from '/@/utils/uuid';
 
   let schemas: FormSchema[] = reactive([
         {
@@ -104,73 +102,10 @@
             span: 14,
           },
           componentProps: {
-            mode: 'multiple',
             options: [],
           },
         },
-        {
-          field: 'FolderAuthority',
-          component: 'CheckboxGroup',
-          label: '选择权限',
-          colProps: {
-            span: 14,
-          },
-          defaultValue: '1',
-          componentProps: {
-            options: [
-              {
-                label: '查看',
-                value: '2',
-              },
-              {
-                label: '编辑',
-                value: '1',
-              },
-            ],
-          },
-        },
-        {
-          field: 'NeedApproval',
-          component: 'RadioGroup',
-          label: '是否需要审核',
-          colProps: {
-            span: 14,
-          },
-          defaultValue: true,
-          componentProps: {
-            options: [
-              {
-                label: '是',
-                value: true,
-              },
-              {
-                label: '否',
-                value: false,
-              },
-            ],
-          },
-        },
-        {
-          field: 'IsShare',
-          component: 'RadioGroup',
-          label: '是否共享',
-          colProps: {
-            span: 14,
-          },
-          defaultValue: true,
-          componentProps: {
-            options: [
-              {
-                label: '是',
-                value: true,
-              },
-              {
-                label: '否',
-                value: false,
-              },
-            ],
-          },
-        },
+       
       ]);
 
   export default defineComponent({
@@ -189,7 +124,7 @@
       };
 
       const userStore = useUserStore();
-
+      
       const UserLi = reactive({ label: '', value: {}, key: '' });
       
       async function init() {
@@ -228,32 +163,20 @@
       //确定按钮  添加文件夹
       function AddFolderOK(ParentFolderId, FolderLevel = 1) {
         let FieldsValue = getFieldsValue();
-          AddFolder({
-          dto: {
-            /// 文件ID
-            FolderId: buildUUID(),
+         AddPrivateFolder({
+            dto: {
             /// 父级ID
             ParentFolderId: ParentFolderId,
             /// 文件名称 string
             FolderName: FieldsValue.FolderName,
             /// 文件夹层级 int
             FolderLevel: FolderLevel,
-            /// 是否私有 bool
-            IsPrivate: false,
-            /// 是否共享 bool
-            IsShare: FieldsValue.IsShare,
-            /// 是否需要审核 bool
-            NeedApproval: FieldsValue.NeedApproval,
             /// 创建人 string
             CreatorID: userStore.getUserInfo.UserId,
             /// 创建人姓名 string
             CreatorName: userStore.getUserInfo.UserName,
-            /// 文件夹权限
-            FolderAuthority: FieldsValue.FolderAuthority,
-            /// 用户列表
-            UserIdList: FieldsValue.UserIdList,
           },
-        });
+          })
       }
 
       return {
@@ -266,7 +189,7 @@
 
         //确定按钮  添加文件夹
         AddFolderOK,
-        init,
+        init
       };
     },
   });

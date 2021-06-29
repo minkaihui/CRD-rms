@@ -9,8 +9,10 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/labelManagement/index',
   meta: {
+    hideChildrenInMenu: true,
     icon: 'ant-design:tag-outlined',
     title: t('routes.dashboard.labelManagement'),
+    orderNo: 7,
   },
   children: [
     {

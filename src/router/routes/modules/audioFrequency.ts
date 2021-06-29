@@ -9,8 +9,10 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/audioFrequency/index',
   meta: {
+    hideChildrenInMenu: true,
     icon: 'ant-design:sound-outlined',
     title: t('routes.dashboard.audioFrequency'),
+    orderNo: 5,
   },
   children: [
     {

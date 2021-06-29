@@ -73,7 +73,7 @@ export function useTree(
   /**
    * 添加节点
    */
-  function insertNodeByKey({ parentKey = null, node, push = 'push' }: InsertNodeParams) {
+   function insertNodeByKey({ parentKey = null, node, push = 'push' }: InsertNodeParams) {
     const treeData: any = cloneDeep(unref(treeDataRef));
     if (!parentKey) {
       treeData[push](node);
@@ -87,9 +87,39 @@ export function useTree(
       if (treeItem[keyField] === parentKey) {
         treeItem[childrenField] = treeItem[childrenField] || [];
         treeItem[childrenField][push](node);
+        return true;
       }
     });
     treeDataRef.value = treeData;
+  }
+
+  /**
+   * 批量添加节点
+   */
+   function insertNodesByKey({ parentKey = null, list, push = 'push' }: InsertNodeParams) {
+    const treeData: any = cloneDeep(unref(treeDataRef));
+    if (!list || list.length < 1) {
+      return;
+    }
+    if (!parentKey) {
+      for (let i = 0; i < list.length; i++) {
+        treeData[push](list[i]);
+      }
+    } else {
+      const { key: keyField, children: childrenField } = unref(getReplaceFields);
+      if (!childrenField || !keyField) return;
+
+      forEach(treeData, (treeItem) => {
+        if (treeItem[keyField] === parentKey) {
+          treeItem[childrenField] = treeItem[childrenField] || [];
+          for (let i = 0; i < list.length; i++) {
+            treeItem[childrenField][push](list[i]);
+          }
+          treeDataRef.value = treeData;
+          return true;
+        }
+      });
+    }
   }
 
   // Delete node
@@ -111,5 +141,12 @@ export function useTree(
       }
     }
   }
-  return { deleteNodeByKey, insertNodeByKey, filterByLevel, updateNodeByKey, getAllKeys };
+  return {
+    deleteNodeByKey,
+    insertNodeByKey,
+    insertNodesByKey,
+    filterByLevel,
+    updateNodeByKey,
+    getAllKeys,
+  };
 }

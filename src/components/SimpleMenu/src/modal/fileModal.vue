@@ -14,7 +14,7 @@
     :FooterStyle="{ padding: '30px' }"
     FooterRound="round"
   >
-    <div class="flex fl h-full w-full">
+    <div class="flex w-full h-full fl">
       <div>
         <div class="mb-2.5"
           >文件 <span class="text-xs text-gray-200" v-show="material.length > 0">(必填)</span></div
@@ -26,7 +26,7 @@
         >
           <div
             v-show="material.length <= 0"
-            class="flex justify-center items-center up1"
+            class="flex items-center justify-center up1"
             :style="{ border: material.length > 0 ? 'none' : '1px dashed #ccc' }"
           >
             <span class="text-blue-600">
@@ -44,7 +44,7 @@
           v-model:file-list="fileList"
           name="avatar"
           list-type="picture-card"
-          class="avatar-uploader mt-5"
+          class="mt-5 avatar-uploader"
           :class="material.length > 0 ? 'border-solid' : 'border-dashed'"
           :show-upload-list="false"
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -57,9 +57,9 @@
             <div class="mb-2">
               <a-button color="primary" shape="round" ghost>上传封面图</a-button>
             </div>
-            <span class="text-gray-400 text-xs"> 最小尺寸为212*212</span>
+            <span class="text-xs text-gray-400"> 最小尺寸为212*212</span>
             <br />
-            <span class="text-gray-400 text-xs">GIF文件将不进行动画处理</span>
+            <span class="text-xs text-gray-400">GIF文件将不进行动画处理</span>
           </div>
         </Upload>
         <a-button style="padding-left: 0" type="link">编辑封面图片</a-button>
@@ -250,6 +250,7 @@ export default defineComponent({
       },
       {
         field: 'field7',
+        label: '',
         component: 'RadioGroup',
         colProps: {
           span: 24,
@@ -269,6 +270,7 @@ export default defineComponent({
       },
       {
         field: 'field8',
+        label: '',
         component: 'Select',
         colProps: {
           span: 24,

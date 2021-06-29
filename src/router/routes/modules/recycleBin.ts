@@ -9,8 +9,10 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/recycleBin/index',
   meta: {
+    hideChildrenInMenu: true,
     icon: 'ant-design:delete-outlined',
     title: t('routes.dashboard.recycleBin'),
+    orderNo: 9,
   },
   children: [
     {

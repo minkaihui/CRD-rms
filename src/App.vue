@@ -11,7 +11,6 @@ import { defineComponent, onMounted, onBeforeMount, onBeforeUnmount } from 'vue'
 import { ConfigProvider } from 'ant-design-vue';
 import {ScreenFixedScale}  from '/@/settings/encryptionSetting';
 import { AppProvider } from '/@/components/Application';
-import { useLockPage } from '/@/hooks/web/useLockPage';
 import { useTitle } from '/@/hooks/web/useTitle';
 import { useLocale } from '/@/locales/useLocale';
 import { useDebounceFn } from '@vueuse/core';
@@ -63,13 +62,11 @@ export default defineComponent({
     })();
 
     useTitle();
-    //支持多语言 
-    const { getAntdLocale } = useLocale();
 
-    //创建锁屏监视器 
-    const lockEvent = useLockPage();
+      // support Multi-language
+      const { getAntdLocale } = useLocale();
 
-    return { getAntdLocale, lockEvent };
+      return { getAntdLocale };
   },
 });
 </script>
