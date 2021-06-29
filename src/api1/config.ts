@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /*基础配置 */
-var config = {
+const config = {
 	//HSDK版本
 	HSDKVersion: 'h-sdk-net-20180201',
 	//token URL

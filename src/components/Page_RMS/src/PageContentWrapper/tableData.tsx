@@ -6,7 +6,7 @@ export function getBasicColumns(): BasicColumn[] {
       title: '标题',
       dataIndex: 'id',
       // width: 300,
-      align:'left'
+      align: 'left',
     },
     {
       title: '格式',
@@ -23,7 +23,7 @@ export function getBasicColumns(): BasicColumn[] {
       // width: 300,
       // sorter: true,
       dataIndex: 'beginTime',
-    }
+    },
   ];
 }
 
@@ -79,4 +79,3 @@ export function getBigImagesList() {
     },
   ];
 }
-

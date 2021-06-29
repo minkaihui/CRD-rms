@@ -52,14 +52,14 @@ class cacheManager {
 		return false;
 	}
 	checkCacheItemIfEffective(cacheItem: any) {
-		var timeNow = new Date().getTime();
+		const timeNow = new Date().getTime();
 		return timeNow < cacheItem.exp;
 	}
 	setCache(key: string, value: any, exp: any) {
-		var now:any = new Date().getTime();
+		const now:any = new Date().getTime();
 		var exp:any = exp || 7000;
-		var expires = this.getExpiresDate(exp, new Date());
-		var cacheItem = {
+		const expires = this.getExpiresDate(exp, new Date());
+		const cacheItem = {
 			v: this._defaultSerializer.serialize(value),
 			exp: expires.getTime(),
 			c: now
@@ -71,7 +71,7 @@ class cacheManager {
 		return key;
 	}
 	getTokenCache(key: string) {
-		var cacheItem: {
+		let cacheItem: {
 			v: string;
 		} | null = null;
 		try {
@@ -80,7 +80,7 @@ class cacheManager {
 			return null;
 		}
 		if (cacheItem != null && this.isCacheItem(cacheItem)) {
-			var value = this._defaultSerializer.deserialize(cacheItem.v);
+			const value = this._defaultSerializer.deserialize(cacheItem.v);
 			if (this.checkCacheItemIfEffective(cacheItem)) {
 				return value;
 			} else {
@@ -121,22 +121,22 @@ class requestHelper {
 
 	//创建请求
 	createXHR() {
-		var xhr = new XMLHttpRequest();
+		let xhr = new XMLHttpRequest();
 		if (xhr == null) {
 			xhr = new ActiveXObject('Microsoft.XMLHTTP');
 		}
 		return xhr;
 	}
 	getAuthHeaders(token: string) {
-		let auth = 'Bearer ' + token;
+		const auth = 'Bearer ' + token;
 		return {
 			Authorization: auth
 		};
 	}
 	//格式化参数
 	formatFormParams(data: any) {
-		let arr: Array<string> = [];
-		for (var name in data) {
+		const arr: Array<string> = [];
+		for (const name in data) {
 			arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
 		}
 		arr.push(('v=' + Math.random()).replace('.', ''));
@@ -145,7 +145,7 @@ class requestHelper {
 	request(url: string, options: any, isform: boolean) {
 		console.log(url)
 		return new Promise((resolve, reject) => {
-			let xhr = this.createXHR();
+			const xhr = this.createXHR();
 			xhr.open(options.method, url);
 			if (options.onCreate) {
 				options.onCreate(xhr);
@@ -162,11 +162,11 @@ class requestHelper {
 				}
 			});
 			xhr.onreadystatechange = () => {
-				let responseText = xhr.responseText;
+				const responseText = xhr.responseText;
 				if (xhr.readyState !== 4) {
 					return;
 				}
-				let reqId = ''; //xhr.getResponseHeader("x-reqId") || "";
+				const reqId = ''; //xhr.getResponseHeader("x-reqId") || "";
 				if (xhr.status !== 200) {
 					let message = `xhr request failed, code: ${xhr.status};`;
 					if (responseText) {
@@ -201,9 +201,9 @@ class requestHelper {
 		});
 	}
 	getToken(refresh = false) {
-		var tokeninfo = this._cache.getTokenCache('token');
+		let tokeninfo = this._cache.getTokenCache('token');
 		//获取token,并进行缓存
-		var header = {
+		const header = {
 			'Content-Type': 'application/json; charset=utf-8'
 		};
 		return new Promise((resolve, reject) => {
@@ -225,9 +225,9 @@ class requestHelper {
 					false
 				).then(
 					(res: any) => {
-						var result = res.data;
+						const result = res.data;
 						if (result.IsSuccess) {
-							var data = result.Data;
+							const data = result.Data;
 							
 							tokeninfo = {
 								accesstoken: data.AccessToken,
@@ -264,9 +264,9 @@ class requestHelper {
 					false
 				).then(
 					(res: any) => {
-						var result = res.data;
+						const result = res.data;
 						if (result.IsSuccess) {
-							var data = result.Data;
+							const data = result.Data;
 							tokeninfo = {
 								accesstoken: data.AccessToken,
 								refreshtoken: data.RefreshToken
@@ -294,14 +294,14 @@ class requestHelper {
 		});
 	}
 	setParam(inputs: any, tables = []) {
-		var hrequest: {
+		const hrequest: {
 			input: Array<any>;
 			tables: any;
 		} = {
 			input: [],
 			tables: []
 		};
-		for (var i in inputs) {
+		for (const i in inputs) {
 			if (inputs.hasOwnProperty(i) && typeof inputs[i] !== 'function') {
 				hrequest.input.push({
 					name: i,
@@ -309,18 +309,18 @@ class requestHelper {
 				});
 			}
 		}
-		var paramStr = JSON.stringify(hrequest);
-		var tokeninfo = this._cache.getTokenCache('token');
-		var params = Object.assign({}, this._config, {
+		const paramStr = JSON.stringify(hrequest);
+		const tokeninfo = this._cache.getTokenCache('token');
+		const params = Object.assign({}, this._config, {
 			param: paramStr,
 			token: tokeninfo.accesstoken
 		});
 		return params;
 	}
 	convertOutput(result: { output: any }) {
-		var output: any = {};
-		for (var i in result.output) {
-			var item = result.output[i];
+		const output: any = {};
+		for (const i in result.output) {
+			const item = result.output[i];
 			if (item.Name) {
 				output[item.Name] = item.value;
 			} else if (item.name) {
@@ -387,10 +387,10 @@ export class hsdk {
 		this._requestHelper.init(options, tokenoption);
 	}
 	async request(url: string, inputs = {}, tables = []) {
-		var header = {
+		const header = {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		};
-		var tokeninfo = await this._requestHelper.getToken();
+		const tokeninfo = await this._requestHelper.getToken();
 		//请求数据
 		console.log(inputs,tables,this._requestHelper.setParam(inputs, tables))
 		return this._requestHelper
@@ -405,9 +405,9 @@ export class hsdk {
 			)
 			.then(
 				(res: any) => {
-					var result = res.data;
+					const result = res.data;
 					if (result.ErrorCode == 0) {
-						var output = this._requestHelper.convertOutput(result);
+						const output = this._requestHelper.convertOutput(result);
 						return {
 							Success: true,
 							Message: result.ErrorMessage,
@@ -471,9 +471,9 @@ export class hsdk {
 		return this._requestHelper.convertOutput(result);
 	}
 }
-var hsdk1 = new hsdk('');
+const hsdk1 = new hsdk('');
 export default hsdk1;
-var w: any = window;
+const w: any = window;
 if (!w.hsdk) {
 	w.hsdk = new hsdk('sdk');
 }

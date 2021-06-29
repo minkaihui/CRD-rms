@@ -2,14 +2,14 @@
 
 import axios from 'axios';
 import moment from 'moment';
-import baseApiConfig from "./apiConfig/baseApiConfig";
-import config from "./config";
-import hsdk from "./hsdk";
-import util from "/@/js/util";
-import { globalConfig, storageKey } from "/@/myBaseConfig";
-import { Result } from "/@/models/result";
-import italkSdk from "/@/js/italkSdk";
-import store from "@/store";
+import baseApiConfig from './apiConfig/baseApiConfig';
+import config from './config';
+import hsdk from './hsdk';
+import util from '/@/js/util';
+import { globalConfig, storageKey } from '/@/myBaseConfig';
+import { Result } from '/@/models/result';
+import italkSdk from '/@/js/italkSdk';
+import store from '@/store';
 /**
  * Post可选参数
  */
@@ -20,10 +20,10 @@ type PostOptions = {
   IsAuth: boolean;
   tryCount: number;
   ContentType:
-    | "application/json"
-    | "text/plain"
-    | "multipart/form-data"
-    | "application/x-www-form-urlencoded";
+    | 'application/json'
+    | 'text/plain'
+    | 'multipart/form-data'
+    | 'application/x-www-form-urlencoded';
 };
 
 class AipResult<T> {
@@ -41,15 +41,15 @@ class AipResult<T> {
 }
 
 class SDKResult<T> {
-  Success: boolean = true;
-  Message: string = "";
+  Success = true;
+  Message = '';
   Data?: T;
-  Code: number = 0;
+  Code = 0;
 }
 
 class HttpClient {
   //  Token
-  private Token: string = "";
+  private Token = '';
   $message: any;
   error: string | undefined;
 
@@ -65,21 +65,21 @@ class HttpClient {
     options: PostOptions = {
       IsAuth: true,
       tryCount: 2,
-      ContentType: "application/json",
+      ContentType: 'application/json',
     }
   ): Promise<any> {
-    var postConfig = {
+    const postConfig = {
       headers: {
-        "Content-Type": options.ContentType,
+        'Content-Type': options.ContentType,
       },
     };
-    var result = await axios({
+    const result = await axios({
       url: url,
-      method: "post",
+      method: 'post',
       headers: postConfig.headers,
       data: JSON.stringify(postData),
     });
-    var { data } = result;
+    const { data } = result;
     return data;
   }
 
@@ -94,9 +94,9 @@ class HttpClient {
     this.addSupmerManagerLog(url, postData);
     return await axios({
       url: url,
-      method: "post",
+      method: 'post',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: postData,
     });
@@ -123,121 +123,95 @@ class HttpClient {
     //初始化skd  没有登录方法前临时使用
     hsdk.config(
       {
-        app_key: "123456",
-        authorizetype: "UserName", //必填， 授权类型UserName, Code
+        app_key: '123456',
+        authorizetype: 'UserName', //必填， 授权类型UserName, Code
       },
       {
         tokenurl: config.TokenHost,
         // code: scanCodeKey  //授权类型为Code
-        userid: "123", //授权类型为UserName
-        password: "123", //授权类型为UserName
+        userid: '123', //授权类型为UserName
+        password: '123', //授权类型为UserName
       }
     );
     //去掉分页条件中的空值
-    if (
-      !!postData &&
-      !!(postData as any).page &&
-      !!(postData as any).page.QueryConditions
-    ) {
+    if (!!postData && !!(postData as any).page && !!(postData as any).page.QueryConditions) {
       var lastQueryConditions = util.grep(
         (postData as any).page.QueryConditions,
-        function(item: any, index: number) {
-          return (
-            !!item.Values && item.Values.length > 0 && item.Values[0] != ""
-          );
+        function (item: any, index: number) {
+          return !!item.Values && item.Values.length > 0 && item.Values[0] != '';
         }
       );
       (postData as any).page.QueryConditions = lastQueryConditions;
     }
 
     //去掉分页条件中的空值
-    if (
-      !!postData &&
-      !!(postData as any).req &&
-      !!(postData as any).req.QueryConditions
-    ) {
+    if (!!postData && !!(postData as any).req && !!(postData as any).req.QueryConditions) {
       var lastQueryConditions = util.grep(
         (postData as any).req.QueryConditions,
-        function(item: any, index: number) {
-          return (
-            !!item.Values && item.Values.length > 0 && item.Values[0] + "" != ""
-          );
+        function (item: any, index: number) {
+          return !!item.Values && item.Values.length > 0 && item.Values[0] + '' != '';
         }
       );
       (postData as any).req.QueryConditions = lastQueryConditions;
     }
     //去掉分页条件中的空值
-    if (
-      !!postData &&
-      !!(postData as any).model &&
-      !!(postData as any).model.QueryConditions
-    ) {
+    if (!!postData && !!(postData as any).model && !!(postData as any).model.QueryConditions) {
       var lastQueryConditions = util.grep(
         (postData as any).model.QueryConditions,
-        function(item: any, index: number) {
-          return (
-            !!item.Values && item.Values.length > 0 && item.Values[0] + "" != ""
-          );
+        function (item: any, index: number) {
+          return !!item.Values && item.Values.length > 0 && item.Values[0] + '' != '';
         }
       );
       (postData as any).model.QueryConditions = lastQueryConditions;
     }
     //去掉分页条件中的空值
-    if (
-      !!postData &&
-      !!(postData as any).dto &&
-      !!(postData as any).dto.QueryConditions
-    ) {
+    if (!!postData && !!(postData as any).dto && !!(postData as any).dto.QueryConditions) {
       var lastQueryConditions = util.grep(
         (postData as any).dto.QueryConditions,
-        function(item: any, index: number) {
-          return (
-            !!item.Values && item.Values.length > 0 && item.Values[0] + "" != ""
-          );
+        function (item: any, index: number) {
+          return !!item.Values && item.Values.length > 0 && item.Values[0] + '' != '';
         }
       );
       (postData as any).dto.QueryConditions = lastQueryConditions;
     }
     this.addSupmerManagerLog(url, postData);
-    let result = await hsdk.request(url, postData);
+    const result = await hsdk.request(url, postData);
     return result as SDKResult<T>;
   }
 
   async addSupmerManagerLog(url: string, postData: any) {
-    let superManager = localStorage.getItem(storageKey.superAdministratorKey);
+    const superManager = localStorage.getItem(storageKey.superAdministratorKey);
     if (!!superManager) {
       //初始化skd  没有登录方法前临时使用
       hsdk.config(
         {
-          app_key: "123456",
-          authorizetype: "UserName", //必填， 授权类型UserName, Code
+          app_key: '123456',
+          authorizetype: 'UserName', //必填， 授权类型UserName, Code
         },
         {
           tokenurl: config.TokenHost,
           // code: scanCodeKey  //授权类型为Code
-          userid: "123", //授权类型为UserName
-          password: "123", //授权类型为UserName
+          userid: '123', //授权类型为UserName
+          password: '123', //授权类型为UserName
         }
       );
       let deviceInformation: any = {};
       // 获取登录设备信息
-      let deviceInformationStr = sessionStorage.getItem("DeviceInformation");
+      const deviceInformationStr = sessionStorage.getItem('DeviceInformation');
       if (deviceInformationStr) {
         deviceInformation = JSON.parse(deviceInformationStr);
       }
-      let userInfo = JSON.parse(
-        localStorage.getItem(storageKey.userInfoKey) || "{}"
-      );
+      const userInfo = JSON.parse(localStorage.getItem(storageKey.userInfoKey) || '{}');
       if (!!userInfo && !!userInfo.UserID) {
-        let logInfo = {
+        const logInfo = {
           SuperUserID: superManager,
           UserID: userInfo.UserID,
           userName: userInfo.UserName,
           HandleApi: url,
           HandleText: JSON.stringify(postData),
           HandleTime: new Date(),
-          HandleSource: deviceInformation.platform || "无法识别",
-          HandleApp: "LSS",
+          HandleSource: deviceInformation.platform || '无法识别',
+          HandleApp: 'LSS',
         };
         hsdk.request(baseApiConfig.AddSuperMangerLogList, {
           dtoList: [logInfo],
@@ -252,17 +226,17 @@ class HttpClient {
    * @param password
    */
   async Login(context: any, param: any) {
-    var self = this;
-    let params: any = {
+    const self = this;
+    const params: any = {
       UserName: param.username,
       Password: param.password,
-      ShopCode: "",
-      AppType: "APP05",
+      ShopCode: '',
+      AppType: 'APP05',
     };
 
     hsdk.config(
       {
-        app_key: "123456",
+        app_key: '123456',
         // authorizetype: "UserName", //必填， 授权类型UserName, Code
       },
       {
@@ -272,7 +246,7 @@ class HttpClient {
       }
     );
 
-    var result: any = await self.Post(baseApiConfig.LoginAsync, params);
+    const result: any = await self.Post(baseApiConfig.LoginAsync, params);
     if (result.Success) {
       this.LoginSuccessHandale(context, result);
     }
@@ -284,21 +258,17 @@ class HttpClient {
    * @param password
    * @param isJumpAdmin  是否跳过管理员
    */
-  async GetRtsUserInfoByName(
-    context: any,
-    username: string,
-    isJumpAdmin: boolean = false
-  ) {
-    var self = this;
-    let params: any = {
+  async GetRtsUserInfoByName(context: any, username: string, isJumpAdmin = false) {
+    const self = this;
+    const params: any = {
       UserName: username,
       IsJumpAdmin: isJumpAdmin,
-      AppType: "APP05",
+      AppType: 'APP05',
     };
 
     hsdk.config(
       {
-        app_key: "123456",
+        app_key: '123456',
         // authorizetype: "UserName", //必填， 授权类型UserName, Code
       },
       {
@@ -308,10 +278,7 @@ class HttpClient {
       }
     );
 
-    var result: any = await self.Post(
-      baseApiConfig.GetRtsUserInfoByName,
-      params
-    );
+    const result: any = await self.Post(baseApiConfig.GetRtsUserInfoByName, params);
     if (result.Success) {
       this.LoginSuccessHandale(context, result);
     }
@@ -319,13 +286,13 @@ class HttpClient {
   }
 
   LoginSuccessHandale(context: any, result: any) {
-    let userinfo = JSON.parse(result.Data.Data);
+    const userinfo = JSON.parse(result.Data.Data);
     let shopInfo: any = {};
     let roleList: any = []; //用户角色列表
     let franchiseeList: any = []; //加盟商列表
     let relationShopList: any = []; //加盟商关联门店列表
     let relationLocationList: any = []; //物流关联门店
-    let isOfficeAdminLogin: boolean = result.Data.isOfficeAdminLogin;
+    const isOfficeAdminLogin: boolean = result.Data.isOfficeAdminLogin;
     if (result.Data.shopInfo) {
       shopInfo = JSON.parse(result.Data.shopInfo);
     }
@@ -345,7 +312,7 @@ class HttpClient {
       userinfo.ShopCode = shopInfo.ShopCode;
       userinfo.ShopName = shopInfo.ShopName;
     }
-    var lastUserInfo = {
+    const lastUserInfo = {
       UserID: userinfo.UserID, //用户ID
       UserName: userinfo.UserName, //用户名称
       ECode: userinfo.ECode, //用户工号
@@ -374,14 +341,14 @@ class HttpClient {
       IsZG: userinfo.IsZG, //是否主管
       IsGW: userinfo.IsGW, //是否顾问
       IsSY: userinfo.IsSY, //是否收银员
-      FuliClass: userinfo.FuliClass || "", //副理班次
-      FuliClassDesc: userinfo.FuliClassDesc || "", //副理班次描述
+      FuliClass: userinfo.FuliClass || '', //副理班次
+      FuliClassDesc: userinfo.FuliClassDesc || '', //副理班次描述
       ShopInfo: shopInfo, //门店信息
       RoleList: roleList, //关联的系统角色
       FranchiseeList: franchiseeList, //加盟商列表
       RelationShopList: relationShopList, //加盟关联的门店列表
       RelationLocationList: relationLocationList, //物流登录关联库位
-      RoleNames: "",
+      RoleNames: '',
       IsOfficeAdminLogin: isOfficeAdminLogin, //是否行政区管理员登录
       time: +new Date(),
     };
@@ -394,19 +361,15 @@ class HttpClient {
       lastUserInfo.ShopTypeName = shopInfo.ShopTypeName;
     }
     //超级管理员登录，给门店登录人后拼出超级管理员名字
-    var superAdministratorKey = localStorage.getItem(
-      storageKey.superAdministratorKey
-    );
+    const superAdministratorKey = localStorage.getItem(storageKey.superAdministratorKey);
     if (superAdministratorKey) {
-      lastUserInfo.UserName =
-        lastUserInfo.UserName + "【" + superAdministratorKey + "】"; //用户名称+(超级管理员名称)
-      lastUserInfo.EName =
-        lastUserInfo.EName + "【" + superAdministratorKey + "】"; //用户名称+(超级管理员名称)
+      lastUserInfo.UserName = lastUserInfo.UserName + '【' + superAdministratorKey + '】'; //用户名称+(超级管理员名称)
+      lastUserInfo.EName = lastUserInfo.EName + '【' + superAdministratorKey + '】'; //用户名称+(超级管理员名称)
     }
     if (!!roleList && roleList.length > 0) {
-      let roleNames = "";
+      let roleNames = '';
       roleList.forEach((item: any) => {
-        roleNames += item.RoleName + "|";
+        roleNames += item.RoleName + '|';
       });
       roleNames = roleNames.substr(0, roleNames.length - 1);
       lastUserInfo.RoleNames = roleNames;
@@ -415,7 +378,7 @@ class HttpClient {
     //登录成功skd初始化
     hsdk.config(
       {
-        app_key: "123456",
+        app_key: '123456',
         // authorizetype: "UserName", //必填， 授权类型UserName, Code
       },
       {

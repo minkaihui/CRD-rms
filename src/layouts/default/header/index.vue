@@ -62,8 +62,8 @@
         :class="`${prefixCls}-action__item`"
       />
       <!-- 个人 -->
-      <UserDropDown  :theme="getHeaderTheme" />
-        <!-- 设置 -->
+      <UserDropDown :theme="getHeaderTheme" />
+      <!-- 设置 -->
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
     </div>
   </Header>
@@ -213,12 +213,12 @@
 <style lang="less">
   @import './index.less';
 
-  .occupation{
+  .occupation {
     height: 4.375rem;
     padding: 0 10px;
-    color: rgba(0,0,0,0.65);
+    color: rgba(0, 0, 0, 0.65);
 
-    img{
+    img {
       margin-right: 10px;
     }
   }

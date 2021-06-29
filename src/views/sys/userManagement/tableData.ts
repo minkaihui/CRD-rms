@@ -6,28 +6,27 @@ export function getBasicColumns(): BasicColumn[] {
       title: '姓名',
       dataIndex: 'name',
       width: 120,
-      align:'left'
+      align: 'left',
     },
     {
       title: '部门',
       dataIndex: 'id',
       width: 150,
-      align:'left',
+      align: 'left',
     },
     {
       title: '角色',
       width: 165,
-      align:'left',
+      align: 'left',
       dataIndex: 'address',
     },
     {
       title: '最后操作',
-      align:'left',
+      align: 'left',
       dataIndex: 'beginTime',
-    }
+    },
   ];
 }
-
 
 export function getBasicColumnsSm(): BasicColumn[] {
   return [
@@ -35,13 +34,13 @@ export function getBasicColumnsSm(): BasicColumn[] {
       title: '姓名',
       dataIndex: 'name',
       width: 120,
-      align:'left'
+      align: 'left',
     },
     {
       title: '部门',
       dataIndex: 'id',
       width: 150,
-      align:'left',
-    }
+      align: 'left',
+    },
   ];
 }

@@ -9,7 +9,7 @@ import { cloneDeep, omit } from 'lodash-es';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { RequestEnum } from '/@/enums/httpEnum';
 
-import {requestData} from '../../CRD_http';
+import { requestData } from '../../CRD_http';
 export * from './axiosTransform';
 
 /**
@@ -204,8 +204,8 @@ export class VAxios {
     }
     conf.requestOptions = opt;
     //CRD特配
-    conf.data=requestData(conf.data);
-    
+    conf.data = requestData(conf.data);
+
     conf = this.supportFormData(conf);
 
     return new Promise((resolve, reject) => {
@@ -214,16 +214,16 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
-              console.log(res)
+              console.log(res);
               const ret = transformRequestHook(res, opt);
-              
+
               resolve(ret);
             } catch (err) {
               reject(err || new Error('request error!'));
             }
             return;
           }
-          console.log(res)
+          console.log(res);
           resolve(res as unknown as Promise<T>);
         })
         .catch((e: Error) => {

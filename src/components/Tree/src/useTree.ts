@@ -73,7 +73,7 @@ export function useTree(
   /**
    * 添加节点
    */
-   function insertNodeByKey({ parentKey = null, node, push = 'push' }: InsertNodeParams) {
+  function insertNodeByKey({ parentKey = null, node, push = 'push' }: InsertNodeParams) {
     const treeData: any = cloneDeep(unref(treeDataRef));
     if (!parentKey) {
       treeData[push](node);
@@ -96,7 +96,7 @@ export function useTree(
   /**
    * 批量添加节点
    */
-   function insertNodesByKey({ parentKey = null, list, push = 'push' }: InsertNodeParams) {
+  function insertNodesByKey({ parentKey = null, list, push = 'push' }: InsertNodeParams) {
     const treeData: any = cloneDeep(unref(treeDataRef));
     if (!list || list.length < 1) {
       return;

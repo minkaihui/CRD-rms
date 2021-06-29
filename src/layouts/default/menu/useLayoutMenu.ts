@@ -9,7 +9,6 @@ import { getChildrenMenus, getCurrentParentPath, getMenus, getShallowMenus } fro
 import { usePermissionStore } from '/@/store/modules/permission';
 import { useAppInject } from '/@/hooks/web/useAppInject';
 
-
 export function useSplitMenu(splitType: Ref<MenuSplitTyeEnum>) {
   // Menu array
   const menusRef = ref<Menu[]>([]);

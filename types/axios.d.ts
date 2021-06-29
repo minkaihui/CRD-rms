@@ -19,6 +19,7 @@ export interface RequestOptions {
   // Whether to add a timestamp
   joinTime?: boolean;
   ignoreCancelToken?: boolean;
+  SuccessMessage?: string;
 }
 
 export interface Result<T = any> {

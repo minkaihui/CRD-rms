@@ -1,5 +1,6 @@
 <template>
   <BasicModal
+    @register="Modal"
     FooterGPS="justify-center"
     RButtonStyle="color: rgba(0,0,0,0.65);"
     title="新增文件夹"
@@ -12,7 +13,6 @@
       padding: '5px 14px',
     }"
     @ok="AddFolderOK()"
-    @visible-change="init"
   >
     <div class="mt-9">
       <BasicForm
@@ -55,66 +55,57 @@
   }
 
   ::v-deep(.ant-select-multiple .ant-select-selector) {
-  margin-top: 0;
-  margin-bottom: 0;
-}
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
-
-::v-deep(.BasicForm .ant-select-selector) {
-  max-height: auto;
-  padding: 0;
-  padding-left: 4px;
-  align-content: start;
-}
+  ::v-deep(.BasicForm .ant-select-selector) {
+    max-height: auto;
+    padding: 0;
+    padding-left: 4px;
+    align-content: start;
+  }
 </style>
 
 <script lang="ts">
-  import { defineComponent, ref, reactive, computed } from 'vue';
-  import { BasicModal } from '/@/components/Modal';
+  import { defineComponent, ref, reactive } from 'vue';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
   import { AddPrivateFolder } from '/@/api/sys/folder';
-    import { GetUserList } from '/@/api/sys/user';
+
   import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
+  const [Modal, { closeModal }] = useModalInner();
 
   let schemas: FormSchema[] = reactive([
-        {
-          field: 'FolderName',
-          component: 'Input',
-          label: '文件夹名称',
-          defaultValue: '',
-          colProps: {
-            span: 14,
+    {
+      field: 'FolderName',
+      component: 'Input',
+      label: '文件夹名称',
+      defaultValue: '',
+      colProps: {
+        span: 14,
+      },
+      // rules: [{ required: true }],
+      componentProps: () => {
+        return {
+          placeholder: '请填写文件夹名称',
+          onChange: (e: any) => {
+            console.log(e);
           },
-          componentProps: () => {
-            return {
-              placeholder: '请填写文件夹名称',
-              onChange: (e: any) => {
-                console.log(e);
-              },
-            };
-          },
-        },
-        {
-          field: 'UserIdList',
-          component: 'Select',
-          label: '选择人员',
-          colProps: {
-            span: 14,
-          },
-          componentProps: {
-            options: [],
-          },
-        },
-       
-      ]);
+        };
+      },
+    },
+  ]);
 
   export default defineComponent({
     components: { BasicModal, BasicForm },
-    props:{
-      OpenValue:{type:Boolean,default:false}
+    props: {
+      OpenValue: { type: Boolean, default: false },
     },
     setup() {
-      
       const check = ref(null);
       let baseRowStyle = {
         'justify-content': 'center',
@@ -122,34 +113,6 @@
       let FooterStyle = {
         padding: '60px',
       };
-
-      const userStore = useUserStore();
-      
-      const UserLi = reactive({ label: '', value: {}, key: '' });
-      
-      async function init() {
-        let UserIdListOptions = [];
-        
-        let UserList = await GetUserList({
-          UserName: userStore.getUserInfo.UserName,
-        });
-     
-        UserList[0].value.map((item, index) => {
-          UserLi.label = item.EName;
-          UserLi.value =  {
-                /// 用户ID string
-                UserId:item.ECode,
-                /// 用户名称 string
-                UserName:item.EName,
-                /// 部门名称 string
-                DepartmentName:item.DeptFullName,
-              };
-          UserLi.key = index;
-          UserIdListOptions.push(UserLi);
-        });
-
-        schemas[1].componentProps.options = UserIdListOptions;
-      }
 
       // 表单
       let [register, { getFieldsValue }] = useForm({
@@ -161,10 +124,14 @@
       });
 
       //确定按钮  添加文件夹
-      function AddFolderOK(ParentFolderId, FolderLevel = 1) {
+      async function AddFolderOK(ParentFolderId, FolderLevel = 1) {
         let FieldsValue = getFieldsValue();
-         AddPrivateFolder({
-            dto: {
+        if (!FieldsValue.FolderName) {
+          createMessage.warn('请填写文件夹名称');
+          return;
+        }
+        let res = await AddPrivateFolder({
+          dto: {
             /// 父级ID
             ParentFolderId: ParentFolderId,
             /// 文件名称 string
@@ -176,7 +143,8 @@
             /// 创建人姓名 string
             CreatorName: userStore.getUserInfo.UserName,
           },
-          })
+        });
+        if (res) closeModal();
       }
 
       return {
@@ -189,7 +157,9 @@
 
         //确定按钮  添加文件夹
         AddFolderOK,
-        init
+        //弹框
+        Modal,
+        closeModal,
       };
     },
   });

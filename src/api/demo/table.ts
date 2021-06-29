@@ -18,7 +18,6 @@ export const demoListApi = (params: DemoParams) =>
     },
   });
 
-
 export const userDemoListApis = (params: DemoParams) =>
   defHttp.get<DemoListGetResultModel>({
     url: Api.DEMO_LIST,
@@ -27,5 +26,3 @@ export const userDemoListApis = (params: DemoParams) =>
       ignoreCancelToken: true,
     },
   });
-
-

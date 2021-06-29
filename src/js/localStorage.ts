@@ -15,7 +15,7 @@ export default {
 	},
 	// 获取缓存
 	getItem(nameKey: string) {
-		var resStr = localStorage.getItem(nameKey);
+		const resStr = localStorage.getItem(nameKey);
 		if (resStr) {
 			return JSON.parse(resStr);
 		} else {

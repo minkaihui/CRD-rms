@@ -27,10 +27,10 @@ enum Api {
   AddFolder = '/api/Folder/AddFolder',
   DeleteFolder = '/api/Folder/DeleteFolder',
   UpdateFolderName = '/api/Folder/UpdateFolderName',
-  UpdateFolder ='/api/Folder/UpdateFolder',
-  GetFolderInfo ='/api/Folder/GetFolderInfo',
-  GetUserPrivateFolder ='/api/Folder/GetUserPrivateFolder',
-  GetUserPublicFolder ='/api/Folder/GetUserPublicFolder'
+  UpdateFolder = '/api/Folder/UpdateFolder',
+  GetFolderInfo = '/api/Folder/GetFolderInfo',
+  GetUserPrivateFolder = '/api/Folder/GetUserPrivateFolder',
+  GetUserPublicFolder = '/api/Folder/GetUserPublicFolder',
 }
 
 /**
@@ -44,6 +44,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
     },
     {
       errorMessageMode: mode,
+      SuccessMessage: '添加成功',
     }
   );
 }
@@ -51,7 +52,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: AddFolder api  : AddFolderParams
  */
- export function AddFolder(params, mode: ErrorMessageMode = 'message') {
+export function AddFolder(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.AddFolder,
@@ -66,7 +67,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: DeleteFolder api  : DeleteFolderParams
  */
- export function DeleteFolder(params, mode: ErrorMessageMode = 'message') {
+export function DeleteFolder(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.DeleteFolder,
@@ -81,7 +82,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: UpdateFolderName api  : UpdateFolderNameParams
  */
- export function UpdateFolderName(params, mode: ErrorMessageMode = 'message') {
+export function UpdateFolderName(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.UpdateFolderName,
@@ -96,7 +97,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: UpdateFolder api  : UpdateFolderParams
  */
- export function UpdateFolder(params, mode: ErrorMessageMode = 'message') {
+export function UpdateFolder(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.UpdateFolder,
@@ -111,7 +112,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: GetFolderInfo api  : GetFolderInfoParams
  */
- export function GetFolderInfo(params, mode: ErrorMessageMode = 'message') {
+export function GetFolderInfo(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.GetFolderInfo,
@@ -126,7 +127,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: GetUserPrivateFolder api  : GetUserPrivateFolderParams
  */
- export function GetUserPrivateFolder(params, mode: ErrorMessageMode = 'message') {
+export function GetUserPrivateFolder(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.GetUserPrivateFolder,
@@ -141,7 +142,7 @@ export function AddPrivateFolder(params, mode: ErrorMessageMode = 'message') {
 /**
  * @description: GetUserPublicFolder api  : GetUserPublicFolderParams
  */
- export function GetUserPublicFolder(params, mode: ErrorMessageMode = 'message') {
+export function GetUserPublicFolder(params, mode: ErrorMessageMode = 'message') {
   return defHttp.post(
     {
       url: Api.GetUserPublicFolder,

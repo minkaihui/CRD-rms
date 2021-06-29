@@ -15,7 +15,7 @@ export const modalProps = {
   centered: { type: Boolean },
   cancelText: { type: String, default: t('common.cancelText') },
   okText: { type: String, default: t('common.okText') },
-  LeftText:{ type: String, default: t('') },
+  LeftText: { type: String, default: t('') },
   LeftExplainText: { type: String, default: t('') },
   closeFunc: Function as PropType<() => Promise<boolean>>,
 };

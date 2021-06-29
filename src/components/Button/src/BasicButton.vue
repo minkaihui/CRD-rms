@@ -50,11 +50,11 @@
         ];
       });
 
-      const { onClick ,StopClick} = props;
+      const { onClick, StopClick } = props;
 
-      function onClickStop(e){
-        if(StopClick){
-          e.stopPropagation()
+      function onClickStop(e) {
+        if (StopClick) {
+          e.stopPropagation();
         }
         return onClick;
       }
@@ -62,7 +62,7 @@
       // get inherit binding value
       const getBindValue = computed(() => ({ ...attrs, ...props }));
 
-      return { getBindValue, getButtonClass ,onClickStop};
-    }
+      return { getBindValue, getButtonClass, onClickStop };
+    },
   });
 </script>

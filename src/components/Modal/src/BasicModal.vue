@@ -10,7 +10,7 @@
     </template>
 
     <template #title v-if="!$slots.title">
-      <ModalHeader  
+      <ModalHeader
         :TB_Border="getMergeProps.TB_Border"
         :HeaderStyle="getMergeProps.HeaderStyle"
         :helpMessage="getProps.helpMessage"
@@ -20,7 +20,7 @@
     </template>
 
     <template #footer v-if="!$slots.footer">
-      <ModalFooter   v-bind="getProps" @ok="handleOk" @cancel="handleCancel">
+      <ModalFooter v-bind="getProps" @ok="handleOk" @cancel="handleCancel">
         <template #[item]="data" v-for="item in Object.keys($slots)">
           <slot :name="item" v-bind="data"></slot>
         </template>

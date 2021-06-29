@@ -1,15 +1,10 @@
-import { storageKey, globalConfig } from "@/myBaseConfig";
-import { QueryDataTable } from "@/models/queryDataTable";
-import reportFormApi from "@/api/reportForm/reportFormApi";
-import {
-  PaginationModel,
-  QueryConditionModel
-} from "@/models/pagination/paginationModel";
+import { storageKey, globalConfig } from '@/myBaseConfig';
+import { QueryDataTable } from '@/models/queryDataTable';
+import reportFormApi from '@/api/reportForm/reportFormApi';
+import { PaginationModel, QueryConditionModel } from '@/models/pagination/paginationModel';
 import util from '@/js/util';
 
-
 export default {
-
   /**
    *设置公共列表查询默认值
    *
@@ -21,10 +16,9 @@ export default {
     if (rtsReportSearchFieldList.length > 0) {
       rtsReportSearchFieldList.forEach((item: any) => {
         // 如果范围选择，需要处理日期范围和时间范围的默认值
-        if (item.SearchType == "ST05") {
+        if (item.SearchType == 'ST05') {
           //时间范围
-          if (item.RangeType == "RT01") {
-
+          if (item.RangeType == 'RT01') {
             if (!!item.DefaultValues && item.DefaultValues.length == 2) {
               item.DefaultValues = context.getTimeRange(
                 item.DefaultValues[0],
@@ -33,9 +27,8 @@ export default {
             }
           }
           //日期范围
-          else if (item.RangeType == "RT02") {
+          else if (item.RangeType == 'RT02') {
             if (!!item.DefaultValues && item.DefaultValues.length == 2) {
-
               item.DefaultValues = context.getDateRange(
                 item.DefaultValues[0],
                 item.DefaultValues[1]
@@ -56,11 +49,15 @@ export default {
    * @param {string} shopConditionName
    * @returns
    */
-  getQueryConditions(rtsReportSearchFieldList: any, isNeedShopCondition: boolean, shopConditionName: string) {
+  getQueryConditions(
+    rtsReportSearchFieldList: any,
+    isNeedShopCondition: boolean,
+    shopConditionName: string
+  ) {
     const context: any = this;
     let queryConditions: any = [];
-    let arrShopCode = []; //门店编号
-    let userInfo = JSON.parse(localStorage.getItem(storageKey.userInfoKey) || "{}");
+    const arrShopCode = []; //门店编号
+    const userInfo = JSON.parse(localStorage.getItem(storageKey.userInfoKey) || '{}');
     arrShopCode.push(userInfo.ShopCode);
     if (isNeedShopCondition) {
       if (shopConditionName) {
@@ -68,32 +65,32 @@ export default {
           {
             FieldName: shopConditionName,
             Mode: QueryConditionModel.EQUAL,
-            Values: arrShopCode
-          }
+            Values: arrShopCode,
+          },
         ];
       } else {
         queryConditions = [
           {
-            FieldName: "ShopCode",
+            FieldName: 'ShopCode',
             Mode: QueryConditionModel.EQUAL,
-            Values: arrShopCode
-          }
+            Values: arrShopCode,
+          },
         ];
       }
     }
-    var QueryConditionsObj = {
-      FieldName: "",
+    const QueryConditionsObj = {
+      FieldName: '',
       Mode: -1,
-      Values: []
+      Values: [],
     };
 
     rtsReportSearchFieldList.forEach((item: any) => {
       //  如果录入了查询条件，则插入请求数据的接口里
-      var obj = JSON.parse(JSON.stringify(QueryConditionsObj));
+      const obj = JSON.parse(JSON.stringify(QueryConditionsObj));
       if (
         !(
           item.DefaultValues.length == 1 &&
-          ((item.DefaultValues[0] + '' == "" && item.DefaultValues[0] != 0) ||
+          ((item.DefaultValues[0] + '' == '' && item.DefaultValues[0] != 0) ||
             item.DefaultValues[0] == null ||
             item.DefaultValues[0] == undefined)
         )
@@ -105,8 +102,8 @@ export default {
           item.DefaultValues[0].length == 10 &&
           item.DefaultValues[1].length == 10
         ) {
-          item.DefaultValues[0] += " 00:00:00";
-          item.DefaultValues[1] += " 23:59:59";
+          item.DefaultValues[0] += ' 00:00:00';
+          item.DefaultValues[1] += ' 23:59:59';
         }
         obj.FieldName = item.FieldName;
         obj.Mode = item.ConditionModel;
@@ -117,17 +114,14 @@ export default {
     return queryConditions;
   },
 
-
   /**获取时间范围
-  * daysStartToNow  开始日期距当前天数
-  * daysEndToNow   结束日期距当前天数
-  */
+   * daysStartToNow  开始日期距当前天数
+   * daysEndToNow   结束日期距当前天数
+   */
   getTimeRange(daysStartToNow: number, daysEndToNow: number) {
     //默认查询最近7天数据
-    let start =
-      util.format.addDay(util.format.formatDate(new Date()), daysStartToNow);
-    let end =
-      util.format.addDay(util.format.formatDate(new Date()), daysEndToNow);
+    const start = util.format.addDay(util.format.formatDate(new Date()), daysStartToNow);
+    const end = util.format.addDay(util.format.formatDate(new Date()), daysEndToNow);
     return [start, end];
   },
 
@@ -137,14 +131,8 @@ export default {
    */
   getDateRange(daysStartToNow: number, daysEndToNow: number) {
     //默认查询最近7天数据
-    let start = util.format.addDay(
-      util.format.formatDate(new Date()),
-      daysStartToNow
-    );
-    let end = util.format.addDay(
-      util.format.formatDate(new Date()),
-      daysEndToNow
-    );
+    const start = util.format.addDay(util.format.formatDate(new Date()), daysStartToNow);
+    const end = util.format.addDay(util.format.formatDate(new Date()), daysEndToNow);
     return [start, end];
-  }
+  },
 };

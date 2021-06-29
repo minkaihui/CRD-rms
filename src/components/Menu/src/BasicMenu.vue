@@ -18,7 +18,7 @@
   </Menu>
 </template>
 <script lang="ts">
-   import { computed, defineComponent, unref, reactive, watch, toRefs, ref } from 'vue';
+  import { computed, defineComponent, unref, reactive, watch, toRefs, ref } from 'vue';
   import { Menu } from 'ant-design-vue';
   import BasicSubMenuItem from './components/BasicSubMenuItem.vue';
   import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';

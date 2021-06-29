@@ -1,8 +1,8 @@
 /**获取地址的同ts文件 */
-import httpClient from "../httpClient";
-import scanAuthorizeApiConfig from "../apiConfig/scanAuthorizeApiConfig";
-import { Result } from "/@/models/result";
-import { globalConfig } from "/@/myBaseConfig";
+import httpClient from '../httpClient';
+import scanAuthorizeApiConfig from '../apiConfig/scanAuthorizeApiConfig';
+import { Result } from '/@/models/result';
+import { globalConfig } from '/@/myBaseConfig';
 export default {
   /**
    *获取扫码登录的二维码路径
@@ -15,13 +15,13 @@ export default {
   GetScanLoginQrCodeSrc(id: any, systemName: string, loginPort: string) {
     return (
       scanAuthorizeApiConfig.GetITalkAuthorizeQrCode +
-      "?businessFlagCode=" +
+      '?businessFlagCode=' +
       id +
-      "&businessType=" +
+      '&businessType=' +
       globalConfig.ScanBusinessType.Login +
-      "&SystemName=" +
+      '&SystemName=' +
       systemName +
-      "&LoginPort=" +
+      '&LoginPort=' +
       loginPort
     );
   },
@@ -35,11 +35,11 @@ export default {
   GetScanAuthQrCodeSrc(id: any, authTypeName: string) {
     return (
       scanAuthorizeApiConfig.GetITalkAuthorizeQrCode +
-      "?businessFlagCode=" +
+      '?businessFlagCode=' +
       id +
-      "&businessType=" +
+      '&businessType=' +
       globalConfig.ScanBusinessType.LSSAuth +
-      "&AuthTypeName=" +
+      '&AuthTypeName=' +
       authTypeName
     );
   },
@@ -50,17 +50,17 @@ export default {
    * @param {*} id 自定义的编号（可guid）
    */
   async GetScanAuthorizeResult(id: any) {
-    let data: any = await httpClient.GetWithoutSDK(
+    const data: any = await httpClient.GetWithoutSDK(
       scanAuthorizeApiConfig.GetITalkAuthorizeResult,
       {
-        businessFlagCode: id
+        businessFlagCode: id,
       }
     );
-    var r = new Result();
+    const r = new Result();
     if (data) {
       //   console.log(data.data);
       if (data.data.IsITalkReturn) {
-        var result = JSON.parse(data.data.AuthorizeResult);
+        const result = JSON.parse(data.data.AuthorizeResult);
         console.log(result);
         // result.IsSuccess为flase是没有在手机按下授权按钮
         if (result.IsSuccess) {
@@ -72,13 +72,13 @@ export default {
         }
       } else {
         r.Success = true;
-        r.Message = "ITalk还未返回扫码信息 继续等待!";
+        r.Message = 'ITalk还未返回扫码信息 继续等待!';
         r.Data = null;
       }
     } else {
       r.Success = false;
-      r.Message = "参数错误,请重新扫码！";
+      r.Message = '参数错误,请重新扫码！';
     }
     return r;
-  }
+  },
 };

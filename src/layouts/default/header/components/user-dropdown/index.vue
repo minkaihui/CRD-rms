@@ -1,5 +1,9 @@
 <template>
-  <Dropdown placement="bottomLeft" class="w-full" :overlayClassName="`${prefixCls}-dropdown-overlay`">
+  <Dropdown
+    placement="bottomLeft"
+    class="w-full"
+    :overlayClassName="`${prefixCls}-dropdown-overlay`"
+  >
     <span :class="[prefixCls, `${prefixCls}--${theme}`]" class="flex">
       <span :class="`${prefixCls}__info hidden md:block`">
         <span :class="`${prefixCls}__name  `" class="truncate">
@@ -7,7 +11,7 @@
         </span>
       </span>
       <img :class="`${prefixCls}__header`" class="ml-2" :src="getUserInfo.avatar" />
-      <img src="/src/assets/images/men/down.png" alt="">
+      <img src="/src/assets/images/men/down.png" alt="" />
     </span>
 
     <template #overlay>

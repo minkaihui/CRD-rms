@@ -26,25 +26,25 @@ if (import.meta.env.DEV) {
 async function bootstrap() {
   const app = createApp(App);
 
-  //配置vuex存储 
+  //配置vuex存储
   setupStore(app);
 
-  //初始化内部系统配置 
+  //初始化内部系统配置
   initAppConfigStore();
 
-  //注册全局组件 
+  //注册全局组件
   registerGlobComp(app);
 
-  //多语言配置 
+  //多语言配置
   await setupI18n(app);
 
-  //多语言配置 
+  //多语言配置
   setupRouter(app);
 
-  //路由器防护 
+  //路由器防护
   setupRouterGuard(router);
 
-  //注册全局指令 
+  //注册全局指令
   setupGlobDirectives(app);
 
   //配置全局错误处理

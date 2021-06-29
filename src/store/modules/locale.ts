@@ -13,8 +13,8 @@ const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
 
 interface LocaleState {
   localInfo: LocaleSetting;
-  RightPage:number,
-  LeftPage:number
+  RightPage: number;
+  LeftPage: number;
 }
 
 export const useLocaleStore = defineStore({
@@ -22,28 +22,28 @@ export const useLocaleStore = defineStore({
   state: (): LocaleState => ({
     localInfo: lsLocaleSetting,
     RightPage: 500,
-    LeftPage:500
+    LeftPage: 500,
   }),
   getters: {
-    getShowPicker(): boolean  {
+    getShowPicker(): boolean {
       return !!this.localInfo?.showPicker;
     },
     getLocale(): LocaleType {
       return this.localInfo?.locale ?? 'zh_CN';
     },
     getRightPage() {
-      return this.RightPage
+      return this.RightPage;
     },
     getLeftPage() {
-      return this.LeftPage
+      return this.LeftPage;
     },
   },
   actions: {
     setRightPage(state) {
-      this.RightPage=state;
+      this.RightPage = state;
     },
     setLeftPage(state) {
-      this.LeftPage=state;
+      this.LeftPage = state;
     },
     /**
      * Set up multilingual information and cache

@@ -1,14 +1,6 @@
-import {
-  User,
-  Device,
-  App,
-  PcOtherSDK,
-  File,
-  Map,
-  Is_Mobile
-} from "italk-wapsdk";
-import { Result } from "/@/models/result";
-import util from "./util";
+import { User, Device, App, PcOtherSDK, File, Map, Is_Mobile } from 'italk-wapsdk';
+import { Result } from '/@/models/result';
+import util from './util';
 import config from '/@/api1/config';
 export default {
   /**
@@ -34,8 +26,8 @@ export default {
    * 获取italk用户信息
    */
   async getItalkUser() {
-    var r = new Result();
-    var italkR = await User.GetUserInfo();
+    const r = new Result();
+    const italkR = await User.GetUserInfo();
     if (italkR.IsSuccess && italkR.Data != null) {
       r.Data = italkR.Data;
     } else {
@@ -49,12 +41,9 @@ export default {
    * @param onlyFromCamera 是否只从相机获取，不允许从相册选择图片
    * @param scanType  扫码的类型  qrCode:二维码  barCode:条码  datamatrix：DataMatrix  pdf417：pdf417
    */
-  async italkScan(
-    onlyFromCamera: boolean = false,
-    scanType: Array<string> = ["qrCode", "barCode"]
-  ) {
-    var r = new Result();
-    var italkR = await Device.ScanCode(onlyFromCamera, scanType);
+  async italkScan(onlyFromCamera = false, scanType: Array<string> = ['qrCode', 'barCode']) {
+    const r = new Result();
+    const italkR = await Device.ScanCode(onlyFromCamera, scanType);
     if (italkR.IsSuccess && italkR.Data != null) {
       r.Data = italkR.Data;
     } else {
@@ -68,14 +57,14 @@ export default {
    *
    */
   async setHorizontalScreen() {
-    await Device.LockOrientation("landscape");
+    await Device.LockOrientation('landscape');
   },
   /**
    *强制设置竖屏
    *
    */
   async setVerticalScreen() {
-    await Device.LockOrientation("portrait");
+    await Device.LockOrientation('portrait');
   },
 
   /**
@@ -87,36 +76,36 @@ export default {
    * @returns
    */
   async italkExportExcel(rowsData: any, colunms: any, fileName: string) {
-    let italSdk = await PcOtherSDK.GetSdk();
+    const italSdk = await PcOtherSDK.GetSdk();
     if (italSdk == null) {
-      return "不是italk环境！";
+      return '不是italk环境！';
     }
-    var self = this;
-    var options = {
-      title: "保存导出结果",
+    const self = this;
+    const options = {
+      title: '保存导出结果',
       defaultPath: fileName,
       filters: [
         {
-          name: "Excel文件",
-          extensions: ["xlsx"]
-        }
-      ]
+          name: 'Excel文件',
+          extensions: ['xlsx'],
+        },
+      ],
     };
-    var savePath = await italSdk.SelectSaveFilePath(options);
+    const savePath = await italSdk.SelectSaveFilePath(options);
     if (!savePath) {
       return null;
     }
-    var headRow: Array<any> = [];
+    const headRow: Array<any> = [];
     util.each(colunms, function (index: number, item: any) {
       headRow.push({
         header: item.label,
-        key: item.prop
+        key: item.prop,
       });
     });
-    var excel = italSdk.GetExcelOperateObj();
-    excel.AddRow(headRow, rowsData, "第一个sheet");
+    const excel = italSdk.GetExcelOperateObj();
+    excel.AddRow(headRow, rowsData, '第一个sheet');
     excel.SaveToFile(savePath);
-    return "";
+    return '';
   },
 
   /**
@@ -137,11 +126,7 @@ export default {
    * @returns
    */
   async italkUploadfile(filePath: any, key: any) {
-    let uploadResult: any = await File.Upload(
-      filePath,
-      key,
-      (number: any) => { }
-    );
+    const uploadResult: any = await File.Upload(filePath, key, (number: any) => {});
     return uploadResult;
   },
 
@@ -151,17 +136,12 @@ export default {
    * @param {string} content
    * @returns
    */
-  async italkPrintHtmle(
-    content: string,
-    width: number = 900,
-    height: number = 900,
-    showWaterMark: boolean
-  ) {
-    let pcOtherSDK: any = await PcOtherSDK.GetSdk();
+  async italkPrintHtmle(content: string, width = 900, height = 900, showWaterMark: boolean) {
+    const pcOtherSDK: any = await PcOtherSDK.GetSdk();
     pcOtherSDK.PrintHtml(content, {
       width: width,
       height: height,
-      showWaterMark: showWaterMark
+      showWaterMark: showWaterMark,
     });
   },
   /**
@@ -175,8 +155,8 @@ export default {
   },
 
   async italkGetLocation() {
-    var r = new Result();
-    let rItalk = await Map.GetLocation("gcj02", false, false);
+    const r = new Result();
+    const rItalk = await Map.GetLocation('gcj02', false, false);
     if (!rItalk.IsSuccess) {
       r.Success = false;
       r.Message = rItalk.ErrorMessage;
@@ -194,18 +174,17 @@ export default {
   },
   // 获取当前版本号
   async GetVersion() {
-    var res = await App.GetVersion()
+    const res = await App.GetVersion();
     if (res.Data) {
-      return res.Data
+      return res.Data;
     } else {
-      return '未获取到版本号'
+      return '未获取到版本号';
     }
-
   },
   // 获取水印
   async showWaterMark(userID: string, userName: string) {
     if (await this.isItalkSdkExist()) {
-      await App.ShowWaterMark({ appId: config.AppID, userName: userName, userId: userID })
+      await App.ShowWaterMark({ appId: config.AppID, userName: userName, userId: userID });
     }
-  }
+  },
 };

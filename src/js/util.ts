@@ -8,12 +8,12 @@ export default {
    */
   forbid(that: any) {
     that.$nextTick(() => {
-      let inputTime = (document as any).querySelectorAll(".el-input__inner");
+      const inputTime = (document as any).querySelectorAll('.el-input__inner');
       if (inputTime.length > 0) {
         inputTime.forEach((item: any) => {
           if (
-            item.parentNode.className.indexOf("el-date-editor") > -1 ||
-            item.className.indexOf("el-date-editor") > -1
+            item.parentNode.className.indexOf('el-date-editor') > -1 ||
+            item.className.indexOf('el-date-editor') > -1
           ) {
             (document as any).activeElement.blur();
           }
@@ -27,7 +27,7 @@ export default {
    * @param {*} obj 传入的对象
    */
   isObjEmpty(obj: any) {
-    if (!obj || JSON.stringify(obj) == "{}") {
+    if (!obj || JSON.stringify(obj) == '{}') {
       return true;
     } else {
       return false;
@@ -40,7 +40,7 @@ export default {
    *returns  返回小数位数
    */
   getDecimalPrecision(obj: number) {
-    let arr = obj.toString().split(".");
+    const arr = obj.toString().split('.');
     if (arr.length == 2) {
       return arr[1].length;
     } else {
@@ -54,7 +54,8 @@ export default {
    * @returns
    */
   validateURL(textval: string) {
-    const urlregex: any = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
+    const urlregex: any =
+      /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
     return urlregex.test(textval);
   },
 
@@ -98,7 +99,8 @@ export default {
    * @returns
    */
   validatePrice(str: string) {
-    const reg: any = /(4\d(.\d{1,2})?KaTeX parse error: Can't use function '\.' in math mode at position 7: )|(^0(\̲.̲\d{1,2})?)/;
+    const reg: any =
+      /(4\d(.\d{1,2})?KaTeX parse error: Can't use function '\.' in math mode at position 7: )|(^0(\̲.̲\d{1,2})?)/;
     return reg.test(str);
   },
 
@@ -197,7 +199,7 @@ export default {
    * @returns      匹配的索引(未匹配到是-1  匹配到时从0开始的值)
    */
   getObjectArrayIndex(array: any, id: string, value: any) {
-    var index = -1;
+    let index = -1;
     if (!!array && array.length > 0 && array[0].hasOwnProperty(id)) {
       for (let i = 0; i < array.length; i++) {
         if (array[i][id] == value) {
@@ -215,8 +217,8 @@ export default {
    */
   getObjectNAttributeName(obj: any, n: number) {
     let result: any = undefined;
-    let i = 1;
-    for (var key in obj) {
+    const i = 1;
+    for (const key in obj) {
       if (i == n) {
         result = key;
       }
@@ -231,8 +233,8 @@ export default {
    */
   getObjectNAttributeValue(obj: any, n: number) {
     let result: any = undefined;
-    let i = 1;
-    for (var key in obj) {
+    const i = 1;
+    for (const key in obj) {
       if (i == n) {
         result = obj[key];
       }
@@ -248,18 +250,18 @@ export default {
    * @returns
    */
   getObjectArrayIndex_V2(array: any, ids: any, values: any) {
-    var index = -1;
+    let index = -1;
     if (!ids || !values) {
       return index;
     }
-    var arrId = ids.split(",");
-    var arrValue = values.split(",");
+    const arrId = ids.split(',');
+    const arrValue = values.split(',');
     if (arrId.length != arrValue.length) {
       return index;
     }
     if (!!array && array.length > 0) {
       for (let i = 0; i < array.length; i++) {
-        var equelCnt = 0;
+        let equelCnt = 0;
         for (let j = 0; j < arrId.length; j++) {
           if (array[i][arrId[j]] == arrValue[j]) {
             equelCnt++;
@@ -282,7 +284,7 @@ export default {
    * @returns
    */
   getArrayIndex(array: any, value: any) {
-    var index = -1;
+    let index = -1;
     if (!!array && array.length > 0) {
       for (let i = 0; i < array.length; i++) {
         if (array[i] == value) {
@@ -299,7 +301,7 @@ export default {
   /* @param a2  被减数组*/
   /* @param id   用来判断的数组对象属性*/
   getObjectArrayDiff(a1: any, a2: any, id: string) {
-    let that = this;
+    const that = this;
     if (!a1 || !a2 || a1.length == 0) {
       return [];
     }
@@ -322,7 +324,7 @@ export default {
   /* @param a2  对象数组2*/
   /* @param id   用来判断的数组对象属性*/
   getObjectArrayCross(a1: any, a2: any, id: string) {
-    let that = this;
+    const that = this;
     if (!a1 || !a2 || a1.length == 0) {
       return [];
     }
@@ -343,7 +345,7 @@ export default {
   /*数组或则列表 */
   /*回调函数 function(element,index){} */
   /* 回调函数不等于的值，可不传*/
-  grep(elems: any, callback: any, inv: boolean = false) {
+  grep(elems: any, callback: any, inv = false) {
     let retVal,
       ret = [];
     inv = !!inv;
@@ -364,7 +366,7 @@ export default {
     let name,
       i = 0,
       length = obj.length,
-      isObj = length === undefined || typeof obj == "function";
+      isObj = length === undefined || typeof obj == 'function';
 
     if (args) {
       if (isObj) {
@@ -374,7 +376,7 @@ export default {
           }
         }
       } else {
-        for (; i < length;) {
+        for (; i < length; ) {
           if (callback.apply(obj[i++], args) === false) {
             break;
           }
@@ -388,7 +390,7 @@ export default {
           }
         }
       } else {
-        for (; i < length;) {
+        for (; i < length; ) {
           if (callback.call(obj[i], i, obj[i++]) === false) {
             break;
           }
@@ -401,15 +403,13 @@ export default {
 
   /*去掉前后空格 */
   trim:
-    String.prototype.trim && !String.prototype.trim.call("\uFEFF\xA0")
+    String.prototype.trim && !String.prototype.trim.call('\uFEFF\xA0')
       ? function (text: any) {
-        return text == null ? "" : String.prototype.trim.call(text);
-      }
+          return text == null ? '' : String.prototype.trim.call(text);
+        }
       : function (text: any) {
-        return text == null
-          ? ""
-          : (text + "").replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
-      },
+          return text == null ? '' : (text + '').replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        },
 
   /**
    *对象克隆
@@ -418,14 +418,14 @@ export default {
    * @returns
    */
   clone(sObj: any) {
-    if (sObj == null || typeof sObj !== "object") {
+    if (sObj == null || typeof sObj !== 'object') {
       return sObj;
     }
     let s: any = {};
     if (sObj.constructor == Array) {
       s = [];
     }
-    for (let i in sObj) {
+    for (const i in sObj) {
       s[i] = this.clone(sObj[i]);
     }
     return s;
@@ -433,9 +433,9 @@ export default {
 
   //生成guid
   getGuid() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-      var r = (Math.random() * 16) | 0,
-        v = c == "x" ? r : (r & 0x3) | 0x8;
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   },
@@ -451,7 +451,7 @@ export default {
        */
       formatNumber(n: any) {
         n = n.toString();
-        return n[1] ? n : "0" + n;
+        return n[1] ? n : '0' + n;
       },
 
       /**
@@ -462,9 +462,9 @@ export default {
        * @returns
        */
       pad(num: any, n: number) {
-        var len = num.toString().length;
+        let len = num.toString().length;
         while (len < n) {
-          num = "0" + num;
+          num = '0' + num;
           len++;
         }
         return num;
@@ -523,9 +523,9 @@ export default {
         const second = datetime.getSeconds();
 
         return (
-          [year, month, day].map(this.formatNumber).join("-") +
-          " " +
-          [hour, minute, second].map(this.formatNumber).join(":")
+          [year, month, day].map(this.formatNumber).join('-') +
+          ' ' +
+          [hour, minute, second].map(this.formatNumber).join(':')
         );
       },
       /**
@@ -536,27 +536,22 @@ export default {
        * @returns
        */
       formatTime2(time: Date, fmt: string) {
-        let o: any = {
-          "M+": time.getMonth() + 1, //月份
-          "d+": time.getDate(), //日
-          "h+": time.getHours(), //小时
-          "m+": time.getMinutes(), //分
-          "s+": time.getSeconds(), //秒
-          "q+": Math.floor((time.getMonth() + 3) / 3), //季度
-          S: time.getMilliseconds() //毫秒
+        const o: any = {
+          'M+': time.getMonth() + 1, //月份
+          'd+': time.getDate(), //日
+          'h+': time.getHours(), //小时
+          'm+': time.getMinutes(), //分
+          's+': time.getSeconds(), //秒
+          'q+': Math.floor((time.getMonth() + 3) / 3), //季度
+          S: time.getMilliseconds(), //毫秒
         };
         if (/(y+)/.test(fmt))
-          fmt = fmt.replace(
-            RegExp.$1,
-            (time.getFullYear() + "").substr(4 - RegExp.$1.length)
-          );
-        for (let k in o)
-          if (new RegExp("(" + k + ")").test(fmt))
+          fmt = fmt.replace(RegExp.$1, (time.getFullYear() + '').substr(4 - RegExp.$1.length));
+        for (const k in o)
+          if (new RegExp('(' + k + ')').test(fmt))
             fmt = fmt.replace(
               RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
+              RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length)
             );
         return fmt;
       },
@@ -575,7 +570,7 @@ export default {
         const minute = date.getMinutes();
         const second = date.getSeconds();
 
-        return [year, month, day].map(this.formatNumber).join("-");
+        return [year, month, day].map(this.formatNumber).join('-');
       },
 
       /**
@@ -592,7 +587,7 @@ export default {
         const minute = date.getMinutes();
         const second = date.getSeconds();
 
-        return [year, month, day].map(this.formatNumber).join("/");
+        return [year, month, day].map(this.formatNumber).join('/');
       },
       /**
        *获取string格式日期的星期
@@ -601,30 +596,30 @@ export default {
        * @returns   周日,周一,周二,...,周六
        */
       formatDateToWeek(data: string) {
-        var date = new Date(Date.parse(data));
+        const date = new Date(Date.parse(data));
         const month = date.getDay();
-        var weekDay;
+        let weekDay;
         switch (month) {
           case 0:
-            weekDay = "周日";
+            weekDay = '周日';
             break;
           case 1:
-            weekDay = "周一";
+            weekDay = '周一';
             break;
           case 2:
-            weekDay = "周二";
+            weekDay = '周二';
             break;
           case 3:
-            weekDay = "周三";
+            weekDay = '周三';
             break;
           case 4:
-            weekDay = "周四";
+            weekDay = '周四';
             break;
           case 5:
-            weekDay = "周五";
+            weekDay = '周五';
             break;
           case 6:
-            weekDay = "周六";
+            weekDay = '周六';
             break;
         }
         return weekDay;
@@ -639,15 +634,15 @@ export default {
        */
       addDay(date: string, days: number) {
         //下面的不是时间戳，是时间戳*1000
-        let timestamp = Date.parse(date);
-        let newTimestamp = timestamp + days * 24 * 60 * 60 * 1000;
-        let dateLast = new Date(newTimestamp);
+        const timestamp = Date.parse(date);
+        const newTimestamp = timestamp + days * 24 * 60 * 60 * 1000;
+        const dateLast = new Date(newTimestamp);
 
         const year = dateLast.getFullYear();
         const month = dateLast.getMonth() + 1;
         const day = dateLast.getDate();
 
-        return [year, month, day].map(this.formatNumber).join("-");
+        return [year, month, day].map(this.formatNumber).join('-');
       },
 
       /**
@@ -658,7 +653,7 @@ export default {
        * @returns
        */
       addMonth(date: Date, months: number) {
-        if (typeof months == "string") {
+        if (typeof months == 'string') {
           months = parseInt(months);
         }
         const curYear = date.getFullYear();
@@ -666,51 +661,50 @@ export default {
         const curDay = date.getDate();
         let month = (curMonth + months - 1) % 12;
         let year = curYear + (curMonth + months - month) / 12;
-        let days = curDay;
+        const days = curDay;
         date = new Date(year, month, days);
         year = date.getFullYear();
         month = date.getMonth() + 1;
         const day = date.getDate();
 
-        return [year, month, day].map(this.formatNumber).join("-");
+        return [year, month, day].map(this.formatNumber).join('-');
       },
       //获得指定某一天日期（DAY：0代表今天）
       getDay(day: any) {
         const that: any = this;
-        var today = new Date();
-        var targetday_milliseconds =
-          today.getTime() + 1000 * 60 * 60 * 24 * day;
+        const today = new Date();
+        const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
         today.setTime(targetday_milliseconds); //注意，这行是关键代码
 
-        var tYear = today.getFullYear();
-        var tMonth = today.getMonth();
-        var tDate = today.getDate();
+        const tYear = today.getFullYear();
+        let tMonth = today.getMonth();
+        let tDate = today.getDate();
         tMonth = that.doHandleMonth(tMonth + 1);
         tDate = that.doHandleMonth(tDate);
-        return tYear + "-" + tMonth + "-" + tDate;
+        return tYear + '-' + tMonth + '-' + tDate;
       },
       // 1-9 前面加0
       doHandleMonth(month: any) {
-        var m = month;
+        let m = month;
         if (month.toString().length == 1) {
-          m = "0" + month;
+          m = '0' + month;
         }
         return m;
       },
       // 获取近几年年份
       getDateTime(dateTime: any) {
         const that: any = this;
-        var myDate = new Date();
-        var thisYear = myDate.getFullYear(); // 获取当年年份
-        var Section = thisYear - 2013; // 声明一个变量 获得当前年份至想获取年份差 eg.2008
-        for (var i = 0; i <= Section; i++) {
+        const myDate = new Date();
+        let thisYear = myDate.getFullYear(); // 获取当年年份
+        const Section = thisYear - 2013; // 声明一个变量 获得当前年份至想获取年份差 eg.2008
+        for (let i = 0; i <= Section; i++) {
           dateTime.push(thisYear--);
         }
       },
       getDaysBetween(date1: any, date2: any) {
-        var days = (date2 - date1) / (1 * 24 * 60 * 60 * 1000);
+        const days = (date2 - date1) / (1 * 24 * 60 * 60 * 1000);
         return days;
-      }
+      },
     };
-  })()
+  })(),
 };

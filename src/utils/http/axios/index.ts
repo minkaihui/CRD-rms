@@ -10,9 +10,11 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
-import { getToken } from '/@/utils/auth';
+import { TokenApi } from '/@/api/sys/user';
+import { getToken, getTokenExpire } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
+import { useUserStore } from '/@/store/modules/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 
@@ -41,37 +43,43 @@ const transform: AxiosTransform = {
     }
     // 错误的时候返回
 
-    const { data } = res; 
+    const { data, config } = res;
     if (!data) {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
 
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    let { StatusCode, SubErrorCode, ErrorCode ,ErrorMessage,Data,output}=data;
+    const { StatusCode, SubErrorCode, ErrorCode, ErrorMessage, Data, output } = data;
 
     // code  兼容
     let code;
-    if(typeof(StatusCode) == "number")code=StatusCode;
-    if(typeof(SubErrorCode) == "number")code=SubErrorCode;
-    if(typeof(ErrorCode) == "number")code=ErrorCode;
+    if (typeof StatusCode == 'number') code = StatusCode;
+    if (typeof SubErrorCode == 'number') code = SubErrorCode;
+    if (typeof ErrorCode == 'number') code = ErrorCode;
 
-    let message=ErrorMessage;
-    
+    let message = ErrorMessage;
+
     // result  兼容
     let result;
-    if(output)result=output;
-    if(Data)result=Data
-    if(message==null)message=undefined;
+    if (output) result = output;
+    if (Data) result = Data;
+    if (message == null) message = undefined;
 
     // 这里逻辑可以根据项目进行修改 && Reflect.has(data, 'StatusCode')
-    const hasSuccess = data  && code === ResultEnum.SUCCESS;
+
+    if (code == 0 && config.requestOptions.SuccessMessage) {
+      createMessage.success(config.requestOptions.SuccessMessage);
+    }
+
+    const hasSuccess = data && code === ResultEnum.SUCCESS;
     if (hasSuccess) {
-      return result;
+      return result ? result : true;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
+
     let timeoutMsg = '';
     switch (code) {
       case ResultEnum.TIMEOUT:
@@ -134,7 +142,7 @@ const transform: AxiosTransform = {
   /**
    * @description: 请求拦截器处理
    */
-  requestInterceptors: (config, options) => {
+  requestInterceptors: function (config, options) {
     // 请求之前处理config
     // const token = getToken();
     // if (token) {
@@ -143,6 +151,27 @@ const transform: AxiosTransform = {
     //     ? `${options.authenticationScheme} ${token}`
     //     : token;
     // }
+    const userStore = useUserStore();
+    const tokenExpire = getTokenExpire();
+    if (tokenExpire) {
+      if (Number(tokenExpire) < new Date().getTime()) {
+        +(async function () {
+          //token
+          const Data = await TokenApi({
+            AppId: '123456',
+            AuthorizeType: 'UserName',
+            Code: '',
+            Password: '123',
+            UserId: '123',
+          });
+          // save token
+          userStore.setToken(Data.AccessToken);
+
+          userStore.setTokenExpire(Data.Expire * 1000 + '');
+        })();
+      }
+    }
+
     return config;
   },
 
@@ -161,7 +190,7 @@ const transform: AxiosTransform = {
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
 
-    console.log(error,'***********************************')
+    console.log(error, '***********************************');
     // let { StatusCode, SubErrorCode,ErrorMessage,Data}=error || {};
 
     // let Code= SubErrorCode || StatusCode;
@@ -200,7 +229,7 @@ const transform: AxiosTransform = {
   },
 };
 
-function createAxios(opt?: Partial<CreateAxiosOptions>, headers?:Partial<string | undefined>) {
+function createAxios(opt?: Partial<CreateAxiosOptions>, headers?: Partial<string | undefined>) {
   return new VAxios(
     deepMerge(
       {
@@ -246,13 +275,14 @@ function createAxios(opt?: Partial<CreateAxiosOptions>, headers?:Partial<string 
 }
 
 // 默认 api url
-export const defHttp = createAxios({},ContentTypeEnum.FORM_URLENCODED);
+export const defHttp = createAxios({}, ContentTypeEnum.FORM_URLENCODED);
 
 // TokenHttp api url
-export const TokenHttp = createAxios({
-  requestOptions: {
-    apiUrl: 'http://121.201.110.194:16180',
-  }
-},ContentTypeEnum.JSON);
-
-
+export const TokenHttp = createAxios(
+  {
+    requestOptions: {
+      apiUrl: 'http://121.201.110.194:16180',
+    },
+  },
+  ContentTypeEnum.JSON
+);

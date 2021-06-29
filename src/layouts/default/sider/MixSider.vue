@@ -98,7 +98,7 @@
   import { getShallowMenus, getChildrenMenus, getCurrentParentPath } from '/@/router/menus';
   import { listenerRouteChange } from '/@/logics/mitt/routeChange';
   import { SimpleMenu } from '/@/components/SimpleMenu';
-  
+
   export default defineComponent({
     name: 'LayoutMixSider',
     components: {

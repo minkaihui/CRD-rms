@@ -3,13 +3,13 @@ import httpClient from '../httpClient';
 import reportFormApiConfig from '../apiConfig/reportApiConfig';
 
 export default {
-	/**报表头部查询条件
+  /**报表头部查询条件
    * @param {*} reportTypeCode
    * 报表类型
-   * @returns 
+   * @returns
    */
-	async GetRtsReportBaseInfo(reportTypeCode: any) {
-		let result = await httpClient.Post(reportFormApiConfig.GetRtsReportBaseInfo, reportTypeCode);
-		return result;
-	}
+  async GetRtsReportBaseInfo(reportTypeCode: any) {
+    const result = await httpClient.Post(reportFormApiConfig.GetRtsReportBaseInfo, reportTypeCode);
+    return result;
+  },
 };

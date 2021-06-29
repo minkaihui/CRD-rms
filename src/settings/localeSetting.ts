@@ -14,7 +14,7 @@ export const localeSetting: LocaleSetting = {
   // 默认语言
   fallback: LOCALE.ZH_CN,
   // 允许的语言 , LOCALE.EN_US
-  availableLocales: [LOCALE.ZH_CN,LOCALE.EN_US],
+  availableLocales: [LOCALE.ZH_CN, LOCALE.EN_US],
 };
 
 // 配置语言列表

@@ -80,125 +80,125 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue';
+  import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue';
 
-import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-import {
-  GithubFilled,
-  WechatFilled,
-  AlipayCircleFilled,
-  GoogleCircleFilled,
-  TwitterCircleFilled,
-} from '@ant-design/icons-vue';
-import LoginFormTitle from './LoginFormTitle.vue';
-
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-
-import { useUserStore } from '/@/store/modules/user';
-import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { onKeyStroke } from '@vueuse/core';
-
-import HttpClient from '/@/api1/httpClient';
-
-export default defineComponent({
-  name: 'LoginForm',
-  components: {
-    [Col.name]: Col,
-    [Row.name]: Row,
-    Checkbox,
-    Button,
-    Form,
-    FormItem: Form.Item,
-    Input,
-    Divider,
-    LoginFormTitle,
-    InputPassword: Input.Password,
+  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
+  import {
     GithubFilled,
     WechatFilled,
     AlipayCircleFilled,
     GoogleCircleFilled,
     TwitterCircleFilled,
-  },
-  setup() {
-    const { t } = useI18n();
-    const { notification, createErrorModal } = useMessage();
-    const { prefixCls } = useDesign('login');
-    const userStore = useUserStore();
+  } from '@ant-design/icons-vue';
+  import LoginFormTitle from './LoginFormTitle.vue';
 
-    const { setLoginState, getLoginState } = useLoginState();
-    const { getFormRules } = useFormRules();
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-    const formRef = ref();
-    const loading = ref(false);
-    const rememberMe = ref(false);
+  import { useUserStore } from '/@/store/modules/user';
+  import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { onKeyStroke } from '@vueuse/core';
 
-    const formData = reactive({
-      account: '闵凯辉',
-      password: '123',
-    });
+  import HttpClient from '/@/api1/httpClient';
 
-    const { validForm } = useFormValid(formRef);
+  export default defineComponent({
+    name: 'LoginForm',
+    components: {
+      [Col.name]: Col,
+      [Row.name]: Row,
+      Checkbox,
+      Button,
+      Form,
+      FormItem: Form.Item,
+      Input,
+      Divider,
+      LoginFormTitle,
+      InputPassword: Input.Password,
+      GithubFilled,
+      WechatFilled,
+      AlipayCircleFilled,
+      GoogleCircleFilled,
+      TwitterCircleFilled,
+    },
+    setup() {
+      const { t } = useI18n();
+      const { notification, createErrorModal } = useMessage();
+      const { prefixCls } = useDesign('login');
+      const userStore = useUserStore();
 
-    onKeyStroke('Enter', handleLogin);
+      const { setLoginState, getLoginState } = useLoginState();
+      const { getFormRules } = useFormRules();
 
-    const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
+      const formRef = ref();
+      const loading = ref(false);
+      const rememberMe = ref(false);
 
-    async function handleLogin() {
-      const data = await validForm();
-      if (!data) return;
-      try {
-        loading.value = true;
+      const formData = reactive({
+        account: '闵凯辉',
+        password: '123',
+      });
 
-        const userInfo = await userStore.login(
-          toRaw({
-            UserName: data.account,
-            Password: data.password,
-          })
-        );
-        // let context = {
-        //   loginForm: {
-        //     username: data.account,
-        //     password: data.password,
-        //   },
-        // };
+      const { validForm } = useFormValid(formRef);
 
-        // const userInfo = await HttpClient.Login(context, {
-        //   username: context.loginForm.username,
-        //   password: context.loginForm.password,
-        // });
-        if (userInfo) {
-          notification.success({
-            message: t('sys.login.loginSuccessTitle'),
-            description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
-            duration: 3,
+      onKeyStroke('Enter', handleLogin);
+
+      const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
+
+      async function handleLogin() {
+        const data = await validForm();
+        if (!data) return;
+        try {
+          loading.value = true;
+
+          const userInfo = await userStore.login(
+            toRaw({
+              UserName: data.account,
+              Password: data.password,
+            })
+          );
+          // let context = {
+          //   loginForm: {
+          //     username: data.account,
+          //     password: data.password,
+          //   },
+          // };
+
+          // const userInfo = await HttpClient.Login(context, {
+          //   username: context.loginForm.username,
+          //   password: context.loginForm.password,
+          // });
+          if (userInfo) {
+            notification.success({
+              message: t('sys.login.loginSuccessTitle'),
+              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+              duration: 3,
+            });
+          }
+        } catch (error) {
+          createErrorModal({
+            title: t('sys.api.errorTip'),
+            content: error.message || t('sys.api.networkExceptionMsg'),
+            getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
           });
+        } finally {
+          loading.value = false;
         }
-      } catch (error) {
-        createErrorModal({
-          title: t('sys.api.errorTip'),
-          content: error.message || t('sys.api.networkExceptionMsg'),
-          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-        });
-      } finally {
-        loading.value = false;
       }
-    }
 
-    return {
-      t,
-      prefixCls,
-      formRef,
-      formData,
-      getFormRules,
-      rememberMe,
-      handleLogin,
-      loading,
-      setLoginState,
-      LoginStateEnum,
-      getShow,
-    };
-  },
-});
+      return {
+        t,
+        prefixCls,
+        formRef,
+        formData,
+        getFormRules,
+        rememberMe,
+        handleLogin,
+        loading,
+        setLoginState,
+        LoginStateEnum,
+        getShow,
+      };
+    },
+  });
 </script>

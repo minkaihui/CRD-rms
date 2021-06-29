@@ -1,8 +1,12 @@
 <template>
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" :numberStyle="numberStyle"  class="flex justify-center items-center text-center">
-        <img class="inline-block" src="/src/assets/images/men/Message.png" alt="">
+      <Badge
+        :count="count"
+        :numberStyle="numberStyle"
+        class="flex justify-center items-center text-center"
+      >
+        <img class="inline-block" src="/src/assets/images/men/Message.png" alt="" />
       </Badge>
       <template #content>
         <Tabs>
@@ -43,7 +47,7 @@
         tabListData,
         count,
         numberStyle: {
-          top:"10px"
+          top: '10px',
         },
       };
     },
@@ -52,7 +56,7 @@
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-notify';
 
-  ::v-deep(.ant-badge-count){
+  ::v-deep(.ant-badge-count) {
     top: 10px !important;
   }
   .@{prefix-cls} {

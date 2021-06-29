@@ -1,5 +1,5 @@
 <template>
-  <Scrollbar ref="scrollbarRef" class="scroll-container"  v-bind="$attrs" v-on="$listeners">
+  <Scrollbar ref="scrollbarRef" class="scroll-container" v-bind="$attrs" v-on="$listeners">
     <slot></slot>
   </Scrollbar>
 </template>
