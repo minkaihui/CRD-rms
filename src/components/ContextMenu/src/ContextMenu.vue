@@ -172,7 +172,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 200;
+    z-index: 999;
     display: block;
     width: 156px;
     margin: 0;

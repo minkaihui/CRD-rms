@@ -55,16 +55,7 @@
       >
         <div class="tab" @click.prevent>
           <div
-            class="
-              flex
-              items-center
-              justify-center
-              inline-block
-              text-black
-              bg-white
-              cursor-pointer
-              ant-dropdown-link
-            "
+            class="flex items-center justify-center inline-block text-black bg-white cursor-pointer ant-dropdown-link"
             :class="tabDownShow == index ? 'ant-dropdown-link-hover' : ''"
           >
             {{ item.tab }}
@@ -89,15 +80,7 @@
                 <a-dropdown :trigger="['click']">
                   <div class="tab">
                     <div
-                      class="
-                        flex
-                        items-center
-                        justify-center
-                        inline-block
-                        text-black
-                        cursor-pointer
-                        ant-dropdown-link ant-dropdown-link-hover
-                      "
+                      class="flex items-center justify-center inline-block text-black cursor-pointer ant-dropdown-link ant-dropdown-link-hover"
                     >
                       任意符合
                       <img class="inline-block" src="/src/assets/images/men/down.png" alt="" />
@@ -202,11 +185,8 @@
     defineComponent,
     onMounted,
     computed,
-    watch,
     ref,
     reactive,
-    toRefs,
-    unref,
     nextTick,
   } from 'vue';
   import { useRoute } from 'vue-router';
@@ -218,11 +198,14 @@
   import { demoListApi } from '/@/api/demo/table';
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { onKeyUp, onKeyDown, useDebounceFn } from '@vueuse/core';
-
-  import { CollapseContainer } from '/@/components/Container/index';
-
-  import { ScrollContainer } from '/@/components/Container/index';
+  import { ScrollContainer,CollapseContainer } from '/@/components/Container/index';
   import { HeightScroll } from '/@/utils/HeightScroll';
+
+   // 文件夹接口
+  import {
+    GetAllFileFormatList,GetFileFormatTypeList,GetFileCategoryList,
+    GetFileList
+  } from '/@/api/sys/File';
 
   import '/@/utils/viewerjs/viewer.min.css';
   import { LeftOutlined } from '@ant-design/icons-vue';
@@ -325,6 +308,53 @@
       });
 
       //视图排序
+      GetAllFileFormatList({})
+      GetFileFormatTypeList({})
+      GetFileCategoryList({})
+
+      // GetFileList({
+      //   req:{
+      //   /// 文件标签列表 List<Guid>
+      //     FileTagList:,
+      //   /// 文件夹名（非文件夹下的文件查询才有） string
+      //     FolderName:,
+      //   /// 文件名 string
+      //     FileName:,
+      //   /// 注释 string
+      //     Notes:,
+      //   /// 文件大小开始区间 decimal?
+      //    FileSizeFrom:,
+      //   /// 文件大小结束区间 decimal?
+      //    FileSizeTo:,
+      //     /// 宽度开始区间 decimal?
+      //     WeightFrom:,
+      //     /// 宽度结束区间 decimal?
+      //     WeightTo:,
+      //     /// 高度开始区间 decimal?
+      //     HeightFrom:,
+      //     /// 高度结束区间 decimal
+      //     HeightTo:,
+      //     /// 创建人名称 string
+      //     CreatorName:,
+      //     /// 日期开始 DateTime
+      //     DateFrom:,
+      //     /// 日期结束 DateTime
+      //     DateTo:,
+      //     /// 文件类别 List<FileCategoryEnum>
+      //     FileCategoryList:,
+      //     /// 文件类型 List<FileTypeEnum>
+      //     FileTypeList:,
+      //     /// 文件夹ID（查询文件夹下的文件才有）
+      //     FolderId:,
+      //     /// 排序方式 FileListSortEnum
+      //     Sort:,
+      //     /// 每页显示的行数 int
+      //     Rows:,
+      //     /// 第几页 int
+      //     Page:,
+      //   }
+      // })
+
       let bigImagesList = reactive(getBigImagesList());
 
       //预览逻辑

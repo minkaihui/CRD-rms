@@ -72,7 +72,6 @@
 
       const items = computed(() => {
         const { item } = props;
-        console.log(item);
         return item;
       });
 

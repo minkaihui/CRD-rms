@@ -5,7 +5,7 @@
         <Icon :icon="getIcon(route)" v-if="getShowBreadCrumbIcon && getIcon(route)" />
         <span v-if="!hasRedirect(routes, route)" class="text-black">
           {{ t(route.name || route.meta.title) }}
-          <span class="text-cool-gray-400 text-xs ml-1">(200)</span>
+          <span class="ml-1 text-xs text-cool-gray-400">(200)</span>
         </span>
         <router-link v-else to="" @click="handleClick(route, paths, $event)">
           {{ t(route.name || route.meta.title) }}
@@ -15,7 +15,7 @@
     <div v-if="flag">
       <a-dropdown :trigger="['click']">
         <div
-          class="ant-dropdown-link inline-block cursor-pointer text-black-65 bg-white"
+          class="inline-block bg-white cursor-pointer ant-dropdown-link text-black-65"
           @click.prevent
         >
           排序方式
@@ -33,7 +33,7 @@
       &nbsp;
       <a-dropdown :trigger="['click']">
         <div
-          class="ant-dropdown-link text-black-65 inline-block cursor-pointer bg-white"
+          class="inline-block bg-white cursor-pointer ant-dropdown-link text-black-65"
           @click.prevent
         >
           筛选
@@ -52,7 +52,7 @@
 
       <div class="inline-block" style="position: relative">
         <a-dropdown :trigger="['click']">
-          <div class="ant-dropdown-link inline-block bg-white" @click.prevent>
+          <div class="inline-block bg-white ant-dropdown-link" @click.prevent>
             <div class="inline-block search-img">
               <span class="cursor-pointer" style="vertical-align: middle; display: inline-block"
                 ><img src="/src/assets/images/men/search.png" alt=""
@@ -75,7 +75,7 @@
             </a-menu>
           </template>
         </a-dropdown>
-        <div class="pl-2 inline-block">
+        <div class="inline-block pl-2">
           <a-input style="padding-left: 40px" placeholder="搜索" v-model="searchValue">
             <template #prefix> </template>
           </a-input>

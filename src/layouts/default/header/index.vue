@@ -17,7 +17,7 @@
         :sider="false"
       />
       <!-- 面包屑换位置 -->
-      <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
+      <!-- <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" /> -->
     </div>
     <!-- left end -->
 
@@ -46,7 +46,7 @@
       <!-- <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" /> -->
       <!-- 搜搜 -->
       <!-- <AppSearch :class="`${prefixCls}-action__item `" /> -->
-      <!-- <div class=" text-xs flex justify-center items-center  occupation">
+      <!-- <div class="flex items-center justify-center text-xs  occupation">
           <img src="/src/assets/images/men/occupation.png" alt="">
           管理员
       </div> -->

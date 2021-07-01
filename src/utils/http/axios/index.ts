@@ -55,7 +55,7 @@ const transform: AxiosTransform = {
     // code  兼容
     let code;
     if (typeof StatusCode == 'number') code = StatusCode;
-    if (typeof SubErrorCode == 'number') code = SubErrorCode;
+    // if (typeof SubErrorCode == 'number') code = SubErrorCode;
     if (typeof ErrorCode == 'number') code = ErrorCode;
 
     let message = ErrorMessage;

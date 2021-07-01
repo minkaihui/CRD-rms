@@ -17,85 +17,147 @@
     </template>
 
     <!-- //上传素材 -->
-    <!-- <div
+    <div
       @click="open('上传素材')"
       class="flex items-center justify-center cursor-pointer"
       :class="!collapse ? 'uploadMaterial' : 'moren'"
     >
       <Icon color="#1665D8" icon="ant-design:upload-outlined" :size="16" />
       <span v-if="!collapse" style="color: #1665d8">上传素材</span>
-    </div> -->
+    </div>
 
     <!-- 共享文件夹 -->
-    <!-- <div
-      @click="open('共享文件夹')"
-      class="flex items-center text-center"
-      :class="!collapse ? 'sharedFolders justify-between' : 'moren justify-center'"
-    >
+    <div class="flex items-center justify-between text-center sharedFolders" v-show="!collapse">
       <span v-if="!collapse">共享文件夹</span>
-      <span :class="!collapse ? 'mr-5' : ''"
+      <span class="mr-5" @click="open('共享文件夹')"
         ><Icon class="cursor-pointer" color="#666" icon="ant-design:plus-outlined" :size="16"
       /></span>
-    </div> -->
-    <!-- <a-menu
+    </div>
+    <a-menu
       style="width: 202px"
       mode="inline"
       :openKeys="openKeysPublic"
       v-model:selectedKeys="selectedKeysPublic"
       @openChange="onOpenChangePublic"
+      v-if="userPublicFolder.arr && userPublicFolder.arr.length > 0"
+      v-show="!collapse"
+      @click="Uncheck"
     >
-      <a-sub-menu key="sub5">
-        <template #expandIcon>
-          <span class="opacity-0" ></span>
-        </template>
-        <template #title>
-          <span>
-            <Icon icon="ant-design:caret-right-filled" size="10" class="Transition" :class="openKeys[0]=='sub5'?'Rotation':''"></Icon>
-            <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
-            <span>Navigation One</span>
-          </span>
-        </template>
-        
-        <a-menu-item key="1">Option 1</a-menu-item>
-        <a-menu-item key="2">Option 2</a-menu-item>
-        <a-menu-item key="3">Option 3</a-menu-item>
-        <a-menu-item key="4">Option 4</a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub6">
-        <template #expandIcon>
-          <span class="opacity-0" ></span>
-        </template>
-        <template #title>
-          <span>
-            <Icon icon="ant-design:caret-right-filled" size="10" class="Transition" :class="openKeys[0]=='sub6'?'Rotation':''"></Icon>
-            <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
-            <span>Navigation Two</span>
-          </span>
-        </template>
-        <a-menu-item key="5">Option 5</a-menu-item>
-        <a-menu-item key="6">Option 6</a-menu-item>
-        <a-sub-menu key="sub7" title="Submenu">
-          <a-menu-item key="7">Option 7</a-menu-item>
-          <a-menu-item key="8">Option 8</a-menu-item>
+      <template v-for="(item, index) in userPublicFolder.arr">
+        <!-- 第一层 -->
+        <a-sub-menu v-if="item.ChildFolderList" :key="item.FolderId + item.FolderLevel">
+          <template #expandIcon>
+            <span class="opacity-0"></span>
+          </template>
+          <template #title>
+            <span
+              style="margin-right: 5px"
+              @contextmenu="
+                RightClick(
+                  $event,
+                  item.FolderId + item.FolderLevel,
+                  open,
+                  '共享文件夹',
+                  FolderDeletion
+                )
+              "
+            >
+              <Icon
+                icon="ant-design:caret-right-filled"
+                size="10"
+                class="Transition"
+                :class="openKeys[index] == item.FolderId + item.FolderLevel ? 'Rotation' : ''"
+              ></Icon>
+              <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
+              <span>{{ item.FolderName }}</span>
+            </span>
+          </template>
+          <template v-for="it in item.ChildFolderList" :key="it.FolderId + it.FolderLevel">
+            <!-- 第二层 -->
+
+            <a-sub-menu v-if="t.ChildFolderList" :key="t.FolderId + t.FolderLevel">
+              <template #expandIcon>
+                <span class="opacity-0"></span>
+              </template>
+              <template #title>
+                <span
+                  style="margin-right: 5px"
+                  @contextmenu="
+                    RightClick(
+                      $event,
+                      it.FolderId + it.FolderLevel,
+                      open,
+                      '共享文件夹',
+                      FolderDeletion
+                    )
+                  "
+                >
+                  <Icon
+                    icon="ant-design:caret-right-filled"
+                    size="10"
+                    class="Transition"
+                    :class="openKeys[index] == it.FolderId + it.FolderLevel ? 'Rotation' : ''"
+                  ></Icon>
+                  <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
+                  <span>{{ it.FolderName }}</span>
+                </span>
+              </template>
+              <!-- 第三层 -->
+              <a-menu-item
+                v-for="t in item.ChildFolderList"
+                @contextmenu="
+                  RightClick($event, t.FolderId + t.FolderLevel, open, '共享文件夹', FolderDeletion)
+                "
+                :key="t.FolderId + t.FolderLevel"
+              >
+                <Icon
+                  icon="ant-design:folder-outlined"
+                  class="icon-top"
+                  style="margin-left: 19px"
+                ></Icon>
+                {{ t.FolderName }}
+              </a-menu-item>
+            </a-sub-menu>
+            <!-- 第二层 -->
+            <a-menu-item
+              v-else
+              @contextmenu="
+                RightClick($event, it.FolderId + it.FolderLevel, open, '共享文件夹', FolderDeletion)
+              "
+              :key="it.FolderId + it.FolderLevel"
+              >{{ it.FolderName }}</a-menu-item
+            >
+          </template>
         </a-sub-menu>
-      </a-sub-menu>
-      <a-menu-item key="sub7">
-        <Icon icon="ant-design:folder-outlined" class="icon-top ml-19"></Icon>
-        Option 11
-      </a-menu-item>
-    </a-menu> -->
+        <!-- 第一层 -->
+        <a-menu-item
+          v-else
+          @contextmenu="
+            RightClick($event, item.FolderId + item.FolderLevel, open, '共享文件夹', FolderDeletion)
+          "
+          :key="item.FolderId + item.FolderLevel"
+        >
+          <Icon icon="ant-design:folder-outlined" class="icon-top" style="margin-left: 19px"></Icon>
+          {{ item.FolderName }}
+        </a-menu-item>
+      </template>
+    </a-menu>
 
     <!-- 私人文件夹 -->
-    <!-- <div
-      @click="open('私人文件夹')"
+    <div
       class="flex items-center text-center"
       :class="!collapse ? 'sharedFolders justify-between' : 'moren justify-center'"
     >
       <span v-if="!collapse">私人文件夹</span>
-      <span :class="!collapse ? 'mr-5' : ''"
-        ><Icon class="cursor-pointer" color="#666" icon="ant-design:plus-outlined" :size="16"
+      <span :class="!collapse ? 'mr-5' : ''" @click="open('私人文件夹')"
+        ><Icon
+          @click="open('私人文件夹')"
+          class="cursor-pointer"
+          color="#666"
+          icon="ant-design:plus-outlined"
+          :size="16"
       /></span>
-    </div> -->
+    </div>
     <!-- let userPrivateFolder=[];
       let userPublicFolder=[];
       ChildFolderList: null
@@ -105,38 +167,119 @@ FolderLevel: 1
 FolderName: "名称"
 UpdateTime: "2021-06-28 17:14:59" -->
     <!-- {{userPrivateFolder[0]}} -->
-    <!-- <a-menu
+    <a-menu
       style="width: 202px"
       mode="inline"
       :openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
       @openChange="onOpenChange"
-      v-if="userPrivateFolder && userPrivateFolder.length >0 " 
+      v-if="userPrivateFolder.arr && userPrivateFolder.arr.length > 0"
+      v-show="!collapse"
+      @click="Uncheck"
     >
-      <a-sub-menu v-for="(item,index) in userPrivateFolder" :key="item.FolderId">
-        <template #expandIcon>
-          <span class="opacity-0" ></span>
-        </template>
-        <template #title>
-          <span>
-            <Icon icon="ant-design:caret-right-filled" size="10" class="Transition" :class="openKeys[index]==item.FolderId?'Rotation':''"></Icon>
-            <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
-            <span>{{item.FolderName}}</span>
-          </span>
-        </template>
-        <template v-if="item.ChildFolderList">
-          <a-menu-item v-for="it in item.ChildFolderList" :key="it.FolderId" >{{it.FolderName}}</a-menu-item>
-        </template>
-      </a-sub-menu>
-      <a-menu-item key="sub4">
-        <Icon icon="ant-design:folder-outlined" class="icon-top ml-19"></Icon>
-        Option 11
-      </a-menu-item>
-    </a-menu> -->
+      <template v-for="(item, index) in userPrivateFolder.arr">
+        <!-- 第一层 -->
+        <a-sub-menu v-if="item.ChildFolderList" :key="item.FolderId + item.FolderLevel">
+          <template #expandIcon>
+            <span class="opacity-0"></span>
+          </template>
+          <template #title>
+            <span
+              style="margin-right: 5px"
+              @contextmenu="
+                RightClick(
+                  $event,
+                  item.FolderId + item.FolderLevel,
+                  open,
+                  '私人文件夹',
+                  FolderDeletion
+                )
+              "
+            >
+              <Icon
+                icon="ant-design:caret-right-filled"
+                size="10"
+                class="Transition"
+                :class="openKeys[index] == item.FolderId + item.FolderLevel ? 'Rotation' : ''"
+              ></Icon>
+              <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
+              <span>{{ item.FolderName }}</span>
+            </span>
+          </template>
+          <template v-for="it in item.ChildFolderList" :key="it.FolderId + it.FolderLevel">
+            <!-- 第二层 -->
+            <a-sub-menu v-if="t.ChildFolderList" :key="t.FolderId + t.FolderLevel">
+              <template #expandIcon>
+                <span class="opacity-0"></span>
+              </template>
+              <template #title>
+                <span
+                  style="margin-right: 5px"
+                  @contextmenu="
+                    RightClick(
+                      $event,
+                      it.FolderId + it.FolderLevel,
+                      open,
+                      '私人文件夹',
+                      FolderDeletion
+                    )
+                  "
+                >
+                  <Icon
+                    icon="ant-design:caret-right-filled"
+                    size="10"
+                    class="Transition"
+                    :class="openKeys[index] == it.FolderId + it.FolderLevel ? 'Rotation' : ''"
+                  ></Icon>
+                  <Icon icon="ant-design:folder-outlined" class="icon-top"></Icon>
+                  <span>{{ it.FolderName }}</span>
+                </span>
+              </template>
+              <!-- 第三层 -->
+              <a-menu-item
+                @contextmenu="
+                  RightClick($event, t.FolderId + t.FolderLevel, open, '私人文件夹', FolderDeletion)
+                "
+                v-for="t in item.ChildFolderList"
+                :key="t.FolderId + t.FolderLevel"
+              >
+                <Icon
+                  icon="ant-design:folder-outlined"
+                  class="icon-top"
+                  style="margin-left: 19px"
+                ></Icon>
+                {{ t.FolderName }}
+              </a-menu-item>
+            </a-sub-menu>
+            <!-- 第二层 -->
+            <a-menu-item
+              v-else
+              @contextmenu="
+                RightClick($event, it.FolderId + it.FolderLevel, open, '私人文件夹', FolderDeletion)
+              "
+              :key="it.FolderId + it.FolderLevel"
+              >{{ it.FolderName }}</a-menu-item
+            >
+          </template>
+        </a-sub-menu>
+        <!-- 第一层 -->
+        <!--  -->
+        <a-menu-item
+          v-else
+          @contextmenu="
+            RightClick($event, item.FolderId + item.FolderLevel, open, '私人文件夹', FolderDeletion)
+          "
+          :key="item.FolderId + item.FolderLevel"
+        >
+          <Icon icon="ant-design:folder-outlined" class="icon-top" style="margin-left: 19px"></Icon>
+          {{ item.FolderName }}
+        </a-menu-item>
+      </template>
+    </a-menu>
 
     <fileModal width="1019px" @register="fileRegister" />
-    <addModal width="630px" @register="addRegister" />
-    <addPrivateModal width="630px" @register="addPrivate" />
+    <addModal width="630px" @register="addRegister" @Folder="onFolder" />
+    <!-- <addPrivateModal width="630px" @register="addPrivate" /> -->
 
     <UploadModal />
   </Menus>
@@ -158,18 +301,27 @@ UpdateTime: "2021-06-28 17:14:59" -->
   import { useRouter } from 'vue-router';
   import { isFunction, isUrl } from '/@/utils/is';
   import { openWindow } from '/@/utils';
-
-  // import { GetUserPublicFolder, GetUserPrivateFolder } from '/@/api/sys/folder';
-
   import { useOpenKeys } from './useOpenKeys';
   import { Icon } from '/@/components/Icon';
 
-  // import { useUserStore } from '/@/store/modules/user';
-  // const userStore = useUserStore();
+  // 文件夹接口
+  import { GetUserPublicFolder, GetUserPrivateFolder, DeleteFolder } from '/@/api/sys/folder';
+
+  //文件夹状态
+  import { useUserFolder } from '/@/store/modules/folder';
+  const userFolder = useUserFolder();
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
+
+  // 右键菜单
+  import { CollapseContainer } from '/@/components/Container/index';
+  import { rightButtonEvent } from './rightButton';
+
+  // 弹框
   import { useModal } from '/@/components/Modal';
   import fileModal from './modal/fileModal.vue';
   import addModal from './modal/addModal.vue';
-  import addPrivateModal from './modal/addPrivateModal.vue';
+  // import addPrivateModal from './modal/addPrivateModal.vue';
   import UploadModal from './modal/UploadModal_RMS.vue';
   export default defineComponent({
     name: 'SimpleMenu',
@@ -183,7 +335,7 @@ UpdateTime: "2021-06-28 17:14:59" -->
       fileModal,
       addModal,
       UploadModal,
-      addPrivateModal,
+      CollapseContainer,
     },
     inheritAttrs: false,
     props: {
@@ -202,7 +354,7 @@ UpdateTime: "2021-06-28 17:14:59" -->
       isSplitMenu: propTypes.bool,
     },
     emits: ['menuClick'],
-    async setup(props, { attrs, emit }) {
+    setup(props, { attrs, emit }) {
       const currentActiveMenu = ref('');
       const isClickGo = ref(false);
 
@@ -290,75 +442,134 @@ UpdateTime: "2021-06-28 17:14:59" -->
         menuState.activeName = key;
       }
 
+      //文件夹列表
+      const userPrivateFolder = reactive({ arr: [] });
+      const userPublicFolder = reactive({ arr: [] });
+      let rootSubmenuPublic = [];
+      let rootSubmenuPrivat = [];
+      async function init() {
+        let PublicFolder = await GetUserPublicFolder({
+          userId: userStore.getUserInfo.UserId,
+        });
+
+        let PrivateFolder = await GetUserPrivateFolder({
+          userId: userStore.getUserInfo.UserId,
+        });
+
+        userPublicFolder.arr = PublicFolder[0].value;
+        userPrivateFolder.arr = PrivateFolder[0].value;
+
+        userPrivateFolder.arr.map((item) => {
+          rootSubmenuPrivat.push(item.FolderId + item.FolderLevel);
+        });
+
+        userPublicFolder.arr.map((item) => {
+          rootSubmenuPublic.push(item.FolderId + item.FolderLevel);
+        });
+      };
+      init();
+      //公共文件夹管理
+      const statePublic = reactive({
+        rootSubmenuKeysPublic: rootSubmenuPublic,
+        openKeysPublic: [''],
+        selectedKeysPublic: [''],
+      });
+      const onOpenChangePublic = (openKeys: string[]) => {
+        const latestOpenKey = openKeys.find(
+          (key) => statePublic.openKeysPublic.indexOf(key) === -1
+        );
+        if (statePublic.rootSubmenuKeysPublic.indexOf(latestOpenKey!) === -1) {
+          statePublic.openKeysPublic = openKeys;
+        } else {
+          statePublic.openKeysPublic = latestOpenKey ? [latestOpenKey] : [];
+        }
+      };
+
+      //私有文件夹管理
+      const state = reactive({
+        rootSubmenuKeys: rootSubmenuPrivat,
+        openKeys: [''],
+        selectedKeys: [''],
+      });
+      const onOpenChange = (openKeys: string[]) => {
+        const latestOpenKey = openKeys.find((key) => state.openKeys.indexOf(key) === -1);
+        if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+          state.openKeys = openKeys;
+        } else {
+          state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+        }
+      };
+
       //打开弹框
       const [fileRegister, { openModal: fileOpenModal }] = useModal();
       const [addRegister, { openModal: addOpenModal }] = useModal();
-      const [addPrivate, { openModal: addPrivateModal }] = useModal();
+      // const [addPrivate, { openModal: addPrivateModal }] = useModal();
 
-      function open(value) {
+      async function open(value,Edit,id) {
+        
+        if(Edit=='编辑文件夹名称'){
+          console.log(id.substr(0,id.length-1)+'1')
+          await userFolder.setOpenEdit(id.substr(0,id.length-1)+'1');
+        }else if(Edit=='编辑文件夹'){
+          await userFolder.setOpenEdit(id.substr(0,id.length-1)+'0');
+        }else{
+          await userFolder.setOpenEdit('');
+        }
+
         if (value == '上传素材') {
           fileOpenModal();
         } else if (value == '共享文件夹') {
+          let ml = statePublic.selectedKeysPublic[0];
+          await userFolder.setOpenModal(false);
+          await userFolder.setOpenKey(ml ? ml.substr(ml.length - 1, 1) : '0');
           addOpenModal();
         } else if (value == '私人文件夹') {
-          addPrivateModal();
+          let ml = state.selectedKeys[0];
+          await userFolder.setOpenModal(true);
+          await userFolder.setOpenKey(ml ? ml.substr(ml.length - 1, 1) : '0');
+          addOpenModal();
         }
       }
 
-      //  let PublicFolder = await GetUserPublicFolder({
-      //       userId: userStore.getUserInfo.UserId,
-      //     });
+      //文件夹取消选中
+      function Uncheck(e) {
+        if (e.key == state.selectedKeys[0]) {
+          e.key = '';
+          state.selectedKeys.shift();
+        } else if (e.key == statePublic.selectedKeysPublic[0]) {
+          e.key = '';
+          statePublic.selectedKeysPublic.shift();
+        }
+      }
 
-      //     let PrivateFolder = await GetUserPrivateFolder({
-      //       userId: userStore.getUserInfo.UserId,
-      //     });
+      // 右键菜单
+      function RightClick(event, value, open, showName, FolderDeletion) {
+        state.selectedKeys[0] = value;
+        rightButtonEvent(event, value, open, showName, FolderDeletion);
+      }
 
-      //   const userPrivateFolder=reactive(PublicFolder[0].value);
-      //   const userPublicFolder=reactive(PrivateFolder[0].value);
-      //     console.log(userPublicFolder,1)
-      //     console.log(userPrivateFolder,2)
+      //文件夹删除
+      function FolderDeletion(FolderId) {
+        DeleteFolder({
+          dto: {
+            /// 文件ID
+            FolderId: FolderId.substr(0,FolderId.length-1),
+            /// 修改人
+            UpdatetorID: userStore.getUserInfo.UserId,
+            /// 修改人姓名
+            UpdatetorName: userStore.getUserInfo.UserName,
+          },
+        });
+      }
 
-      //   let rootSubmenuPrivat = [];
-      //   userPrivateFolder.map(item=>{
-      //     rootSubmenuPrivat.push(item.FolderId)
-      //   })
-      //   let rootSubmenuPublic = [];
-      //   userPublicFolder.map(item=>{
-      //     rootSubmenuPublic.push(item.FolderId)
-      //   })
-
-      //   console.log(rootSubmenuPrivat)
-
-      //公共文件夹管理
-      //   const statePublic = reactive({
-
-      //    rootSubmenuKeysPublic: ['sub5', 'sub6', 'sub7'],
-      //   openKeysPublic: [''],
-      //   selectedKeysPublic: [],
-      // });
-      // const onOpenChangePublic = (openKeys: string[]) => {
-      //   const latestOpenKey = openKeys.find(key => statePublic.openKeysPublic.indexOf(key) === -1);
-      //   if (statePublic.rootSubmenuKeysPublic.indexOf(latestOpenKey!) === -1) {
-      //     statePublic.openKeysPublic = openKeys;
-      //   } else {
-      //     statePublic.openKeysPublic = latestOpenKey ? [latestOpenKey] : [];
-      //   }
-      // };
-
-      //私有文件夹管理
-      //  const state = reactive({
-      //   rootSubmenuKeys: rootSubmenuPrivat,
-      //   openKeys: [''],
-      //   selectedKeys: [],
-      // });
-      // const onOpenChange = (openKeys: string[]) => {
-      //   const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
-      //   if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
-      //     state.openKeys = openKeys;
-      //   } else {
-      //     state.openKeys = latestOpenKey ? [latestOpenKey] : [];
-      //   }
-      // };
+      //监听更新文件夹
+      function onFolder(flag){
+        if(flag){
+          init();
+          statePublic.rootSubmenuKeysPublic=rootSubmenuPublic;
+          state.rootSubmenuKeys=rootSubmenuPrivat;
+        }
+      }
 
       return {
         prefixCls,
@@ -367,18 +578,25 @@ UpdateTime: "2021-06-28 17:14:59" -->
         getOpenKeys,
         ...toRefs(menuState),
         //私有文件夹管理
-        // userPrivateFolder,
-        // ...toRefs(state),
-        // onOpenChange,
+        userPrivateFolder,
+        ...toRefs(state),
+        onOpenChange,
         // 公共文件夹管理
-        // userPublicFolder,
-        // ...toRefs(statePublic),
-        // onOpenChangePublic,
+        userPublicFolder,
+        ...toRefs(statePublic),
+        onOpenChangePublic,
         //打开弹框
         fileRegister,
         addRegister,
-        addPrivate,
         open,
+        //文件夹取消选中
+        Uncheck,
+        //右键菜单
+        RightClick,
+        rightButtonEvent,
+        FolderDeletion,
+        //监听更新文件夹
+        onFolder
       };
     },
   });
@@ -420,7 +638,6 @@ UpdateTime: "2021-06-28 17:14:59" -->
 
   .Transition {
     transition: all 0.5s;
-    margin-right: 5px;
   }
 
   .Rotation {
@@ -429,9 +646,5 @@ UpdateTime: "2021-06-28 17:14:59" -->
 
   .icon-top {
     transform: translateY(1px);
-  }
-
-  .ml-19 {
-    margin-left: 19px;
   }
 </style>
