@@ -7,3 +7,5 @@ export interface DropMenu {
   disabled?: boolean;
   divider?: boolean;
 }
+
+// export type Trigger = 'click' | 'hover' | 'contextMenu';

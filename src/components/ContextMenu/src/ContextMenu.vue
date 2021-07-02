@@ -30,14 +30,21 @@
 
   const ItemContent: FunctionalComponent<ItemContentProps> = (props) => {
     const { item } = props;
+    let sty = {
+    display: 'inline-block',
+    width: '-webkit-fill-available',
+    height: 'inherit',
+    ...item.textStyle,
+  };
     return (
       <span
-        style="display: inline-block; width: 100%; "
+        style={sty}
         class="px-4"
         onClick={props.handler.bind(null, item)}
       >
-        {props.showIcon && item.icon && <Icon class="mr-2" icon={item.icon} />}
-        <span>{item.label}</span>
+      {props.showIcon && item.icon && <Icon class="mr-2" icon={item.icon} />}
+      <span>{item.label}</span>
+      {props.showIcon && item.righticon && <Icon class="mr-2" icon={item.righticon} />}
       </span>
     );
   };

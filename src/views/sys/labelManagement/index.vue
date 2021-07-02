@@ -5,7 +5,7 @@
       <div class="p-4">
         <!-- 上 -->
         <div
-          class="tab-up flex justify-between items-center"
+          class="flex items-center justify-between tab-up"
           v-for="(item, index) in TagNameList"
           :key="index"
           :class="checkedBg == index ? 'checked-bg' : ''"
@@ -14,11 +14,11 @@
           <div class="h-6 w-7">
             <img :src="item.tagImg" alt="" />
           </div>
-          <div class="tab flex-1">{{ item.name }}</div>
+          <div class="flex-1 tab">{{ item.name }}</div>
           <div class="text-right">{{ item.num }}</div>
         </div>
         <!-- 中 -->
-        <div class="tab-centre flex justify-between items-center">
+        <div class="flex items-center justify-between tab-centre">
           <div class="tab">标签群组</div>
           <div class="cursor-pointer">
             <Icon icon="ant-design:plus-outlined" color="#9ea0a5" :size="13" />
@@ -26,29 +26,46 @@
         </div>
         <!-- 下 -->
         <div
-          class="tab-up flex justify-between items-center"
+          class="flex items-center justify-between tab-up"
           v-for="(item, index) in 3"
-          :key="index"
+          :key="index + 3"
           :class="checkedBg == index + 3 ? 'checked-bg' : ''"
           @contextmenu="rightButton_left"
           @click="checkedBg = index + 3"
         >
-          <div class="h-6 w-4">
+          <div class="w-4 h-6">
             <div class="roundDot"></div>
           </div>
-          <div class="tab flex-1">群组{{ item }}</div>
+          <div class="flex-1 tab">群组{{ item }}</div>
           <div class="text-right">{{ item }}</div>
         </div>
       </div>
     </div>
-    <!-- 右侧模块1 -->
-    <div></div>
+    <!-- 右侧模块1-->
+
     <div class="scroll-wrap" :style="{ height: scrollHeight + 'px' }">
+      <div class="flex items-start justify-between TabName">
+        <div>
+          <span class="text-xl font-semibold" style="margin-right: 24px">群组</span>
+          <Icon
+            @click="addGroupTag"
+            icon="ant-design:plus-outlined"
+            size="14"
+            color="#474a57"
+          ></Icon>
+        </div>
+        <div>
+          <span>排列方式</span>
+          <a-button type="link" :size="size">
+            名称排列 <Icon icon="ant-design:caret-down-filled" size="10" color="#474a57"></Icon>
+          </a-button>
+        </div>
+      </div>
       <ScrollContainer ref="scrollRef" @handleScroll="handleScroll">
-        <div class="pagecontent bg-white">
-          <div class="az pt-6 flex flex-col">
+        <div class="bg-white pagecontent">
+          <div class="flex flex-col pt-6 az">
             <div
-              class="zimu cursor-pointer"
+              class="cursor-pointer zimu"
               v-for="(item, index) in generateSmall"
               :key="index"
               @click="AZindexClick(index)"
@@ -61,7 +78,7 @@
               <div class="zimu-li">{{ item }}</div>
             </div>
             <div class="flex flex-wrap">
-              <div class="tag mb-5" v-for="(item, k) in 15" :key="k"
+              <div class="mb-5 tag" v-for="(item, k) in 15" :key="k"
                 >戒指&nbsp;&nbsp;
                 <span class="text-black-45">{{ k }}</span>
               </div>
@@ -135,6 +152,12 @@
     }
 
     // 右
+
+    .TabName {
+      height: 55px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
     ::v-deep(.scrollbar__thumb) {
       background-color: rgba(144, 147, 153, 0);
     }
@@ -205,6 +228,20 @@
   import { ScrollContainer } from '/@/components/Container/index';
   import { Icon } from '/@/components/Icon';
   import { HeightScroll, setDOM } from '/@/utils/HeightScroll';
+
+  // 文件夹接口
+  import {
+    GetTileTagList,
+    GetFileTagAndGroupList,
+    GetAllFileTagGroup,
+    AddTagGroup,
+    UpdateTagGroupName,
+    DeleteTagGroup,
+  } from '/@/api/sys/FileTag';
+
+  import { useUserStore } from '/@/store/modules/user';
+  const userStore = useUserStore();
+
   // 右键逻辑
   import { rightButton_left, rightButton_right } from './rightButton';
 
@@ -248,6 +285,63 @@
       }
       let generateSmall = generateBig_1();
 
+      async function AllTagGroup() {
+        let AllFileTagGroup = await GetAllFileTagGroup({});
+        console.log(AllFileTagGroup, 2);
+      }
+
+      async function init(
+        IsOften = false,
+        SearchNoGroup = false,
+        GroupId = null,
+        FileTagName = ''
+      ) {
+        // 获得文件标签列表
+        let TileTagList = await GetTileTagList({
+          req: {
+            /// 查询常用文件标签 bool?
+            IsOften: IsOften,
+            /// 查询未分类文件标签 bool?
+            SearchNoGroup: SearchNoGroup,
+            /// 根据分组ID查询文件夹标签 Guid?
+            GroupId: GroupId,
+            /// 文件标签名称 string
+            FileTagName: FileTagName,
+          },
+        });
+        // 获得文件标签标签组列表
+        let FileTagAndGroupList = await GetFileTagAndGroupList({
+          req: {
+            /// 查询常用文件标签 bool?
+            IsOften: IsOften,
+            /// 查询未分类文件标签 bool?
+            SearchNoGroup: SearchNoGroup,
+            /// 根据分组ID查询文件夹标签 Guid?
+            GroupId: GroupId,
+            /// 文件标签名称 string
+            FileTagName: FileTagName,
+          },
+        });
+        AllTagGroup();
+        console.log(TileTagList, FileTagAndGroupList, 1);
+      }
+      init();
+
+      async function addGroupTag() {
+        let GroupTag = await AddTagGroup({
+          dto: {
+            /// 标签分组名称 string
+            GroupName: '群组1',
+            /// 创建人  string
+            CreatorID: userStore.getUserInfo.UserId,
+            /// 创建人姓名  string
+            CreatorName: userStore.getUserInfo.UserName,
+          },
+        });
+        console.log(GroupTag, 3);
+        AllTagGroup();
+      }
+
       return {
         // 左
         checkedBg: ref(0),
@@ -283,6 +377,9 @@
         scrollTo,
         scrollBottom,
         handleScroll,
+
+        //添加群组标签
+        addGroupTag,
       };
     },
   });

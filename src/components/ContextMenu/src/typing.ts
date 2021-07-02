@@ -4,6 +4,8 @@ export interface Axis {
 }
 
 export interface ContextMenuItem {
+  textStyle?: Object;
+  righticon?: string;
   label: string;
   icon?: string;
   disabled?: boolean;
