@@ -110,9 +110,9 @@ export const useUserStore = defineStore({
         const sessionTimeout = this.sessionTimeout;
         sessionTimeout && this.setSessionTimeout(false);
         !sessionTimeout && goHome && (await router.replace(PageEnum.BASE_HOME));
-        this.setUserInfo(userInfo[0].value);
-        this.setRoleList(userInfo[0].value);
-        return userInfo[0].value;
+        this.setUserInfo(userInfo);
+        this.setRoleList(userInfo);
+        return userInfo;
       } catch (error) {
         return Promise.reject(error);
       }

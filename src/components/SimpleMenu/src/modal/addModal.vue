@@ -264,7 +264,7 @@
           UserName: userStore.getUserInfo.UserName,
         });
 
-        UserList[0].value.map((item, index) => {
+        UserList.map((item, index) => {
           UserLi.label = item.EName;
           UserLi.value = {
             /// 用户ID string

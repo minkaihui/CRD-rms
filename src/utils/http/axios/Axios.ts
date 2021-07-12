@@ -214,16 +214,13 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
-              console.log(res);
               const ret = transformRequestHook(res, opt);
-
               resolve(ret);
             } catch (err) {
               reject(err || new Error('request error!'));
             }
             return;
           }
-          console.log(res);
           resolve(res as unknown as Promise<T>);
         })
         .catch((e: Error) => {

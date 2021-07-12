@@ -62,7 +62,14 @@ const transform: AxiosTransform = {
 
     // result  兼容
     let result;
-    if (output) result = output;
+    if (output){
+      if (output.length>0){
+        let {value}=output[0];
+        if(value)result = value || [];
+      }else{
+        result = output;
+      }
+    }
     if (Data) result = Data;
     if (message == null) message = undefined;
 

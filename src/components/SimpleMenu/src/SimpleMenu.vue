@@ -456,8 +456,8 @@ UpdateTime: "2021-06-28 17:14:59" -->
           userId: userStore.getUserInfo.UserId,
         });
 
-        userPublicFolder.arr = PublicFolder[0].value;
-        userPrivateFolder.arr = PrivateFolder[0].value;
+        userPublicFolder.arr = PublicFolder;
+        userPrivateFolder.arr = PrivateFolder;
 
         userPrivateFolder.arr.map((item) => {
           rootSubmenuPrivat.push(item.FolderId + item.FolderLevel);
