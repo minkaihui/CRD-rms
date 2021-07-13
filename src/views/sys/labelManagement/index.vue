@@ -44,7 +44,7 @@ TagQuantity: 0 -->
               v-for="(item, index) in AllFileTagGroup.arr"
               :key="item.GroupId"
               :class="checkedBg == index + TagNameList.length ? 'checked-bg' : ''"
-              Entrust="rightButton_left"
+              entrust="rightButton_left"
               :index="index"
               @click="ClickTagGroup(index + TagNameList.length)"
             >
@@ -86,7 +86,7 @@ TagQuantity: 0 -->
             v-if="AddKey == '标签'"
             v-model:value="AddValue"
             @pressEnter="pressEnter"
-            @blur="AddKey = ''"
+            @blur="pressEnter"
             v-focus
           />
           <span v-else style="line-height: 28px">
@@ -120,10 +120,12 @@ TagQuantity: 0 -->
                 >{{ item }}</div
               >
             </div>
-            <div class="li" v-for="(item, j) in generateSmall" :key="j">
+            <div class="li" v-for="(items, j) in TileTagList.arr" :key="j">
               <!-- //a-z导航标题 -->
               <div class="mb-5">
-                <div class="zimu-li">{{ item }}</div>
+                <div class="zimu-li" :class="items.initial == '*' ? 'F35' : ''">{{
+                  items.initial
+                }}</div>
               </div>
               <div class="flex flex-wrap">
                 <!-- CreatedTime: "2021-07-12 10:22:23"
@@ -136,10 +138,11 @@ TagQuantity: 0 -->
                 UsedQuantity: 0 -->
                 <div
                   class="mb-5 tag"
-                  v-for="(item, k) in TileTagList.arr"
+                  v-for="(item, k) in items.data"
                   :key="item.GroupId"
-                  :index="k"
-                  Entrust="rightButton_right"
+                  :index1="k" :index2="j"
+                  :groupid="item.TagId"
+                  entrust="rightButton_right"
                 >
                   {{ item.TagName }}&nbsp;&nbsp;
                   <span class="pointer-events-none text-black-45">{{ item.UsedQuantity }}</span>
@@ -276,6 +279,10 @@ TagQuantity: 0 -->
           color: #1665d8;
         }
 
+        .F35 {
+          font-size: 35px;
+        }
+
         .tag {
           height: 30px;
           padding: 5px 11px;
@@ -289,12 +296,13 @@ TagQuantity: 0 -->
   }
 </style>
 <script lang="ts">
-  import { defineComponent, onMounted, ref, reactive, watch,nextTick  } from 'vue';
+  import { defineComponent, onMounted, ref, reactive, watch } from 'vue';
   import { Tag } from 'ant-design-vue';
   import { CollapseContainer } from '/@/components/Container/index';
   import { ScrollContainer } from '/@/components/Container/index';
   import { Icon } from '/@/components/Icon';
   import { HeightScroll, setDOM } from '/@/utils/HeightScroll';
+  import { AZarr } from '/@/utils/sortAZ';
 
   // 文件夹接口
   import {
@@ -305,6 +313,7 @@ TagQuantity: 0 -->
     AddFileTag,
     UpdateTagGroupName,
     DeleteTagGroup,
+    SetFileTagOften,
     UpdateFileTagName,
   } from '/@/api/sys/FileTag';
 
@@ -332,21 +341,25 @@ TagQuantity: 0 -->
 
       // 事件委托 右键初始化
       let zimuList, manageLeft, manageRight;
+      const checkedTag = reactive({ id: null, index1: -1 ,index2: -1 });
       onMounted(() => {
         zimuList = document.querySelectorAll('.zimu-li');
         manageLeft = document.querySelector('#manage_left');
         manageRight = document.querySelector('#manage_right');
 
-        manageLeft.oncontextmenu =  function (e) {
-          let { Entrust, index } = e.target.attributes;
-          if (Entrust.value && Entrust.value == 'rightButton_left') {
-            checkedBg.value =  TagNameList.length + Number(index.value);
+        manageLeft.oncontextmenu = function (e) {
+          let { entrust, index } = e.target.attributes;
+          if (entrust && entrust.value == 'rightButton_left') {
+            checkedBg.value = TagNameList.length + Number(index.value);
             rightButton_left(e);
           }
         };
         manageRight.oncontextmenu = function (e) {
-          let { Entrust } = e.target.attributes;
-          if (Entrust.value && Entrust.value == 'rightButton_right') {
+          let { entrust, index1,index2, groupid } = e.target.attributes;
+          if (entrust && entrust.value == 'rightButton_right') {
+            checkedTag.index1 = index1.value;
+            checkedTag.index2 = index2.value;
+            checkedTag.id = groupid.value;
             rightButton_right(e);
           }
         };
@@ -433,7 +446,7 @@ TagQuantity: 0 -->
       // 获得文件标签列表
       const TileTagList = reactive({ arr: arrValue });
       async function TagList() {
-        TileTagList.arr = await GetTileTagList({
+        let res = await GetTileTagList({
           req: {
             /// 查询常用文件标签 bool?
             IsOften: ClickTag.IsOften,
@@ -445,6 +458,8 @@ TagQuantity: 0 -->
             FileTagName: ClickTag.FileTagName,
           },
         });
+        TileTagList.arr = AZarr(res, 'TagName');
+        console.log(TileTagList.arr);
       }
 
       // 获得文件标签标签组列表
@@ -478,7 +493,7 @@ TagQuantity: 0 -->
       const AddKey = ref('');
       const AddValue = ref('');
       async function pressEnter() {
-        if(!AddValue.value)return AddKey.value = '';
+        if (!AddValue.value) return (AddKey.value = '');
         if (AddKey.value == '标签') {
           let GroupTag = await AddFileTag({
             dto: {
@@ -535,11 +550,20 @@ TagQuantity: 0 -->
         }
       }
 
-      // // 失去焦点
-      // function LoseFocus() {
-      //   if(AddKey.value == '添加标签群组')AllFileTagGroup.arr.shift();
-      //   AddKey.value = '';
-      // }
+      async function TagOftenFn(IsOften) {
+        let TagOften = await SetFileTagOften({
+          /// 标签ID Guid
+          TagId: checkedTag.id,
+          /// 是否常用 bool
+          IsOften: IsOften,
+          /// 修改人ID string
+          UpdatorID: userStore.getUserInfo.UserId,
+          /// 修改人名称 string
+          UpdatorName: userStore.getUserInfo.UserName,
+        });
+        if (TagOften && IsOften) createMessage.success('设为常用标签成功');
+        if (TagOften && !IsOften) createMessage.success('取消常用标签成功');
+      }
 
       // 左边的右键
       function rightButton_left(e: MouseEvent) {
@@ -566,7 +590,7 @@ TagQuantity: 0 -->
               textStyle: {
                 color: '#f95a2c',
               },
-              handler: async() => {
+              handler: async () => {
                 let DeleteGroup = await DeleteTagGroup({
                   dto: {
                     /// 标签分组ID GroupId
@@ -600,8 +624,8 @@ TagQuantity: 0 -->
             },
             {
               label: '设为常用标签',
-              handler: () => {
-                createMessage.success('设为常用标签');
+              handler: async () => {
+                TagOftenFn(true);
               },
             },
             {
@@ -610,7 +634,7 @@ TagQuantity: 0 -->
                 color: '#d9dbe1',
               },
               handler: () => {
-                createMessage.success('取消常用标签');
+                TagOftenFn(false);
               },
             },
             {
@@ -619,6 +643,16 @@ TagQuantity: 0 -->
                 'border-bottom': '1px solid rgba(0,0,0,0.06)',
               },
               handler: () => {
+                UpdateFileTagName({
+                  /// 标签ID Guid
+                  TagId: checkedTag.id,
+                  /// 标签名称 string
+                  TagName: '',
+                  /// 修改人ID string
+                  UpdatorID: userStore.getUserInfo.UserId,
+                  /// 修改人名称 string
+                  UpdatorName: userStore.getUserInfo.UserName,
+                });
                 createMessage.success('重命名');
               },
             },
@@ -649,6 +683,8 @@ TagQuantity: 0 -->
       }
 
       return {
+        checkedTag,
+
         AddOpen,
         AddKey,
         AddValue,
